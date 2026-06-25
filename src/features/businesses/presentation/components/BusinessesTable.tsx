@@ -27,7 +27,7 @@ export const BusinessesTable = ({ businesses }: BusinessesTableProps) => (
             <td>{business.category}</td>
             <td>{business.status}</td>
             <td>{business.priority}</td>
-            <td>{business.assignedToName ?? 'Unassigned'}</td>
+            <td>{business.assignedTo?.name ?? 'Unassigned'}</td>
             <td>{business.nextFollowUpAt ?? '—'}</td>
           </tr>
         ))}

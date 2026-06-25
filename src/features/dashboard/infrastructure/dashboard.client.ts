@@ -1,10 +1,10 @@
 import { getSalesTrackerAPI } from '@/shared/api/generated/salesTrackerApi';
 
-import type { DashboardSummaryDto } from './dashboard.dto';
+import type { GetDashboardSummaryResponseDto } from './dashboard.dto';
 
 const salesTrackerApi = getSalesTrackerAPI();
 
 export const dashboardClient = {
-  getSummary: async (): Promise<DashboardSummaryDto> =>
+  getSummary: async (): Promise<GetDashboardSummaryResponseDto> =>
     salesTrackerApi.getDashboardSummary(),
 };

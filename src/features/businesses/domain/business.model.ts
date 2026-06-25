@@ -1,26 +1,25 @@
-export type BusinessStatus =
-  | 'new'
-  | 'contacted'
-  | 'interested'
-  | 'not_interested'
-  | 'follow_up'
-  | 'closed';
+import type {
+  BusinessStatus,
+  Category,
+  LeadSource,
+  Priority,
+  UserSummaryDto,
+} from '@/shared/api/generated/salesTrackerApi';
 
-export type BusinessPriority = 'low' | 'medium' | 'high';
+export type UserSummary = UserSummaryDto;
 
-// TODO: replace string for proper types from api
 export type Business = {
   id: string;
   name: string;
-  category: string;
-  status: string;
-  priority: string;
-  source: string;
+  category: Category;
+  status: BusinessStatus;
+  priority: Priority;
+  source: LeadSource;
   notes: string | null;
   lastContactedAt: string | null;
   nextFollowUpAt: string | null;
-  assignedToName: string | null;
-  createdByName: string;
+  createdBy: UserSummary;
+  assignedTo: UserSummary | null;
   createdAt: string;
   updatedAt: string;
 };
