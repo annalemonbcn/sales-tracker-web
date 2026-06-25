@@ -1,12 +1,9 @@
-import { apiClient } from '@/shared/api/apiClient';
-
 import type { DashboardSummary } from '../domain/dashboardSummary.model';
-import type { DashboardSummaryDto } from './dashboard.dto';
+import { dashboardClient } from './dashboard.client';
 import { mapDashboardSummaryDtoToDomain } from './dashboard.mapper';
 
 export const getDashboardSummary = async (): Promise<DashboardSummary> => {
-  const response =
-    await apiClient.get<DashboardSummaryDto>('/dashboard/summary');
+  const dto = await dashboardClient.getSummary();
 
-  return mapDashboardSummaryDtoToDomain(response.data);
+  return mapDashboardSummaryDtoToDomain(dto);
 };

@@ -5,10 +5,10 @@ import { Button, Card, ErrorState, LoadingState } from '@/shared/ui';
 import { DashboardMetrics } from '../components/DashboardMetrics';
 
 import styles from './DashboardPage.module.css';
-import useSummary from '../../hooks/useSummary';
+import { useDashboardSummary } from '../../application/useDashboardSummary';
 
 export const DashboardPage = () => {
-  const { data: summary, isError, isLoading } = useSummary();
+  const { data, isError, isLoading } = useDashboardSummary();
 
   if (isLoading) return <LoadingState message="Loading dashboard..." />;
 
@@ -20,7 +20,7 @@ export const DashboardPage = () => {
       />
     );
 
-  if (!summary)
+  if (!data)
     return (
       <ErrorState
         title="No dashboard data"
@@ -44,7 +44,7 @@ export const DashboardPage = () => {
         </Button>
       </header>
 
-      <DashboardMetrics summary={summary} />
+      <DashboardMetrics summary={data} />
 
       <Card>
         <Card.Header>

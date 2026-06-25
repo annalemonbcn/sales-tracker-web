@@ -1,6 +1,11 @@
+export type DashboardSummaryMetric = {
+  value: number;
+  currentMonth: number;
+};
+
 export type DashboardSummary = {
-  totalBusinesses: number;
-  contactedBusinesses: number;
-  pendingFollowUps: number;
-  highPriorityBusinesses: number;
+  totalBusinesses: DashboardSummaryMetric;
+  contactedBusinesses: DashboardSummaryMetric;
+  pendingFollowUps: DashboardSummaryMetric;
+  highPriorityBusinesses: DashboardSummaryMetric;
 };

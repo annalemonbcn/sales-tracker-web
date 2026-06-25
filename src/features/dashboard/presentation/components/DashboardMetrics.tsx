@@ -9,33 +9,36 @@ type DashboardMetricsProps = {
   summary: DashboardSummary;
 };
 
-export const DashboardMetrics = ({ summary }: DashboardMetricsProps) => (
-  <section className={styles.metrics}>
-    <DashboardMetricCard
-      icon={<Building2 size={24} />}
-      title="Total businesses"
-      value={summary.totalBusinesses}
-    />
+export const DashboardMetrics = ({ summary }: DashboardMetricsProps) => {
+  console.log('summary', summary);
+  return (
+    <section className={styles.metrics}>
+      <DashboardMetricCard
+        icon={<Building2 size={24} />}
+        title="Total businesses"
+        value={summary.totalBusinesses.value}
+      />
 
-    <DashboardMetricCard
-      icon={<Phone size={24} />}
-      title="Contacted"
-      value={summary.contactedBusinesses}
-      variant="success"
-    />
+      <DashboardMetricCard
+        icon={<Phone size={24} />}
+        title="Contacted"
+        value={summary.contactedBusinesses.value}
+        variant="success"
+      />
 
-    <DashboardMetricCard
-      icon={<Timer size={24} />}
-      title="Pending follow-ups"
-      value={summary.pendingFollowUps}
-      variant="warning"
-    />
+      <DashboardMetricCard
+        icon={<Timer size={24} />}
+        title="Pending follow-ups"
+        value={summary.pendingFollowUps.value}
+        variant="warning"
+      />
 
-    <DashboardMetricCard
-      icon={<Flag size={24} />}
-      title="High priority"
-      value={summary.highPriorityBusinesses}
-      variant="danger"
-    />
-  </section>
-);
+      <DashboardMetricCard
+        icon={<Flag size={24} />}
+        title="High priority"
+        value={summary.highPriorityBusinesses.value}
+        variant="danger"
+      />
+    </section>
+  );
+};

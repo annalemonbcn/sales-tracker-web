@@ -1,6 +1,3 @@
-export type DashboardSummaryDto = {
-  totalBusinesses: number;
-  contactedBusinesses: number;
-  pendingFollowUps: number;
-  highPriorityBusinesses: number;
-};
+import type { GetDashboardSummary200 } from '@/shared/api/generated/salesTrackerApi';
+
+export type DashboardSummaryDto = GetDashboardSummary200;
