@@ -25,8 +25,13 @@
   font-size: 0.9375rem;
 }
 
-.demoRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+.placeholder {
+  display: grid;
+  min-height: 16rem;
+  place-items: center;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  font-weight: 600;
 }
