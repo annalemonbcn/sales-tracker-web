@@ -10,8 +10,43 @@
     BlinkMacSystemFont,
     'Segoe UI',
     sans-serif;
-  color: #0f172a;
-  background: #f8fafc;
+
+  --color-bg-app: #f8fafc;
+  --color-bg-surface: #ffffff;
+
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-soft: #eff6ff;
+
+  --color-success: #16a34a;
+  --color-success-hover: #15803d;
+  --color-success-soft: #dcfce7;
+
+  --color-warning: #f97316;
+  --color-warning-hover: #ea580c;
+  --color-warning-soft: #ffedd5;
+
+  --color-danger: #dc2626;
+  --color-danger-hover: #b91c1c;
+  --color-danger-soft: #fee2e2;
+
+  --color-neutral-soft: #f1f5f9;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.125rem;
+
+  --shadow-card: 0 0.75rem 1.875rem rgb(15 23 42 / 0.04);
+
+  color: var(--color-text-primary);
+  background: var(--color-bg-app);
 }
 
 body {
