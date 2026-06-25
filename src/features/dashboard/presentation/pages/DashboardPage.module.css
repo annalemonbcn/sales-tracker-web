@@ -1,0 +1,42 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  margin: 0;
+  color: #0f172a;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 15px;
+}
+
+.card {
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.cardTitle {
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 20px;
+}
+
+.cardText {
+  margin: 0;
+  color: #64748b;
+}

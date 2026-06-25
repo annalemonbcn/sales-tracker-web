@@ -1,0 +1,52 @@
+{
+  "name": "sales-tracker-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint .",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "preview": "vite preview",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "oxlint --fix",
+      "prettier --write"
+    ],
+    "*.{css,json,md}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.4.0",
+    "@tanstack/react-query": "^5.101.1",
+    "@tanstack/react-query-devtools": "^5.101.1",
+    "@tanstack/react-router": "^1.170.16",
+    "@tanstack/react-table": "^8.21.3",
+    "@tanstack/router-devtools": "^1.167.0",
+    "axios": "^1.18.1",
+    "date-fns": "^4.4.0",
+    "lucide-react": "^1.21.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-hook-form": "^7.80.0",
+    "zod": "^4.4.3",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "oxlint": "^1.69.0",
+    "prettier": "^3.8.4",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.0"
+  }
+}
