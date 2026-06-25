@@ -9,36 +9,41 @@ type DashboardMetricsProps = {
   summary: DashboardSummary;
 };
 
-export const DashboardMetrics = ({ summary }: DashboardMetricsProps) => {
-  console.log('summary', summary);
-  return (
-    <section className={styles.metrics}>
-      <DashboardMetricCard
-        icon={<Building2 size={24} />}
-        title="Total businesses"
-        value={summary.totalBusinesses.value}
-      />
+export const DashboardMetrics = ({ summary }: DashboardMetricsProps) => (
+  <section className={styles.metrics}>
+    <DashboardMetricCard
+      currentMonth={summary.totalBusinesses.currentMonth}
+      icon={<Building2 size={24} />}
+      title="Total businesses"
+      trendVariant={summary.totalBusinesses.trendVariant}
+      value={summary.totalBusinesses.value}
+    />
 
-      <DashboardMetricCard
-        icon={<Phone size={24} />}
-        title="Contacted"
-        value={summary.contactedBusinesses.value}
-        variant="success"
-      />
+    <DashboardMetricCard
+      currentMonth={summary.contactedBusinesses.currentMonth}
+      icon={<Phone size={24} />}
+      title="Contacted"
+      trendVariant={summary.contactedBusinesses.trendVariant}
+      value={summary.contactedBusinesses.value}
+      variant="success"
+    />
 
-      <DashboardMetricCard
-        icon={<Timer size={24} />}
-        title="Pending follow-ups"
-        value={summary.pendingFollowUps.value}
-        variant="warning"
-      />
+    <DashboardMetricCard
+      currentMonth={summary.pendingFollowUps.currentMonth}
+      icon={<Timer size={24} />}
+      title="Pending follow-ups"
+      trendVariant={summary.pendingFollowUps.trendVariant}
+      value={summary.pendingFollowUps.value}
+      variant="warning"
+    />
 
-      <DashboardMetricCard
-        icon={<Flag size={24} />}
-        title="High priority"
-        value={summary.highPriorityBusinesses.value}
-        variant="danger"
-      />
-    </section>
-  );
-};
+    <DashboardMetricCard
+      currentMonth={summary.highPriorityBusinesses.currentMonth}
+      icon={<Flag size={24} />}
+      title="High priority"
+      trendVariant={summary.highPriorityBusinesses.trendVariant}
+      value={summary.highPriorityBusinesses.value}
+      variant="danger"
+    />
+  </section>
+);

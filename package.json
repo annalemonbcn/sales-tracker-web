@@ -11,7 +11,8 @@
     "format:check": "prettier . --check",
     "preview": "vite preview",
     "prepare": "husky",
-    "api:generate": "orval --config ./orval.config.ts"
+    "api:generate": "orval --config ./orval.config.ts",
+    "check": "npm run lint && npm run format:check && npm run build"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

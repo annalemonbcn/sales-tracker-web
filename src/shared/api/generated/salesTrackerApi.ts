@@ -6,9 +6,21 @@
  * OpenAPI spec version: 1.0.0
  */
 import { orvalMutator } from '../orvalMutator';
+export type DashboardMetricTrendVariant =
+  (typeof DashboardMetricTrendVariant)[keyof typeof DashboardMetricTrendVariant];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DashboardMetricTrendVariant = {
+  success: 'success',
+  warning: 'warning',
+  danger: 'danger',
+  neutral: 'neutral',
+} as const;
+
 export interface DashboardMetric {
   value: number;
   currentMonth: number;
+  trendVariant: DashboardMetricTrendVariant;
 }
 
 export interface UserSummaryDto {
