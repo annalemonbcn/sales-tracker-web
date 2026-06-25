@@ -1,23 +1,41 @@
+import { Plus } from 'lucide-react';
+
+import { Badge, Button, Card } from '@/shared/ui';
+
 import styles from './DashboardPage.module.css';
 
-export function DashboardPage() {
-  return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Dashboard</h1>
-          <p className={styles.subtitle}>
-            Overview of your leads and businesses.
-          </p>
-        </div>
-      </header>
-
-      <section className={styles.card}>
-        <h2 className={styles.cardTitle}>Sales Tracker frontend ready</h2>
-        <p className={styles.cardText}>
-          Next step: connect GET /dashboard/summary.
+export const DashboardPage = () => (
+  <div className={styles.page}>
+    <header className={styles.header}>
+      <div>
+        <h1 className={styles.title}>Dashboard</h1>
+        <p className={styles.subtitle}>
+          Overview of your leads and businesses.
         </p>
-      </section>
-    </div>
-  );
-}
+      </div>
+
+      <Button>
+        <Plus size={18} />
+        Add business
+      </Button>
+    </header>
+
+    <Card>
+      <Card.Header>
+        <Card.Title>Sales Tracker frontend ready</Card.Title>
+        <Card.Description>
+          Reusable UI base created with CSS Modules.
+        </Card.Description>
+      </Card.Header>
+
+      <Card.Content>
+        <div className={styles.demoRow}>
+          <Badge variant="primary">New lead</Badge>
+          <Badge variant="success">Contacted</Badge>
+          <Badge variant="warning">Follow-up pending</Badge>
+          <Badge variant="danger">High priority</Badge>
+        </div>
+      </Card.Content>
+    </Card>
+  </div>
+);
