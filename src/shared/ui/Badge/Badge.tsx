@@ -4,7 +4,12 @@ import { cn } from '@/shared/lib/cn';
 
 import styles from './Badge.module.css';
 
-type BadgeVariant = 'neutral' | 'primary' | 'success' | 'warning' | 'danger';
+export type BadgeVariant =
+  | 'neutral'
+  | 'primary'
+  | 'success'
+  | 'warning'
+  | 'danger';
 
 type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
   children: ReactNode;
