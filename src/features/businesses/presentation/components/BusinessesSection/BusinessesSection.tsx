@@ -29,7 +29,7 @@ export const BusinessesSection = () => {
       <Card.Header>
         <Card.Title>Businesses</Card.Title>
         <Card.Description>
-          Track your businesses, priorities and next follow-ups.
+          Review your pipeline, priorities and upcoming follow-ups.
         </Card.Description>
       </Card.Header>
 
@@ -39,19 +39,21 @@ export const BusinessesSection = () => {
           onFiltersChange={setBusinessFilters}
         />
 
-        {isLoading ? <LoadingState message="Loading businesses..." /> : null}
+        {isLoading ? (
+          <LoadingState message="Loading your business list..." />
+        ) : null}
 
         {isError ? (
           <ErrorState
-            title="Could not load businesses"
-            message="Check that the API is running and try again."
+            title="We couldn't load your business list"
+            message="Please refresh the page or try again in a moment."
           />
         ) : null}
 
         {!isLoading && !isError ? (
           <>
             {isFetching ? (
-              <p className={styles.updatingText}>Updating businesses...</p>
+              <p className={styles.updatingText}>Refreshing results...</p>
             ) : null}
 
             <BusinessesTable businesses={businesses} />

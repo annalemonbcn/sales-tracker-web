@@ -1,41 +1,14 @@
-import type { ReactNode } from 'react';
-
 import { ArrowUp } from 'lucide-react';
 
 import { cn } from '@/shared/lib/cn';
 import { Card } from '@/shared/ui';
 
-import type { DashboardTrendVariant } from '../../../domain/dashboardSummary.model';
-
 import styles from './DashboardMetricCard.module.css';
-
-type DashboardMetricCardVariant = 'primary' | 'success' | 'warning' | 'danger';
-
-type DashboardMetricCardProps = {
-  title: string;
-  value: number;
-  currentMonth: number;
-  icon: ReactNode;
-  variant?: DashboardMetricCardVariant;
-  trendVariant: DashboardTrendVariant;
-};
-
-const iconVariantClassNameByVariant: Record<
-  DashboardMetricCardVariant,
-  string
-> = {
-  primary: styles.iconPrimary,
-  success: styles.iconSuccess,
-  warning: styles.iconWarning,
-  danger: styles.iconDanger,
-};
-
-const trendVariantClassNameByVariant: Record<DashboardTrendVariant, string> = {
-  success: styles.trendSuccess,
-  warning: styles.trendWarning,
-  danger: styles.trendDanger,
-  neutral: styles.trendNeutral,
-};
+import type { DashboardMetricCardProps } from './types';
+import {
+  iconVariantClassNameByVariant,
+  trendVariantClassNameByVariant,
+} from './utils';
 
 export const DashboardMetricCard = ({
   title,

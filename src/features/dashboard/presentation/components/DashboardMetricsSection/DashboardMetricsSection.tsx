@@ -6,14 +6,14 @@ export const DashboardMetricsSection = () => {
   const { data: summary, isError, isLoading } = useDashboardSummary();
 
   if (isLoading) {
-    return <LoadingState message="Loading dashboard metrics..." />;
+    return <LoadingState message="Loading overview..." />;
   }
 
   if (isError) {
     return (
       <ErrorState
-        title="Could not load dashboard metrics"
-        message="The rest of the dashboard may still be available."
+        title="We couldn't load your overview"
+        message="Your business list may still be available below."
       />
     );
   }
@@ -21,8 +21,8 @@ export const DashboardMetricsSection = () => {
   if (!summary) {
     return (
       <ErrorState
-        title="No dashboard metrics"
-        message="The API did not return dashboard summary data."
+        title="No overview data yet"
+        message="Once you start adding business activity, your metrics will appear here."
       />
     );
   }
