@@ -1,21 +1,15 @@
+import { useDashboardBusinessFilters } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersProvider';
 import { Card, ErrorState, LoadingState } from '@/shared/ui';
 
 import { useBusinesses } from '../../../application/useBusinesses';
-import type { BusinessFilters } from '../../../domain/businessFilters.model';
 import { BusinessesFilters } from '../BusinessesFilters';
 import { BusinessesTable } from '../BusinessesTable';
 
 import styles from './BusinessesSection.module.css';
 
-type BusinessesSectionProps = {
-  filters: BusinessFilters;
-  onFiltersChange: (filters: BusinessFilters) => void;
-};
+export const BusinessesSection = () => {
+  const { filters } = useDashboardBusinessFilters();
 
-export const BusinessesSection = ({
-  filters,
-  onFiltersChange,
-}: BusinessesSectionProps) => {
   const {
     data: businesses = [],
     isError,
@@ -33,10 +27,7 @@ export const BusinessesSection = ({
       </Card.Header>
 
       <Card.Content>
-        <BusinessesFilters
-          filters={filters}
-          onFiltersChange={onFiltersChange}
-        />
+        <BusinessesFilters />
 
         {isLoading ? (
           <LoadingState message="Loading your business list..." />

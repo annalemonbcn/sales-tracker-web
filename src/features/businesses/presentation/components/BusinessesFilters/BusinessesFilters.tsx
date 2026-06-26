@@ -1,16 +1,8 @@
-import type { BusinessFilters } from '@/features/businesses/domain/businessFilters.model';
 import { useUsers } from '@/features/users/application/useUsers';
+
 import { BusinessesFiltersView } from './BusinessesFiltersView';
 
-type BusinessesFiltersProps = {
-  filters: BusinessFilters;
-  onFiltersChange: (filters: BusinessFilters) => void;
-};
-
-export const BusinessesFilters = ({
-  filters,
-  onFiltersChange,
-}: BusinessesFiltersProps) => {
+export const BusinessesFilters = () => {
   const {
     data: users = [],
     isError: isUsersError,
@@ -25,9 +17,7 @@ export const BusinessesFilters = ({
   return (
     <BusinessesFiltersView
       assigneeOptions={assigneeOptions}
-      filters={filters}
       isAssigneeDisabled={isUsersLoading || isUsersError}
-      onFiltersChange={onFiltersChange}
     />
   );
 };

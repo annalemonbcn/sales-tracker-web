@@ -8,10 +8,6 @@ import type {
 } from '@/shared/api/generated/salesTrackerApi';
 import { Button } from '@/shared/ui';
 
-import {
-  initialBusinessFilters,
-  type BusinessFilters,
-} from '@/features/businesses/domain/businessFilters.model';
 import styles from './BusinessesFilters.module.css';
 import {
   getBusinessCategoryLabel,
@@ -19,6 +15,7 @@ import {
   getBusinessStatusLabel,
   getPriorityLabel,
 } from '@/features/businesses/presentation/lib/formatters';
+import { useDashboardBusinessFilters } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersProvider';
 
 // TODO: double check
 type SelectOption = {
@@ -66,57 +63,46 @@ const sourceOptions: LeadSource[] = [
 ];
 
 type BusinessesFiltersViewProps = {
-  filters: BusinessFilters;
   assigneeOptions: SelectOption[];
   isAssigneeDisabled: boolean;
-  onFiltersChange: (filters: BusinessFilters) => void;
 };
 
 export const BusinessesFiltersView = ({
-  filters,
   assigneeOptions,
   isAssigneeDisabled,
-  onFiltersChange,
 }: BusinessesFiltersViewProps) => {
+  const { filters, updateFilter, clearFilters } = useDashboardBusinessFilters();
+
   const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    onFiltersChange({
-      ...filters,
-      status: event.target.value
-        ? (event.target.value as BusinessStatus)
-        : null,
-    });
+    updateFilter(
+      'status',
+      event.target.value ? (event.target.value as BusinessStatus) : null,
+    );
   };
 
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    onFiltersChange({
-      ...filters,
-      category: event.target.value ? (event.target.value as Category) : null,
-    });
+    updateFilter(
+      'category',
+      event.target.value ? (event.target.value as Category) : null,
+    );
   };
 
   const handlePriorityChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    onFiltersChange({
-      ...filters,
-      priority: event.target.value ? (event.target.value as Priority) : null,
-    });
+    updateFilter(
+      'priority',
+      event.target.value ? (event.target.value as Priority) : null,
+    );
   };
 
   const handleSourceChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    onFiltersChange({
-      ...filters,
-      source: event.target.value ? (event.target.value as LeadSource) : null,
-    });
+    updateFilter(
+      'source',
+      event.target.value ? (event.target.value as LeadSource) : null,
+    );
   };
 
   const handleAssigneeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    onFiltersChange({
-      ...filters,
-      assignedToId: event.target.value || null,
-    });
-  };
-
-  const handleClearFilters = () => {
-    onFiltersChange(initialBusinessFilters);
+    updateFilter('assignedToId', event.target.value || null);
   };
 
   return (
@@ -190,7 +176,7 @@ export const BusinessesFiltersView = ({
         </select>
       </label>
 
-      <Button variant="secondary" onClick={handleClearFilters}>
+      <Button variant="secondary" onClick={clearFilters}>
         Clear filters
       </Button>
     </div>

@@ -1,11 +1,7 @@
 import { createRoute } from '@tanstack/react-router';
 
-import type { BusinessFilters } from '@/features/businesses/domain/businessFilters.model';
-import {
-  mapBusinessFiltersToSearch,
-  mapSearchToBusinessFilters,
-} from '@/features/businesses/domain/businessFilters.model';
 import { DashboardPage } from '@/features/dashboard/presentation/pages/DashboardPage';
+import { DashboardBusinessFiltersProvider } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersProvider';
 import type {
   BusinessStatus,
   Category,
@@ -24,25 +20,11 @@ type DashboardSearch = {
   search?: string;
 };
 
-const DashboardRouteComponent = () => {
-  const search = Route.useSearch();
-  const navigate = Route.useNavigate();
-
-  const businessFilters = mapSearchToBusinessFilters(search);
-
-  const handleBusinessFiltersChange = (filters: BusinessFilters) => {
-    navigate({
-      search: () => mapBusinessFiltersToSearch(filters),
-    });
-  };
-
-  return (
-    <DashboardPage
-      businessFilters={businessFilters}
-      onBusinessFiltersChange={handleBusinessFiltersChange}
-    />
-  );
-};
+const DashboardRouteComponent = () => (
+  <DashboardBusinessFiltersProvider>
+    <DashboardPage />
+  </DashboardBusinessFiltersProvider>
+);
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,
