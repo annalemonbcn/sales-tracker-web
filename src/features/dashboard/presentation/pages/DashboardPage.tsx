@@ -1,13 +1,22 @@
 import { Plus } from 'lucide-react';
 
+import type { BusinessFilters } from '@/features/businesses/domain/businessFilters.model';
+import { BusinessesSection } from '@/features/businesses/presentation/components/BusinessesSection';
 import { Button } from '@/shared/ui';
 
 import { DashboardMetricsSection } from '../components/DashboardMetricsSection';
 
 import styles from './DashboardPage.module.css';
-import { BusinessesSection } from '@/features/businesses/presentation/components/BusinessesSection';
 
-export const DashboardPage = () => (
+type DashboardPageProps = {
+  businessFilters: BusinessFilters;
+  onBusinessFiltersChange: (filters: BusinessFilters) => void;
+};
+
+export const DashboardPage = ({
+  businessFilters,
+  onBusinessFiltersChange,
+}: DashboardPageProps) => (
   <div className={styles.page}>
     <header className={styles.header}>
       <div>
@@ -25,6 +34,9 @@ export const DashboardPage = () => (
 
     <DashboardMetricsSection />
 
-    <BusinessesSection />
+    <BusinessesSection
+      filters={businessFilters}
+      onFiltersChange={onBusinessFiltersChange}
+    />
   </div>
 );

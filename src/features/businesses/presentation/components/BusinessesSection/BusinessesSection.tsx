@@ -1,28 +1,27 @@
-import { useState } from 'react';
-
 import { Card, ErrorState, LoadingState } from '@/shared/ui';
 
-import { useBusinesses } from '@/features/businesses/application/useBusinesses';
-import {
-  initialBusinessFilters,
-  type BusinessFilters,
-} from '@/features/businesses/domain/businessFilters.model';
+import { useBusinesses } from '../../../application/useBusinesses';
+import type { BusinessFilters } from '../../../domain/businessFilters.model';
+import { BusinessesFilters } from '../BusinessesFilters';
+import { BusinessesTable } from '../BusinessesTable';
 
 import styles from './BusinessesSection.module.css';
-import { BusinessesTable } from '@/features/businesses/presentation/components/BusinessesTable';
-import { BusinessesFilters } from '@/features/businesses/presentation/components/BusinessesFilters';
 
-export const BusinessesSection = () => {
-  const [businessFilters, setBusinessFilters] = useState<BusinessFilters>(
-    initialBusinessFilters,
-  );
+type BusinessesSectionProps = {
+  filters: BusinessFilters;
+  onFiltersChange: (filters: BusinessFilters) => void;
+};
 
+export const BusinessesSection = ({
+  filters,
+  onFiltersChange,
+}: BusinessesSectionProps) => {
   const {
     data: businesses = [],
     isError,
     isFetching,
     isLoading,
-  } = useBusinesses(businessFilters);
+  } = useBusinesses(filters);
 
   return (
     <Card>
@@ -35,8 +34,8 @@ export const BusinessesSection = () => {
 
       <Card.Content>
         <BusinessesFilters
-          filters={businessFilters}
-          onFiltersChange={setBusinessFilters}
+          filters={filters}
+          onFiltersChange={onFiltersChange}
         />
 
         {isLoading ? (
@@ -45,7 +44,7 @@ export const BusinessesSection = () => {
 
         {isError ? (
           <ErrorState
-            title="We couldn't load your business list"
+            title="We couldn’t load your business list"
             message="Please refresh the page or try again in a moment."
           />
         ) : null}
