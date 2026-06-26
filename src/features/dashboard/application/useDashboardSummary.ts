@@ -6,6 +6,6 @@ const COMMON_KEYS = ['dashboard'];
 
 export const useDashboardSummary = () =>
   useQuery({
-    queryKey: [...COMMON_KEYS, 'summary', 'useGetDashboardSummary'],
+    queryKey: [...COMMON_KEYS, 'summary', 'useDashboardSummary'],
     queryFn: getDashboardSummary,
   });

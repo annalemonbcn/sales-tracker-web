@@ -1,11 +1,42 @@
 import { createRoute } from '@tanstack/react-router';
 
 import { DashboardPage } from '@/features/dashboard/presentation/pages/DashboardPage';
+import { DashboardBusinessFiltersProvider } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersProvider';
+import type {
+  BusinessStatus,
+  Category,
+  LeadSource,
+  Priority,
+} from '@/shared/api/generated/salesTrackerApi';
 
-import { Route as rootRoute } from './__root';
+import { Route as RootRoute } from './__root';
+
+type DashboardSearch = {
+  status?: BusinessStatus;
+  category?: Category;
+  priority?: Priority;
+  source?: LeadSource;
+  assignedToId?: string;
+  search?: string;
+};
+
+const DashboardRouteComponent = () => (
+  <DashboardBusinessFiltersProvider>
+    <DashboardPage />
+  </DashboardBusinessFiltersProvider>
+);
 
 export const Route = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => RootRoute,
   path: '/dashboard',
-  component: DashboardPage,
+  validateSearch: (search): DashboardSearch => ({
+    status: search.status as BusinessStatus | undefined,
+    category: search.category as Category | undefined,
+    priority: search.priority as Priority | undefined,
+    source: search.source as LeadSource | undefined,
+    assignedToId:
+      typeof search.assignedToId === 'string' ? search.assignedToId : undefined,
+    search: typeof search.search === 'string' ? search.search : undefined,
+  }),
+  component: DashboardRouteComponent,
 });

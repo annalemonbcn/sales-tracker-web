@@ -1,9 +1,18 @@
 import { defineConfig } from 'orval';
+import { config } from 'dotenv';
+
+config({ path: '.env.test' });
+
+const apiUrl = process.env.VITE_API_URL;
+
+if (!apiUrl) {
+  throw new Error('VITE_API_URL is not defined');
+}
 
 export default defineConfig({
   salesTrackerApi: {
     input: {
-      target: 'http://localhost:3000/openapi.json',
+      target: `${apiUrl}/openapi.json`,
     },
     output: {
       target: './src/shared/api/generated/salesTrackerApi.ts',

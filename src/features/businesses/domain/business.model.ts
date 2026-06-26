@@ -6,6 +6,7 @@ import type {
   UserSummaryDto,
 } from '@/shared/api/generated/salesTrackerApi';
 
+// TODO: reusar features/User ?
 export type UserSummary = UserSummaryDto;
 
 export type Business = {
