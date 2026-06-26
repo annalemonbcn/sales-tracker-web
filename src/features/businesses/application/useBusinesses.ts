@@ -7,6 +7,6 @@ const COMMON_KEYS = ['businesses'];
 
 export const useBusinesses = (filters: BusinessFilters) =>
   useQuery({
-    queryKey: [...COMMON_KEYS, 'useGetBusinesses', filters],
+    queryKey: [...COMMON_KEYS, 'useBusinesses', filters],
     queryFn: () => getBusinesses(filters),
   });

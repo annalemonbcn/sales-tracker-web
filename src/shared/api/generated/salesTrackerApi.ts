@@ -27,14 +27,22 @@ export interface UserSummaryDto {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: UserRole;
 }
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UserRole = {
+  admin: 'admin',
+  commercial: 'commercial',
+} as const;
 
 export interface UserDto {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: UserRole;
   active: boolean;
   createdAt: string;
   updatedAt: string;

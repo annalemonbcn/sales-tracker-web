@@ -1,17 +1,26 @@
+// src/features/businesses/presentation/components/BusinessesFilters/BusinessesFilters.tsx
+
 import type { ChangeEvent } from 'react';
 
 import type {
   BusinessStatus,
+  Category,
+  LeadSource,
   Priority,
 } from '@/shared/api/generated/salesTrackerApi';
 import { Button } from '@/shared/ui';
+import type { User } from '@/features/users/domain/user.model';
 
 import {
   initialBusinessFilters,
   type BusinessFilters,
 } from '../../../domain/businessFilters.model';
-import type { Business } from '../../../domain/business.model';
-import { getBusinessStatusLabel, getPriorityLabel } from '../../lib/formatters';
+import {
+  getBusinessCategoryLabel,
+  getBusinessSourceLabel,
+  getBusinessStatusLabel,
+  getPriorityLabel,
+} from '../../lib/formatters';
 
 import styles from './BusinessesFilters.module.css';
 
@@ -31,29 +40,40 @@ const businessStatusOptions: BusinessStatus[] = [
   'discarded',
 ];
 
+const categoryOptions: Category[] = [
+  'restaurant',
+  'hairdresser',
+  'beauty_center',
+  'hotel',
+  'shop',
+  'gym',
+  'clinic',
+  'other',
+];
+
 const priorityOptions: Priority[] = ['low', 'medium', 'high'];
 
+const sourceOptions: LeadSource[] = [
+  'instagram',
+  'google_maps',
+  'walk_in',
+  'referral',
+  'website',
+  'existing_contact',
+  'other',
+];
+
 type BusinessesFiltersProps = {
-  businesses: Business[];
   filters: BusinessFilters;
+  users: User[];
   onFiltersChange: (filters: BusinessFilters) => void;
 };
 
 export const BusinessesFilters = ({
-  businesses,
   filters,
+  users,
   onFiltersChange,
 }: BusinessesFiltersProps) => {
-  const assigneeOptions = businesses
-    .map((business) => business.assignedTo)
-    .filter((assignee): assignee is NonNullable<typeof assignee> =>
-      Boolean(assignee),
-    )
-    .filter(
-      (assignee, index, assignees) =>
-        assignees.findIndex((item) => item.id === assignee.id) === index,
-    );
-
   const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => {
     onFiltersChange({
       ...filters,
@@ -63,10 +83,24 @@ export const BusinessesFilters = ({
     });
   };
 
+  const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    onFiltersChange({
+      ...filters,
+      category: event.target.value ? (event.target.value as Category) : null,
+    });
+  };
+
   const handlePriorityChange = (event: ChangeEvent<HTMLSelectElement>) => {
     onFiltersChange({
       ...filters,
       priority: event.target.value ? (event.target.value as Priority) : null,
+    });
+  };
+
+  const handleSourceChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    onFiltersChange({
+      ...filters,
+      source: event.target.value ? (event.target.value as LeadSource) : null,
     });
   };
 
@@ -97,6 +131,19 @@ export const BusinessesFilters = ({
       </label>
 
       <label className={styles.field}>
+        <span>Category</span>
+        <select value={filters.category ?? ''} onChange={handleCategoryChange}>
+          <option value="">All categories</option>
+
+          {categoryOptions.map((category) => (
+            <option key={category} value={category}>
+              {getBusinessCategoryLabel(category)}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label className={styles.field}>
         <span>Priority</span>
         <select value={filters.priority ?? ''} onChange={handlePriorityChange}>
           <option value="">All priorities</option>
@@ -110,6 +157,19 @@ export const BusinessesFilters = ({
       </label>
 
       <label className={styles.field}>
+        <span>Source</span>
+        <select value={filters.source ?? ''} onChange={handleSourceChange}>
+          <option value="">All sources</option>
+
+          {sourceOptions.map((source) => (
+            <option key={source} value={source}>
+              {getBusinessSourceLabel(source)}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label className={styles.field}>
         <span>Assignee</span>
         <select
           value={filters.assignedToId ?? ''}
@@ -117,9 +177,9 @@ export const BusinessesFilters = ({
         >
           <option value="">All assignees</option>
 
-          {assigneeOptions.map((assignee) => (
-            <option key={assignee.id} value={assignee.id}>
-              {assignee.name}
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.name}
             </option>
           ))}
         </select>

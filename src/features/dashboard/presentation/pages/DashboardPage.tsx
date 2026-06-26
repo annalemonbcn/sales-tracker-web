@@ -13,11 +13,12 @@ export const DashboardPage = () => {
   const {
     summary,
     businesses,
+    users,
     businessFilters,
     setBusinessFilters,
     isLoading,
     isError,
-    isBusinessesFetching,
+    isBusinessesLoading,
   } = useDashboardPage();
 
   if (isLoading) {
@@ -70,12 +71,12 @@ export const DashboardPage = () => {
 
         <Card.Content>
           <BusinessesFilters
-            businesses={businesses}
+            users={users}
             filters={businessFilters}
             onFiltersChange={setBusinessFilters}
           />
 
-          {isBusinessesFetching ? (
+          {isBusinessesLoading ? (
             <p className={styles.updatingText}>Updating businesses...</p>
           ) : null}
 
