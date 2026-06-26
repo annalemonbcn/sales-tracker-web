@@ -1,7 +1,18 @@
+import { useState } from 'react';
+
 import { useBusinesses } from '@/features/businesses/application/useBusinesses';
+import {
+  initialBusinessFilters,
+  type BusinessFilters,
+} from '@/features/businesses/domain/businessFilters.model';
+
 import { useDashboardSummary } from '../../application/useDashboardSummary';
 
 export const useDashboardPage = () => {
+  const [businessFilters, setBusinessFilters] = useState<BusinessFilters>(
+    initialBusinessFilters,
+  );
+
   const {
     data: summary,
     isError: isSummaryError,
@@ -11,8 +22,9 @@ export const useDashboardPage = () => {
   const {
     data: businesses = [],
     isError: isBusinessesError,
+    isFetching: isBusinessesFetching,
     isLoading: isBusinessesLoading,
-  } = useBusinesses();
+  } = useBusinesses(businessFilters);
 
   const isLoading = isSummaryLoading || isBusinessesLoading;
   const isError = isSummaryError || isBusinessesError;
@@ -20,7 +32,10 @@ export const useDashboardPage = () => {
   return {
     summary,
     businesses,
+    businessFilters,
+    setBusinessFilters,
     isLoading,
     isError,
+    isBusinessesFetching,
   };
 };

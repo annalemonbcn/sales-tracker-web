@@ -7,12 +7,21 @@ import { DashboardMetrics } from '../components/DashboardMetrics';
 import styles from './DashboardPage.module.css';
 import { BusinessesTable } from '@/features/businesses/presentation/components/BusinessesTable/BusinessesTable';
 import { useDashboardPage } from '../hooks/useDashboardPage';
+import { BusinessesFilters } from '@/features/businesses/presentation/components/BusinessesFilters/BusinessesFilters';
 
 export const DashboardPage = () => {
-  const { summary, businesses, isLoading, isError } = useDashboardPage();
+  const {
+    summary,
+    businesses,
+    businessFilters,
+    setBusinessFilters,
+    isLoading,
+    isError,
+    isBusinessesFetching,
+  } = useDashboardPage();
 
   if (isLoading) {
-    return <LoadingState message="Loading..." />;
+    return <LoadingState message="Loading dashboard..." />;
   }
 
   if (isError) {
@@ -60,6 +69,16 @@ export const DashboardPage = () => {
         </Card.Header>
 
         <Card.Content>
+          <BusinessesFilters
+            businesses={businesses}
+            filters={businessFilters}
+            onFiltersChange={setBusinessFilters}
+          />
+
+          {isBusinessesFetching ? (
+            <p className={styles.updatingText}>Updating businesses...</p>
+          ) : null}
+
           <BusinessesTable businesses={businesses} />
         </Card.Content>
       </Card>
