@@ -1,14 +1,11 @@
-export type DashboardTrendVariant =
-  | 'success'
-  | 'warning'
-  | 'danger'
-  | 'neutral';
+import type {
+  DashboardMetric,
+  DashboardMetricTrendVariant,
+} from '@/shared/api/generated/salesTrackerApi';
 
-export type DashboardSummaryMetric = {
-  value: number;
-  currentMonth: number;
-  trendVariant: DashboardTrendVariant;
-};
+export type DashboardTrendVariant = DashboardMetricTrendVariant;
+
+export type DashboardSummaryMetric = DashboardMetric;
 
 export type DashboardSummary = {
   totalBusinesses: DashboardSummaryMetric;

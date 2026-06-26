@@ -53,6 +53,62 @@ export interface BusinessDetailsDto {
   address: string | null;
 }
 
+export type BusinessStatus =
+  (typeof BusinessStatus)[keyof typeof BusinessStatus];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const BusinessStatus = {
+  new_lead: 'new_lead',
+  assigned: 'assigned',
+  waiting_response: 'waiting_response',
+  interested: 'interested',
+  dossier_sent: 'dossier_sent',
+  meeting_scheduled: 'meeting_scheduled',
+  meeting_done: 'meeting_done',
+  proposal_sent: 'proposal_sent',
+  negotiating: 'negotiating',
+  won: 'won',
+  lost: 'lost',
+  recontact_later: 'recontact_later',
+  discarded: 'discarded',
+} as const;
+
+export type Category = (typeof Category)[keyof typeof Category];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const Category = {
+  restaurant: 'restaurant',
+  hairdresser: 'hairdresser',
+  beauty_center: 'beauty_center',
+  hotel: 'hotel',
+  shop: 'shop',
+  gym: 'gym',
+  clinic: 'clinic',
+  other: 'other',
+} as const;
+
+export type Priority = (typeof Priority)[keyof typeof Priority];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const Priority = {
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+} as const;
+
+export type LeadSource = (typeof LeadSource)[keyof typeof LeadSource];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LeadSource = {
+  instagram: 'instagram',
+  google_maps: 'google_maps',
+  walk_in: 'walk_in',
+  referral: 'referral',
+  website: 'website',
+  existing_contact: 'existing_contact',
+  other: 'other',
+} as const;
+
 /**
  * @nullable
  */
@@ -61,10 +117,10 @@ export type BusinessDtoAssignedTo = UserSummaryDto | null;
 export interface BusinessDto {
   id: string;
   name: string;
-  category: string;
-  status: string;
-  priority: string;
-  source: string;
+  category: Category;
+  status: BusinessStatus;
+  priority: Priority;
+  source: LeadSource;
   details: BusinessDetailsDto;
   /** @nullable */
   notes: string | null;

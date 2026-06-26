@@ -5,28 +5,33 @@ import { Button, Card, ErrorState, LoadingState } from '@/shared/ui';
 import { DashboardMetrics } from '../components/DashboardMetrics';
 
 import styles from './DashboardPage.module.css';
-import { useDashboardSummary } from '../../application/useDashboardSummary';
+import { BusinessesTable } from '@/features/businesses/presentation/components/BusinessesTable/BusinessesTable';
+import { useDashboardPage } from '../hooks/useDashboardPage';
 
 export const DashboardPage = () => {
-  const { data, isError, isLoading } = useDashboardSummary();
+  const { summary, businesses, isLoading, isError } = useDashboardPage();
 
-  if (isLoading) return <LoadingState message="Loading dashboard..." />;
+  if (isLoading) {
+    return <LoadingState message="Loading..." />;
+  }
 
-  if (isError)
+  if (isError) {
     return (
       <ErrorState
         title="Could not load dashboard"
         message="Check that the API is running and try again."
       />
     );
+  }
 
-  if (!data)
+  if (!summary) {
     return (
       <ErrorState
         title="No dashboard data"
         message="The API did not return dashboard summary data."
       />
     );
+  }
 
   return (
     <div className={styles.page}>
@@ -44,20 +49,18 @@ export const DashboardPage = () => {
         </Button>
       </header>
 
-      <DashboardMetrics summary={data} />
+      <DashboardMetrics summary={summary} />
 
       <Card>
         <Card.Header>
           <Card.Title>Businesses</Card.Title>
           <Card.Description>
-            Next step: connect GET /businesses and render TanStack Table.
+            Track your businesses, priorities and next follow-ups.
           </Card.Description>
         </Card.Header>
 
         <Card.Content>
-          <div className={styles.placeholder}>
-            Businesses table coming next.
-          </div>
+          <BusinessesTable businesses={businesses} />
         </Card.Content>
       </Card>
     </div>

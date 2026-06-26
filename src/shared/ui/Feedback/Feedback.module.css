@@ -1,6 +1,7 @@
 .feedback,
 .empty {
   display: flex;
+  flex-direction: column;
   min-height: 11.25rem;
   align-items: center;
   justify-content: center;

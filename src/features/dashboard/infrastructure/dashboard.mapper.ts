@@ -5,7 +5,7 @@ import type {
   DashboardSummaryMetric,
   DashboardTrendVariant,
 } from '../domain/dashboardSummary.model';
-import type { DashboardSummaryDto } from './dashboard.dto';
+import type { GetDashboardSummaryResponseDto } from './dashboard.dto';
 
 const mapTrendVariantDtoToDomain = (
   trendVariant?: DashboardMetric['trendVariant'],
@@ -19,10 +19,10 @@ const mapDashboardMetricDtoToDomain = (
   trendVariant: mapTrendVariantDtoToDomain(metric?.trendVariant),
 });
 
-export const mapDashboardSummaryDtoToDomain = (
-  dto: DashboardSummaryDto,
+export const mapGetDashboardSummaryResponseDtoToDomain = (
+  response: GetDashboardSummaryResponseDto,
 ): DashboardSummary => {
-  const metrics = dto.data?.metrics;
+  const metrics = response.data?.metrics;
 
   return {
     totalBusinesses: mapDashboardMetricDtoToDomain(metrics?.totalBusinesses),
