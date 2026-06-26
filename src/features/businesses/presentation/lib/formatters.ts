@@ -1,6 +1,7 @@
 import type {
   BusinessStatus,
   Category,
+  LeadSource,
   Priority,
 } from '@/shared/api/generated/salesTrackerApi';
 import type { BadgeVariant } from '@/shared/ui/Badge/Badge';
@@ -30,6 +31,16 @@ const businessStatusLabelMap: Record<BusinessStatus, string> = {
   lost: 'Lost',
   recontact_later: 'Recontact Later',
   discarded: 'Discarded',
+};
+
+const businessLeadSourceLabelMap: Record<LeadSource, string> = {
+  instagram: 'Instagram',
+  google_maps: 'Google Maps',
+  walk_in: 'Walk-in',
+  referral: 'Referral',
+  website: 'Website',
+  existing_contact: 'Existing Contact',
+  other: 'Other',
 };
 
 const badgeVariantByStatusMap: Record<BusinessStatus, BadgeVariant> = {
@@ -65,6 +76,9 @@ export const getBusinessStatusLabel = (status: BusinessStatus): string =>
 
 export const getBusinessCategoryLabel = (category: Category): string =>
   businessCategoryLabelMap[category];
+
+export const getBusinessSourceLabel = (source: LeadSource): string =>
+  businessLeadSourceLabelMap[source];
 
 export const getPriorityLabel = (priority: Priority): string =>
   priorityLabelMap[priority];

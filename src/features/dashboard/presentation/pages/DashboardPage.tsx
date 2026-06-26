@@ -5,7 +5,7 @@ import { Button, Card, ErrorState, LoadingState } from '@/shared/ui';
 import { DashboardMetrics } from '../components/DashboardMetrics';
 
 import styles from './DashboardPage.module.css';
-import { BusinessesTable } from '@/features/businesses/presentation/components/BusinessesTable';
+import { BusinessesTable } from '@/features/businesses/presentation/components/BusinessesTable/BusinessesTable';
 import { useDashboardPage } from '../hooks/useDashboardPage';
 
 export const DashboardPage = () => {
