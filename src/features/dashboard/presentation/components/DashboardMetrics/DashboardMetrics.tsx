@@ -1,7 +1,7 @@
 import { Building2, Flag, Phone, Timer } from 'lucide-react';
 
-import type { DashboardSummary } from '../../domain/dashboardSummary.model';
-import { DashboardMetricCard } from './DashboardMetricCard';
+import type { DashboardSummary } from '../../../domain/dashboardSummary.model';
+import { DashboardMetricCard } from '../DashboardMetricCard';
 
 import styles from './DashboardMetrics.module.css';
 

@@ -5,7 +5,7 @@ import { ArrowUp } from 'lucide-react';
 import { cn } from '@/shared/lib/cn';
 import { Card } from '@/shared/ui';
 
-import type { DashboardTrendVariant } from '../../domain/dashboardSummary.model';
+import type { DashboardTrendVariant } from '../../../domain/dashboardSummary.model';
 
 import styles from './DashboardMetricCard.module.css';
 
