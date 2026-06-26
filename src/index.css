@@ -70,3 +70,57 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.appSelect__control {
+  min-height: 2.625rem !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-md) !important;
+  background: var(--color-bg-surface) !important;
+  box-shadow: none !important;
+}
+
+.appSelect__control:hover {
+  border-color: var(--color-border-strong) !important;
+}
+
+.appSelect__control--is-focused {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 0.1875rem rgb(37 99 235 / 0.12) !important;
+}
+
+.appSelect__value-container {
+  padding: 0 0.75rem !important;
+}
+
+.appSelect__placeholder {
+  color: var(--color-text-muted) !important;
+}
+
+.appSelect__single-value {
+  color: var(--color-text-primary) !important;
+}
+
+.appSelect__indicator-separator {
+  display: none;
+}
+
+.appSelect__menu {
+  z-index: 20;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-card) !important;
+  overflow: hidden;
+}
+
+.appSelect__option--is-focused {
+  background: var(--color-neutral-soft) !important;
+}
+
+.appSelect__option--is-selected {
+  background: var(--color-primary) !important;
+  color: #ffffff !important;
+}
+
+.appSelect__control--is-disabled {
+  opacity: 0.6;
+}
