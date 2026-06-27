@@ -38,6 +38,33 @@
   font-size: 0.875rem;
 }
 
+.row {
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.row:hover td {
+  background: var(--color-neutral-soft);
+}
+
+.selectedRow td {
+  background: var(--color-primary-soft);
+}
+
+.selectedRow:hover td {
+  background: var(--color-primary-soft);
+}
+
+.selectedRow td:first-child {
+  box-shadow: inset 0.25rem 0 0 var(--color-primary);
+}
+
+.selectedRow td:first-child strong {
+  color: var(--color-primary);
+}
+
 .headerButton {
   display: inline-flex;
   align-items: center;

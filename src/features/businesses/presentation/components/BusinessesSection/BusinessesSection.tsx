@@ -15,6 +15,7 @@ import styles from './BusinessesSection.module.css';
 import { Plus } from 'lucide-react';
 import type { Business } from '@/features/businesses/domain/business.model';
 import { hasActiveBusinessFilters } from '@/features/businesses/domain/businessFilters.model';
+import { useState } from 'react';
 
 type BusinessesEmptyStateProps = {
   isAnyFilterActive: boolean;
@@ -59,6 +60,8 @@ type BusinessesSectionContentProps = {
   isError: boolean;
   isFetching: boolean;
   isLoading: boolean;
+  selectedBusinessId: string | null;
+  onBusinessSelect: (business: Business | null) => void;
   onClearFilters: () => void;
 };
 
@@ -68,6 +71,8 @@ const BusinessesSectionContent = ({
   isError,
   isFetching,
   isLoading,
+  selectedBusinessId,
+  onBusinessSelect,
   onClearFilters,
 }: BusinessesSectionContentProps) => {
   if (isLoading) {
@@ -98,12 +103,20 @@ const BusinessesSectionContent = ({
         <p className={styles.updatingText}>Refreshing results...</p>
       ) : null}
 
-      <BusinessesTable businesses={businesses} />
+      <BusinessesTable
+        businesses={businesses}
+        selectedBusinessId={selectedBusinessId}
+        onBusinessSelect={onBusinessSelect}
+      />
     </>
   );
 };
 
 export const BusinessesSection = () => {
+  const [selectedBusinessId, setSelectedBusinessId] = useState<string | null>(
+    null,
+  );
+
   const { clearFilters, filters } = useDashboardBusinessFilters();
 
   const {
@@ -114,6 +127,10 @@ export const BusinessesSection = () => {
   } = useBusinesses(filters);
 
   const isAnyFilterActive = hasActiveBusinessFilters(filters);
+
+  const handleBusinessSelect = (business: Business | null) => {
+    setSelectedBusinessId(business?.id || null);
+  };
 
   return (
     <Card className={styles.section}>
@@ -133,6 +150,8 @@ export const BusinessesSection = () => {
           isError={isError}
           isFetching={isFetching}
           isLoading={isLoading}
+          selectedBusinessId={selectedBusinessId}
+          onBusinessSelect={handleBusinessSelect}
           onClearFilters={clearFilters}
         />
       </Card.Content>
