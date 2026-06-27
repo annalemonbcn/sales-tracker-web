@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getBusinessDetails } from '../infrastructure/businessDetails.api';
 
-const COMMON_KEYS = ['business'];
+const COMMON_KEYS = ['business-detail'];
 
 export const useBusinessDetails = (businessId: string | null) =>
   useQuery({

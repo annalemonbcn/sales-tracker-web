@@ -1,5 +1,4 @@
 import type {
-  ActivityDto,
   BusinessStatus,
   Category,
   LeadSource,
@@ -24,10 +23,4 @@ export type Business = {
   assignedTo: UserSummary | null;
   createdAt: string;
   updatedAt: string;
-};
-
-type Activity = ActivityDto;
-
-export type BusinessDetail = Business & {
-  activities: Activity[];
 };
