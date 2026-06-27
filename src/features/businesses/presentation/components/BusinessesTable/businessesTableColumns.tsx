@@ -3,7 +3,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/shared/ui';
 import { formatNullableDate } from '@/shared/lib/date';
 
-import type { Business } from '../../../domain/business.model';
+import type { Business } from '@/features/businesses/domain/business.model';
 import {
   getBadgeVariantByPriority,
   getBadgeVariantByStatus,
@@ -14,6 +14,20 @@ import {
 } from '../../lib/formatters';
 
 import styles from './BusinessesTable.module.css';
+import { businessCategoryIconByCategory } from './businessCategoryIcons';
+import type { Category } from '@/shared/api/generated/salesTrackerApi';
+import { cn } from '@/shared/lib/cn';
+
+const categoryIconClassNameByCategory = {
+  restaurant: styles.categoryIconRestaurant,
+  hairdresser: styles.categoryIconHairdresser,
+  beauty_center: styles.categoryIconBeautyCenter,
+  hotel: styles.categoryIconHotel,
+  shop: styles.categoryIconShop,
+  gym: styles.categoryIconGym,
+  clinic: styles.categoryIconClinic,
+  other: styles.categoryIconOther,
+} satisfies Record<Category, string>;
 
 export const businessesTableColumns: ColumnDef<Business>[] = [
   {
@@ -21,10 +35,23 @@ export const businessesTableColumns: ColumnDef<Business>[] = [
     header: 'Business name',
     cell: ({ row }) => {
       const business = row.original;
+      const CategoryIcon = businessCategoryIconByCategory[business.category];
+      const categoryLabel = getBusinessCategoryLabel(business.category);
 
       return (
-        <div className={styles.businessCell}>
-          <strong>{business.name}</strong>
+        <div className={styles.businessNameCell}>
+          <span
+            className={cn(
+              styles.categoryIcon,
+              categoryIconClassNameByCategory[business.category],
+            )}
+            aria-label={categoryLabel}
+            title={categoryLabel}
+          >
+            <CategoryIcon size={18} />
+          </span>
+
+          <strong className={styles.businessName}>{business.name}</strong>
         </div>
       );
     },
