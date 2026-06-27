@@ -8,6 +8,7 @@ import { DashboardMetricsSection } from '../components/DashboardMetricsSection';
 import styles from './DashboardPage.module.css';
 import { cn } from '@/shared/lib/cn';
 import { useDashboardSelectedBusiness } from '../providers/DashboardSelectedBusinessProvider';
+import { BusinessDetailsPanel } from '@/features/businesses/presentation/components/BusinessDetailsPanel';
 
 export const DashboardPage = () => {
   const { selectedBusinessId } = useDashboardSelectedBusiness();
@@ -38,7 +39,7 @@ export const DashboardPage = () => {
         </div>
 
         {selectedBusinessId ? (
-          <aside className={styles.businessPanel}>Business panel</aside>
+          <BusinessDetailsPanel businessId={selectedBusinessId} />
         ) : null}
       </div>
     </div>

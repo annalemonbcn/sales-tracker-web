@@ -13,7 +13,7 @@ const mapUserSummaryDtoToDomain = (user: UserSummaryDto): UserSummary => ({
   role: user.role,
 });
 
-const mapBusinessDtoToDomain = (business: BusinessDto): Business => ({
+export const mapBusinessDtoToDomain = (business: BusinessDto): Business => ({
   id: business.id,
   name: business.name,
   category: business.category,

@@ -48,7 +48,7 @@ export interface UserDto {
   updatedAt: string;
 }
 
-export interface BusinessDetailsDto {
+export interface BusinessContactDetailsDto {
   /** @nullable */
   instagram: string | null;
   /** @nullable */
@@ -129,7 +129,7 @@ export interface BusinessDto {
   status: BusinessStatus;
   priority: Priority;
   source: LeadSource;
-  details: BusinessDetailsDto;
+  details: BusinessContactDetailsDto;
   /** @nullable */
   notes: string | null;
   /** @nullable */
@@ -142,6 +142,12 @@ export interface BusinessDto {
   createdAt: string;
   updatedAt: string;
 }
+
+export type BusinessDetailDtoAllOf = {
+  activities: ActivityDto[];
+};
+
+export type BusinessDetailDto = BusinessDto & BusinessDetailDtoAllOf;
 
 export interface CreateBusinessRequest {
   name: string;
@@ -483,7 +489,7 @@ export type PostBusinesses201 = {
 };
 
 export type GetBusinessesBusinessId200Data = {
-  business?: BusinessDto;
+  business: BusinessDetailDto;
 };
 
 export type GetBusinessesBusinessId200 = {
