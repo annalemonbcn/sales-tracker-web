@@ -8,8 +8,6 @@ import {
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
 
-import { EmptyState } from '@/shared/ui';
-
 import type { Business } from '../../../domain/business.model';
 import { businessesTableColumns } from './businessesTableColumns';
 
@@ -32,15 +30,6 @@ export const BusinessesTable = ({ businesses }: BusinessesTableProps) => {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
-
-  if (businesses.length === 0) {
-    return (
-      <EmptyState
-        title="No businesses found"
-        message="Create your first business to start tracking your sales pipeline."
-      />
-    );
-  }
 
   return (
     <div className={styles.tableWrapper}>

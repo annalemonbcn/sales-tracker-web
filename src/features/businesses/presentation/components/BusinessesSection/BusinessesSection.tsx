@@ -1,14 +1,110 @@
 import { useDashboardBusinessFilters } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersProvider';
-import { Card, ErrorState, LoadingState } from '@/shared/ui';
+import {
+  Button,
+  Card,
+  EmptyState,
+  ErrorState,
+  LoadingState,
+} from '@/shared/ui';
 
 import { useBusinesses } from '../../../application/useBusinesses';
 import { BusinessesFilters } from '../BusinessesFilters';
 import { BusinessesTable } from '../BusinessesTable';
 
 import styles from './BusinessesSection.module.css';
+import { Plus } from 'lucide-react';
+import type { Business } from '@/features/businesses/domain/business.model';
+import { hasActiveBusinessFilters } from '@/features/businesses/domain/businessFilters.model';
+
+type BusinessesEmptyStateProps = {
+  isAnyFilterActive: boolean;
+  onClearFilters: () => void;
+};
+
+const BusinessesEmptyState = ({
+  isAnyFilterActive,
+  onClearFilters,
+}: BusinessesEmptyStateProps) => {
+  if (isAnyFilterActive) {
+    return (
+      <EmptyState
+        title="No businesses match your filters"
+        message="Try adjusting your filters or clear them to see all businesses."
+        action={
+          <Button variant="secondary" onClick={onClearFilters}>
+            Clear filters
+          </Button>
+        }
+      />
+    );
+  }
+
+  return (
+    <EmptyState
+      title="No businesses yet"
+      message="Create your first business to start tracking your sales pipeline."
+      action={
+        <Button>
+          <Plus size={18} />
+          Add business
+        </Button>
+      }
+    />
+  );
+};
+
+type BusinessesSectionContentProps = {
+  businesses: Business[];
+  isAnyFilterActive: boolean;
+  isError: boolean;
+  isFetching: boolean;
+  isLoading: boolean;
+  onClearFilters: () => void;
+};
+
+const BusinessesSectionContent = ({
+  businesses,
+  isAnyFilterActive,
+  isError,
+  isFetching,
+  isLoading,
+  onClearFilters,
+}: BusinessesSectionContentProps) => {
+  if (isLoading) {
+    return <LoadingState message="Loading your business list..." />;
+  }
+
+  if (isError) {
+    return (
+      <ErrorState
+        title="We couldn't load your business list"
+        message="Please refresh the page or try again in a moment."
+      />
+    );
+  }
+
+  if (businesses.length === 0) {
+    return (
+      <BusinessesEmptyState
+        isAnyFilterActive={isAnyFilterActive}
+        onClearFilters={onClearFilters}
+      />
+    );
+  }
+
+  return (
+    <>
+      {isFetching ? (
+        <p className={styles.updatingText}>Refreshing results...</p>
+      ) : null}
+
+      <BusinessesTable businesses={businesses} />
+    </>
+  );
+};
 
 export const BusinessesSection = () => {
-  const { filters } = useDashboardBusinessFilters();
+  const { clearFilters, filters } = useDashboardBusinessFilters();
 
   const {
     data: businesses = [],
@@ -16,6 +112,8 @@ export const BusinessesSection = () => {
     isFetching,
     isLoading,
   } = useBusinesses(filters);
+
+  const isAnyFilterActive = hasActiveBusinessFilters(filters);
 
   return (
     <Card className={styles.section}>
@@ -29,26 +127,14 @@ export const BusinessesSection = () => {
       <Card.Content className={styles.content}>
         <BusinessesFilters isBusinessesFetching={isLoading || isFetching} />
 
-        {isLoading ? (
-          <LoadingState message="Loading your business list..." />
-        ) : null}
-
-        {isError ? (
-          <ErrorState
-            title="We couldn’t load your business list"
-            message="Please refresh the page or try again in a moment."
-          />
-        ) : null}
-
-        {!isLoading && !isError ? (
-          <>
-            {isFetching ? (
-              <p className={styles.updatingText}>Refreshing results...</p>
-            ) : null}
-
-            <BusinessesTable businesses={businesses} />
-          </>
-        ) : null}
+        <BusinessesSectionContent
+          businesses={businesses}
+          isAnyFilterActive={isAnyFilterActive}
+          isError={isError}
+          isFetching={isFetching}
+          isLoading={isLoading}
+          onClearFilters={clearFilters}
+        />
       </Card.Content>
     </Card>
   );
