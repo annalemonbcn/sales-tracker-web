@@ -18,7 +18,7 @@ import { cn } from '@/shared/lib/cn';
 type BusinessesTableProps = {
   businesses: Business[];
   selectedBusinessId: string | null;
-  onBusinessSelect: (business: Business | null) => void;
+  onBusinessSelect: (businessId: string) => void;
 };
 
 export const BusinessesTable = ({
@@ -94,7 +94,7 @@ export const BusinessesTable = ({
                 key={row.id}
                 className={cn(styles.row, isSelected && styles.selectedRow)}
                 onClick={() => {
-                  onBusinessSelect(isSelected ? null : row.original);
+                  onBusinessSelect(row.original.id);
                 }}
               >
                 {row.getVisibleCells().map((cell) => (

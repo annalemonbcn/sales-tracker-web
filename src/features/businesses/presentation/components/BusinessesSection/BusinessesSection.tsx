@@ -15,7 +15,7 @@ import styles from './BusinessesSection.module.css';
 import { Plus } from 'lucide-react';
 import type { Business } from '@/features/businesses/domain/business.model';
 import { hasActiveBusinessFilters } from '@/features/businesses/domain/businessFilters.model';
-import { useState } from 'react';
+import { useDashboardSelectedBusiness } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessProvider';
 
 type BusinessesEmptyStateProps = {
   isAnyFilterActive: boolean;
@@ -61,7 +61,7 @@ type BusinessesSectionContentProps = {
   isFetching: boolean;
   isLoading: boolean;
   selectedBusinessId: string | null;
-  onBusinessSelect: (business: Business | null) => void;
+  onBusinessSelect: (businessId: string) => void;
   onClearFilters: () => void;
 };
 
@@ -113,11 +113,9 @@ const BusinessesSectionContent = ({
 };
 
 export const BusinessesSection = () => {
-  const [selectedBusinessId, setSelectedBusinessId] = useState<string | null>(
-    null,
-  );
-
   const { clearFilters, filters } = useDashboardBusinessFilters();
+  const { selectedBusinessId, toggleSelectedBusiness } =
+    useDashboardSelectedBusiness();
 
   const {
     data: businesses = [],
@@ -127,10 +125,6 @@ export const BusinessesSection = () => {
   } = useBusinesses(filters);
 
   const isAnyFilterActive = hasActiveBusinessFilters(filters);
-
-  const handleBusinessSelect = (business: Business | null) => {
-    setSelectedBusinessId(business?.id || null);
-  };
 
   return (
     <Card className={styles.section}>
@@ -151,7 +145,7 @@ export const BusinessesSection = () => {
           isFetching={isFetching}
           isLoading={isLoading}
           selectedBusinessId={selectedBusinessId}
-          onBusinessSelect={handleBusinessSelect}
+          onBusinessSelect={toggleSelectedBusiness}
           onClearFilters={clearFilters}
         />
       </Card.Content>
