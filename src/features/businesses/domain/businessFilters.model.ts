@@ -23,6 +23,9 @@ export const initialBusinessFilters: BusinessFilters = {
   search: '',
 };
 
+export const hasActiveBusinessFilters = (filters: BusinessFilters): boolean =>
+  Object.values(filters).some((value) => value !== '' && value !== null);
+
 type BusinessFiltersSearch = {
   status?: BusinessStatus;
   category?: Category;

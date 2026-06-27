@@ -18,6 +18,7 @@ import type {
   BusinessFilterSelectConfig,
   BusinessSelectFilterKey,
 } from './types';
+import { hasActiveBusinessFilters } from '@/features/businesses/domain/businessFilters.model';
 
 type UseBusinessesFiltersParams = {
   isBusinessesFetching: boolean;
@@ -49,9 +50,7 @@ export const useBusinessesFilters = ({
     isUsersError ||
     assigneeOptions.length === 0;
 
-  const isAnyFilterActive = Object.values(filters).some(
-    (value) => value !== '' && value !== null,
-  );
+  const isAnyFilterActive = hasActiveBusinessFilters(filters);
 
   const filterSelectConfigByKey: Record<
     BusinessSelectFilterKey,

@@ -1,10 +1,16 @@
 .tableWrapper {
-  overflow-x: auto;
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
+  border-spacing: 0;
+  border-collapse: separate;
 }
 
 .table th,
@@ -20,11 +26,43 @@
   color: var(--color-text-secondary);
   font-weight: 700;
   white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--color-bg-surface);
+  box-shadow: inset 0 -1px 0 var(--color-border);
 }
 
 .table td {
   color: var(--color-text-primary);
   font-size: 0.875rem;
+}
+
+.row {
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.row:hover td {
+  background: var(--color-neutral-soft);
+}
+
+.selectedRow td {
+  background: var(--color-primary-soft);
+}
+
+.selectedRow:hover td {
+  background: var(--color-primary-soft);
+}
+
+.selectedRow td:first-child {
+  box-shadow: inset 0.25rem 0 0 var(--color-primary);
+}
+
+.selectedRow td:first-child strong {
+  color: var(--color-primary);
 }
 
 .headerButton {
@@ -43,18 +81,81 @@
   color: var(--color-text-primary);
 }
 
-.businessCell {
+.businessNameCell {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.businessCell strong {
+.businessNameCell strong {
   color: var(--color-text-primary);
   font-weight: 700;
 }
 
-.businessCell span {
-  color: var(--color-text-secondary);
-  font-size: 0.75rem;
+.businessName {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.categoryIcon {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--category-icon-bg);
+  color: var(--category-icon-color);
+}
+
+.categoryIconRestaurant {
+  --category-icon-bg: var(--color-warning-soft);
+  --category-icon-color: var(--color-warning);
+}
+
+.categoryIconHairdresser {
+  --category-icon-bg: var(--color-danger-soft);
+  --category-icon-color: var(--color-danger);
+}
+
+.categoryIconBeautyCenter {
+  --category-icon-bg: #f3e8ff;
+  --category-icon-color: #9333ea;
+}
+
+.categoryIconHotel {
+  --category-icon-bg: var(--color-primary-soft);
+  --category-icon-color: var(--color-primary);
+}
+
+.categoryIconShop {
+  --category-icon-bg: var(--color-success-soft);
+  --category-icon-color: var(--color-success);
+}
+
+.categoryIconGym {
+  --category-icon-bg: #dcfce7;
+  --category-icon-color: #16a34a;
+}
+
+.categoryIconClinic {
+  --category-icon-bg: #ccfbf1;
+  --category-icon-color: #0f766e;
+}
+
+.categoryIconOther {
+  --category-icon-bg: var(--color-neutral-soft);
+  --category-icon-color: var(--color-text-secondary);
+}
+
+.assigneeCell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.assigneeCell img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
 }

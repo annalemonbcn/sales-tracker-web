@@ -1,6 +1,7 @@
 .shell {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background: var(--color-bg-app);
 }
 
@@ -38,10 +39,14 @@
   display: flex;
   flex: 1;
   min-width: 0;
+  height: 100%;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .main {
   flex: 1;
+  min-height: 0;
+  overflow: hidden;
   padding: 1.5rem;
 }
