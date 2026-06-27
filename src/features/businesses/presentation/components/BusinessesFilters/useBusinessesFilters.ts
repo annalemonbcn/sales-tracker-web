@@ -1,19 +1,42 @@
+import { useDashboardBusinessFilters } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersProvider';
 import { useUsers } from '@/features/users/application/useUsers';
+import type {
+  BusinessStatus,
+  Category,
+  LeadSource,
+  Priority,
+} from '@/shared/api/generated/salesTrackerApi';
+import type { SelectOption } from '@/shared/ui';
+
+import {
+  businessStatusOptions,
+  categoryOptions,
+  priorityOptions,
+  sourceOptions,
+} from './filterOptions';
+import type {
+  BusinessFilterSelectConfig,
+  BusinessSelectFilterKey,
+} from './types';
 
 type UseBusinessesFiltersParams = {
   isBusinessesFetching: boolean;
+  filtersToUse: BusinessSelectFilterKey[];
 };
 
 export const useBusinessesFilters = ({
   isBusinessesFetching,
+  filtersToUse,
 }: UseBusinessesFiltersParams) => {
+  const { filters, updateFilter, clearFilters } = useDashboardBusinessFilters();
+
   const {
     data: users = [],
     isError: isUsersError,
     isLoading: isUsersLoading,
   } = useUsers();
 
-  const assigneeOptions = users.map((user) => ({
+  const assigneeOptions: SelectOption[] = users.map((user) => ({
     label: user.name,
     value: user.id,
   }));
@@ -26,9 +49,80 @@ export const useBusinessesFilters = ({
     isUsersError ||
     assigneeOptions.length === 0;
 
+  const isAnyFilterActive = Object.values(filters).some(
+    (value) => value !== '' && value !== null,
+  );
+
+  const filterSelectConfigByKey: Record<
+    BusinessSelectFilterKey,
+    BusinessFilterSelectConfig
+  > = {
+    status: {
+      key: 'status',
+      label: 'Status',
+      placeholder: 'All statuses',
+      value: filters.status,
+      options: businessStatusOptions,
+      isDisabled: areBaseFiltersDisabled,
+      onChange: (value) => {
+        updateFilter('status', value as BusinessStatus | null);
+      },
+    },
+
+    category: {
+      key: 'category',
+      label: 'Category',
+      placeholder: 'All categories',
+      value: filters.category,
+      options: categoryOptions,
+      isDisabled: areBaseFiltersDisabled,
+      onChange: (value) => {
+        updateFilter('category', value as Category | null);
+      },
+    },
+
+    priority: {
+      key: 'priority',
+      label: 'Priority',
+      placeholder: 'All priorities',
+      value: filters.priority,
+      options: priorityOptions,
+      isDisabled: areBaseFiltersDisabled,
+      onChange: (value) => {
+        updateFilter('priority', value as Priority | null);
+      },
+    },
+
+    source: {
+      key: 'source',
+      label: 'Source',
+      placeholder: 'All sources',
+      value: filters.source,
+      options: sourceOptions,
+      isDisabled: areBaseFiltersDisabled,
+      onChange: (value) => {
+        updateFilter('source', value as LeadSource | null);
+      },
+    },
+
+    assignedToId: {
+      key: 'assignedToId',
+      label: 'Assignee',
+      placeholder: 'All assignees',
+      value: filters.assignedToId,
+      options: assigneeOptions,
+      isDisabled: isAssigneeSelectDisabled,
+      onChange: (value) => {
+        updateFilter('assignedToId', value);
+      },
+    },
+  };
+
+  const filterSelects = filtersToUse.map((key) => filterSelectConfigByKey[key]);
+
   return {
-    assigneeOptions,
-    areBaseFiltersDisabled,
-    isAssigneeSelectDisabled,
+    clearFilters,
+    filterSelects,
+    isClearButtonDisabled: !isAnyFilterActive || areBaseFiltersDisabled,
   };
 };
