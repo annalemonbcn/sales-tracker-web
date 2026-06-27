@@ -96,7 +96,17 @@ export const businessesTableColumns: ColumnDef<Business>[] = [
     id: 'assignedTo',
     header: 'Assignee',
     accessorFn: (business) => business.assignedTo?.name ?? 'Unassigned',
-    cell: ({ row }) => row.original.assignedTo?.name ?? 'Unassigned',
+    cell: ({ row }) => {
+      const name = row.original.assignedTo?.name ?? 'Unassigned';
+      const imgSrc = `https://api.dicebear.com/10.x/initials/svg?seed=${name}`;
+
+      return (
+        <div className={styles.assigneeCell}>
+          <img src={imgSrc} alt="" />
+          {name}
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'lastContactedAt',
