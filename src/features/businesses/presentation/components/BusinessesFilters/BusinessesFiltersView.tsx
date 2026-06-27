@@ -11,18 +11,23 @@ import {
 
 type BusinessesFiltersViewProps = {
   assigneeOptions: SelectOption[];
-  isAssigneeDisabled: boolean;
+  isAssigneeSelectDisabled: boolean;
+  areBaseFiltersDisabled: boolean;
 };
 
 export const BusinessesFiltersView = ({
   assigneeOptions,
-  isAssigneeDisabled,
+  isAssigneeSelectDisabled,
+  areBaseFiltersDisabled,
 }: BusinessesFiltersViewProps) => {
   const { filters, updateFilter, clearFilters } = useDashboardBusinessFilters();
+
+  const isAnyFilterActive = Object.values(filters).some(Boolean);
 
   return (
     <div className={styles.filters}>
       <Select
+        isDisabled={areBaseFiltersDisabled}
         label="Status"
         options={businessStatusOptions}
         placeholder="All statuses"
@@ -31,6 +36,7 @@ export const BusinessesFiltersView = ({
       />
 
       <Select
+        isDisabled={areBaseFiltersDisabled}
         label="Category"
         options={categoryOptions}
         placeholder="All categories"
@@ -39,6 +45,7 @@ export const BusinessesFiltersView = ({
       />
 
       <Select
+        isDisabled={areBaseFiltersDisabled}
         label="Priority"
         options={priorityOptions}
         placeholder="All priorities"
@@ -47,6 +54,7 @@ export const BusinessesFiltersView = ({
       />
 
       <Select
+        isDisabled={areBaseFiltersDisabled}
         label="Source"
         options={sourceOptions}
         placeholder="All sources"
@@ -55,7 +63,7 @@ export const BusinessesFiltersView = ({
       />
 
       <Select
-        isDisabled={isAssigneeDisabled}
+        isDisabled={isAssigneeSelectDisabled}
         label="Assignee"
         options={assigneeOptions}
         placeholder="All assignees"
@@ -63,7 +71,11 @@ export const BusinessesFiltersView = ({
         onChange={(value) => updateFilter('assignedToId', value)}
       />
 
-      <Button variant="secondary" onClick={clearFilters}>
+      <Button
+        variant="secondary"
+        onClick={clearFilters}
+        disabled={!isAnyFilterActive}
+      >
         Clear filters
       </Button>
     </div>
