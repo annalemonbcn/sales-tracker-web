@@ -18,7 +18,7 @@ export const BusinessesSection = () => {
   } = useBusinesses(filters);
 
   return (
-    <Card>
+    <Card className={styles.section}>
       <Card.Header>
         <Card.Title>Businesses</Card.Title>
         <Card.Description>
@@ -26,7 +26,7 @@ export const BusinessesSection = () => {
         </Card.Description>
       </Card.Header>
 
-      <Card.Content>
+      <Card.Content className={styles.content}>
         <BusinessesFilters isBusinessesFetching={isLoading || isFetching} />
 
         {isLoading ? (
