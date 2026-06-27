@@ -27,7 +27,7 @@ export const BusinessesSection = () => {
       </Card.Header>
 
       <Card.Content>
-        <BusinessesFilters />
+        <BusinessesFilters isBusinessesFetching={isLoading || isFetching} />
 
         {isLoading ? (
           <LoadingState message="Loading your business list..." />

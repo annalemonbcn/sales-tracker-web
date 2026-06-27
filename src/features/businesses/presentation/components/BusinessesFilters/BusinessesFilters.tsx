@@ -1,23 +1,30 @@
-import { useUsers } from '@/features/users/application/useUsers';
-
 import { BusinessesFiltersView } from './BusinessesFiltersView';
+import type { BusinessSelectFilterKey } from './types';
+import { useBusinessesFilters } from './useBusinessesFilters';
 
-export const BusinessesFilters = () => {
-  const {
-    data: users = [],
-    isError: isUsersError,
-    isLoading: isUsersLoading,
-  } = useUsers();
+type BusinessesFiltersProps = {
+  isBusinessesFetching: boolean;
+};
 
-  const assigneeOptions = users.map((user) => ({
-    label: user.name,
-    value: user.id,
-  }));
+const filtersToUse = [
+  'status',
+  'category',
+  'priority',
+  'source',
+  'assignedToId',
+] satisfies BusinessSelectFilterKey[];
+
+export const BusinessesFilters = ({
+  isBusinessesFetching,
+}: BusinessesFiltersProps) => {
+  const { clearFilters, filterSelects, isClearButtonDisabled } =
+    useBusinessesFilters({ isBusinessesFetching, filtersToUse });
 
   return (
     <BusinessesFiltersView
-      assigneeOptions={assigneeOptions}
-      isAssigneeDisabled={isUsersLoading || isUsersError}
+      clearFilters={clearFilters}
+      filterSelects={filterSelects}
+      isClearButtonDisabled={isClearButtonDisabled}
     />
   );
 };
