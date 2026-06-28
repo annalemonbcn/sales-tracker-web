@@ -1,7 +1,14 @@
 import { mapBusinessDtoToDomain } from './businesses.mapper';
 import type { GetBusinessDetailsResponseDto } from './businessDetails.dto';
-import type { BusinessDetailDto } from '@/shared/api/generated/salesTrackerApi';
+import type {
+  BusinessContactDetailsDto,
+  BusinessDetailDto,
+} from '@/shared/api/generated/salesTrackerApi';
 import type { BusinessDetail } from '../domain/businessDetail.model';
+
+const mapBusinessCOntactDetailsDtoToDomain = (
+  details: BusinessContactDetailsDto,
+): BusinessContactDetailsDto => details;
 
 export const mapBusinessDetailDtoToDomain = (
   business: BusinessDetailDto,
@@ -11,6 +18,7 @@ export const mapBusinessDetailDtoToDomain = (
   return {
     ...businessDto,
     activities: business.activities,
+    details: mapBusinessCOntactDetailsDtoToDomain(business.details),
   };
 };
 

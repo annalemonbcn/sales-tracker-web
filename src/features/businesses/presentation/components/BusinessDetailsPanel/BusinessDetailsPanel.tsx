@@ -1,25 +1,9 @@
-import {
-  CalendarDays,
-  ExternalLink,
-  MapPin,
-  MoreVertical,
-  Phone,
-  Send,
-  UserRound,
-  X,
-} from 'lucide-react';
+import { CalendarDays, X } from 'lucide-react';
 
 import { useBusinessDetails } from '@/features/businesses/application/useBusinessDetails';
 import { useDashboardSelectedBusiness } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessProvider';
 import { formatNullableDateTime } from '@/shared/lib/date';
-import { Badge, ErrorState, IconButton, LoadingState } from '@/shared/ui';
-
-import {
-  getBadgeVariantByPriority,
-  getBusinessCategoryLabel,
-  getBusinessSourceLabel,
-  getPriorityLabel,
-} from '../../lib/formatters';
+import { ErrorState, IconButton, LoadingState } from '@/shared/ui';
 
 import styles from './BusinessDetailsPanel.module.css';
 import {
@@ -27,12 +11,16 @@ import {
   getActivityTypeLabel,
   getActivityVariant,
 } from '../../lib/activityFormatters';
+import { cn } from '@/shared/lib/cn';
+import { BusinessDetailsPanelHeader } from './BusinessDetailsPanelHeader';
+import { BusinessContactInformation } from './BusinessContactInformation';
 
 type BusinessDetailsPanelProps = {
   businessId: string;
   className?: string;
 };
 
+// TODO: refactor
 export const BusinessDetailsPanel = ({
   businessId,
   className,
@@ -43,86 +31,35 @@ export const BusinessDetailsPanel = ({
 
   if (isLoading) {
     return (
-      <aside className={`${styles.panel} ${className ?? ''}`}>
+      <aside className={cn(styles.panel, className)}>
         <PanelHeader title="Business details" onClose={clearSelectedBusiness} />
-        <LoadingState message="Loading business details..." />
+        <LoadingState message="Loading business details..." noBorder />
       </aside>
     );
   }
 
   if (isError || !business) {
     return (
-      <aside className={`${styles.panel} ${className ?? ''}`}>
+      <aside className={cn(styles.panel, className)}>
         <PanelHeader title="Business details" onClose={clearSelectedBusiness} />
         <ErrorState
           title="We couldn't load this business"
-          message="Please try selecting it again in a moment."
+          message="Please try it again in a moment."
+          noBorder
         />
       </aside>
     );
   }
 
   return (
-    <aside className={`${styles.panel} ${className ?? ''}`}>
-      <div className={styles.header}>
-        <div className={styles.businessIntro}>
-          <div className={styles.categoryIcon}>
-            <UserRound size={26} />
-          </div>
-
-          <div className={styles.businessMain}>
-            <h2 className={styles.title}>{business.name}</h2>
-
-            <div className={styles.badges}>
-              <Badge variant="primary">
-                {getBusinessCategoryLabel(business.category)}
-              </Badge>
-
-              <Badge variant={getBadgeVariantByPriority(business.priority)}>
-                {getPriorityLabel(business.priority)}
-              </Badge>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.headerActions}>
-          <IconButton
-            label="Close business details"
-            onClick={clearSelectedBusiness}
-          >
-            <X size={18} />
-          </IconButton>
-
-          <IconButton label="More actions">
-            <MoreVertical size={18} />
-          </IconButton>
-        </div>
-      </div>
+    <aside className={cn(styles.panel, className)}>
+      <BusinessDetailsPanelHeader
+        business={business}
+        onClose={clearSelectedBusiness}
+      />
 
       <div className={styles.content}>
-        <section className={styles.section}>
-          <h3 className={styles.sectionTitle}>Contact information</h3>
-
-          <div className={styles.contactList}>
-            <ContactRow
-              icon={<Phone size={19} />}
-              label="No phone yet"
-              actionIcon={<Phone size={18} />}
-            />
-
-            <ContactRow
-              icon={<Send size={19} />}
-              label={getBusinessSourceLabel(business.source)}
-              actionIcon={<ExternalLink size={18} />}
-            />
-
-            <ContactRow
-              icon={<MapPin size={19} />}
-              label="No address yet"
-              actionIcon={<ExternalLink size={18} />}
-            />
-          </div>
-        </section>
+        <BusinessContactInformation business={business} />
 
         <section className={styles.section}>
           <SectionHeader title="Notes" actionLabel="Edit" />
@@ -215,25 +152,6 @@ const SectionHeader = ({ actionLabel, title }: SectionHeaderProps) => (
     {actionLabel ? (
       <button className={styles.sectionAction} type="button">
         {actionLabel}
-      </button>
-    ) : null}
-  </div>
-);
-
-type ContactRowProps = {
-  icon: React.ReactNode;
-  label: string;
-  actionIcon?: React.ReactNode;
-};
-
-const ContactRow = ({ actionIcon, icon, label }: ContactRowProps) => (
-  <div className={styles.contactRow}>
-    <span className={styles.contactIcon}>{icon}</span>
-    <span className={styles.contactLabel}>{label}</span>
-
-    {actionIcon ? (
-      <button className={styles.contactAction} type="button">
-        {actionIcon}
       </button>
     ) : null}
   </div>
