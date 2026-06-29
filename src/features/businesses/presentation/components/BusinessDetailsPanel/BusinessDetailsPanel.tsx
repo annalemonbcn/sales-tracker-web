@@ -14,6 +14,7 @@ import {
 import { cn } from '@/shared/lib/cn';
 import { BusinessDetailsPanelHeader } from './BusinessDetailsPanelHeader';
 import { BusinessContactInformation } from './BusinessContactInformation';
+import { BusinessNotes } from './BusinessNotes';
 
 type BusinessDetailsPanelProps = {
   businessId: string;
@@ -61,13 +62,7 @@ export const BusinessDetailsPanel = ({
       <div className={styles.content}>
         <BusinessContactInformation business={business} />
 
-        <section className={styles.section}>
-          <SectionHeader title="Notes" actionLabel="Edit" />
-
-          <div className={styles.notesBox}>
-            {business.notes || 'No notes yet.'}
-          </div>
-        </section>
+        <BusinessNotes business={business} />
 
         <section className={styles.section}>
           <SectionHeader title="Next action" actionLabel="Edit" />
