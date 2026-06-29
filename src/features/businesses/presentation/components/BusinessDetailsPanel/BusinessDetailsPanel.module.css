@@ -88,59 +88,6 @@
   font-weight: 800;
 }
 
-.contactList {
-  display: grid;
-}
-
-.contactRow {
-  display: grid;
-  grid-template-columns: 1.5rem minmax(0, 1fr) 2rem;
-  align-items: center;
-  gap: 0.75rem;
-  min-height: 2rem;
-}
-
-.contactIcon {
-  display: grid;
-  place-items: center;
-  color: var(--color-text-secondary);
-}
-
-.contactLabel {
-  min-width: 0;
-  overflow: hidden;
-  color: var(--color-text-primary);
-  font-size: 0.875rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.contactLabelMuted {
-  min-width: 0;
-  overflow: hidden;
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  font-style: italic;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.contactAction {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  place-items: center;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--color-text-secondary);
-}
-
-.contactAction:hover {
-  background: var(--color-neutral-soft);
-  color: var(--color-text-primary);
-}
-
 .notesBox {
   padding: 1rem;
   border: 1px solid #fed7aa;
@@ -297,46 +244,4 @@
   .panel {
     animation: none;
   }
-}
-
-.contactForm {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.contactField {
-  display: grid;
-  gap: 0.375rem;
-}
-
-.contactField span {
-  color: var(--color-text-secondary);
-  font-size: 0.75rem;
-  font-weight: 800;
-}
-
-.contactField input {
-  width: 100%;
-  min-height: 2.375rem;
-  box-sizing: border-box;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 0 0.75rem;
-  background: var(--color-bg-surface);
-  color: var(--color-text-primary);
-  font: inherit;
-  font-size: 0.875rem;
-}
-
-.contactField input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 0.1875rem rgb(37 99 235 / 0.12);
-  outline: none;
-}
-
-.contactFormActions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
 }
