@@ -1,11 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getDashboardSummary } from '../infrastructure/dashboard.api';
-
-const COMMON_KEYS = ['dashboard'];
+import { dashboardQueryKeys } from './dashboard.queryKeys';
 
 export const useDashboardSummary = () =>
   useQuery({
-    queryKey: [...COMMON_KEYS, 'summary', 'useDashboardSummary'],
+    queryKey: dashboardQueryKeys.summary(),
     queryFn: getDashboardSummary,
   });

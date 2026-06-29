@@ -498,7 +498,7 @@ export type GetBusinessesBusinessId200 = {
 };
 
 export type PatchBusinessesBusinessId200Data = {
-  business?: BusinessDto;
+  business?: BusinessDetailDto;
 };
 
 export type PatchBusinessesBusinessId200 = {

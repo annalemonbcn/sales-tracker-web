@@ -4,6 +4,7 @@ import type {
 } from '@/shared/api/generated/salesTrackerApi';
 import type { Business } from './business.model';
 
+// TODO: reusar features/Activity ?
 export type Activity = ActivityDto;
 
 type BusinessContactDetails = BusinessContactDetailsDto;

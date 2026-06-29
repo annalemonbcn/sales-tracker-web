@@ -2,11 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getBusinesses } from '../infrastructure/businesses.api';
 import type { BusinessFilters } from '../domain/businessFilters.model';
-
-const COMMON_KEYS = ['businesses'];
+import { businessesQueryKeys } from './businesses.queryKeys';
 
 export const useBusinesses = (filters: BusinessFilters) =>
   useQuery({
-    queryKey: [...COMMON_KEYS, 'useBusinesses', filters],
+    queryKey: businessesQueryKeys.list(filters),
     queryFn: () => getBusinesses(filters),
   });

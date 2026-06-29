@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getBusinessDetails } from '../infrastructure/businessDetails.api';
-
-const COMMON_KEYS = ['business-detail'];
+import { businessesQueryKeys } from './businesses.queryKeys';
 
 export const useBusinessDetails = (businessId: string | null) =>
   useQuery({
-    queryKey: [...COMMON_KEYS, 'useBusinessDetails', businessId],
+    queryKey: businessesQueryKeys.detail(businessId as string),
     queryFn: () => getBusinessDetails(businessId as string),
     enabled: Boolean(businessId),
   });

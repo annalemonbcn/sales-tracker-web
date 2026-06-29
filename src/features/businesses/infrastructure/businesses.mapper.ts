@@ -20,6 +20,13 @@ export const mapBusinessDtoToDomain = (business: BusinessDto): Business => ({
   status: business.status,
   priority: business.priority,
   source: business.source,
+  details: {
+    instagram: business.details.instagram,
+    email: business.details.email,
+    phone: business.details.phone,
+    website: business.details.website,
+    address: business.details.address,
+  },
   notes: business.notes,
   lastContactedAt: business.lastContactedAt,
   nextFollowUpAt: business.nextFollowUpAt,

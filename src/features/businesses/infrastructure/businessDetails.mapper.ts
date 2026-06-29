@@ -1,27 +1,51 @@
 import { mapBusinessDtoToDomain } from './businesses.mapper';
-import type { GetBusinessDetailsResponseDto } from './businessDetails.dto';
 import type {
-  BusinessContactDetailsDto,
+  GetBusinessDetailsResponseDto,
+  UpdateBusinessResponseDto,
+} from './businessDetails.dto';
+import type {
+  ActivityDto,
   BusinessDetailDto,
 } from '@/shared/api/generated/salesTrackerApi';
-import type { BusinessDetail } from '../domain/businessDetail.model';
+import type { Activity, BusinessDetail } from '../domain/businessDetail.model';
 
-const mapBusinessCOntactDetailsDtoToDomain = (
-  details: BusinessContactDetailsDto,
-): BusinessContactDetailsDto => details;
+const mapActivityDtoToDomain = (activity: ActivityDto): Activity => ({
+  id: activity.id,
+  type: activity.type,
+  notes: activity.notes,
+  metadata: activity.metadata ?? null,
+  user: {
+    id: activity.user.id,
+    name: activity.user.name,
+    email: activity.user.email,
+    role: activity.user.role,
+  },
+  createdAt: activity.createdAt,
+});
 
 export const mapBusinessDetailDtoToDomain = (
   business: BusinessDetailDto,
-): BusinessDetail => {
-  const businessDto = mapBusinessDtoToDomain(business);
+): BusinessDetail => ({
+  ...mapBusinessDtoToDomain(business),
+  activities: business.activities.map(mapActivityDtoToDomain),
+});
 
-  return {
-    ...businessDto,
-    activities: business.activities,
-    details: mapBusinessCOntactDetailsDtoToDomain(business.details),
-  };
+export const mapGetBusinessDetailResponseDtoToDomain = (
+  response: GetBusinessDetailsResponseDto,
+): BusinessDetail => {
+  if (!response.data.business) {
+    throw new Error('Business was not returned');
+  }
+
+  return mapBusinessDetailDtoToDomain(response.data.business);
 };
 
-export const mapGetBusinessDetailsResponseDtoToDomain = (
-  response: GetBusinessDetailsResponseDto,
-) => mapBusinessDetailDtoToDomain(response.data.business);
+export const mapUpdateBusinessResponseDtoToDomain = (
+  response: UpdateBusinessResponseDto,
+): BusinessDetail => {
+  if (!response.data.business) {
+    throw new Error('Business was not returned after update');
+  }
+
+  return mapBusinessDetailDtoToDomain(response.data.business);
+};
