@@ -1,11 +1,6 @@
-import type {
-  ActivityDto,
-  BusinessContactDetailsDto,
-} from '@/shared/api/generated/salesTrackerApi';
+import type { BusinessContactDetailsDto } from '@/shared/api/generated/salesTrackerApi';
 import type { Business } from './business.model';
-
-// TODO: reusar features/Activity ?
-export type Activity = ActivityDto;
+import type { Activity } from './activity.model';
 
 type BusinessContactDetails = BusinessContactDetailsDto;
 

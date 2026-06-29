@@ -2,27 +2,21 @@ import { X } from 'lucide-react';
 
 import { useBusinessDetails } from '@/features/businesses/application/useBusinessDetails';
 import { useDashboardSelectedBusiness } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessProvider';
-import { formatNullableDateTime } from '@/shared/lib/date';
 import { ErrorState, IconButton, LoadingState } from '@/shared/ui';
 
 import styles from './BusinessDetailsPanel.module.css';
-import {
-  getActivityIcon,
-  getActivityTypeLabel,
-  getActivityVariant,
-} from '../../lib/activityFormatters';
 import { cn } from '@/shared/lib/cn';
 import { BusinessDetailsPanelHeader } from './BusinessDetailsPanelHeader';
 import { BusinessContactInformation } from './BusinessContactInformation';
 import { BusinessNotes } from './BusinessNotes';
 import { BusinessNextFollowUp } from './BusinessNextFollowUp';
+import { BusinessActivity } from './BusinessActivity';
 
 type BusinessDetailsPanelProps = {
   businessId: string;
   className?: string;
 };
 
-// TODO: refactor
 export const BusinessDetailsPanel = ({
   businessId,
   className,
@@ -67,30 +61,7 @@ export const BusinessDetailsPanel = ({
 
         <BusinessNextFollowUp business={business} />
 
-        <section className={styles.section}>
-          <SectionHeader title="Activity" actionLabel="View all" />
-
-          {business.activities.length > 0 ? (
-            <div className={styles.activityList}>
-              {business.activities.map((activity) => {
-                const ActivityIcon = getActivityIcon(activity.type);
-
-                return (
-                  <ActivityItem
-                    key={activity.id}
-                    icon={<ActivityIcon size={18} />}
-                    variant={getActivityVariant(activity.type)}
-                    title={getActivityTypeLabel(activity.type)}
-                    description={activity.notes ?? `By ${activity.user.name}`}
-                    date={formatNullableDateTime(activity.createdAt)}
-                  />
-                );
-              })}
-            </div>
-          ) : (
-            <p className={styles.emptyText}>No activity yet.</p>
-          )}
-        </section>
+        <BusinessActivity business={business} />
       </div>
     </aside>
   );
@@ -108,48 +79,5 @@ const PanelHeader = ({ title, onClose }: PanelHeaderProps) => (
     <IconButton label="Close business details" onClick={onClose}>
       <X size={18} />
     </IconButton>
-  </div>
-);
-
-type SectionHeaderProps = {
-  title: string;
-  actionLabel?: string;
-};
-
-const SectionHeader = ({ actionLabel, title }: SectionHeaderProps) => (
-  <div className={styles.sectionHeader}>
-    <h3 className={styles.sectionTitle}>{title}</h3>
-
-    {actionLabel ? (
-      <button className={styles.sectionAction} type="button">
-        {actionLabel}
-      </button>
-    ) : null}
-  </div>
-);
-
-type ActivityItemProps = {
-  icon: React.ReactNode;
-  variant: 'success' | 'primary' | 'warning' | 'danger';
-  title: string;
-  description: string;
-  date: string;
-};
-
-const ActivityItem = ({
-  date,
-  description,
-  icon,
-  title,
-  variant,
-}: ActivityItemProps) => (
-  <div className={styles.activityItem}>
-    <span className={`${styles.activityIcon} ${styles[variant]}`}>{icon}</span>
-
-    <div>
-      <strong>{title}</strong>
-      <p>{date}</p>
-      <span>{description}</span>
-    </div>
   </div>
 );

@@ -6,7 +6,9 @@ import type {
 import type { Business, UserSummary } from '../domain/business.model';
 import type { GetBusinessesResponseDto } from './businesses.dto';
 
-const mapUserSummaryDtoToDomain = (user: UserSummaryDto): UserSummary => ({
+export const mapUserSummaryDtoToDomain = (
+  user: UserSummaryDto,
+): UserSummary => ({
   id: user.id,
   name: user.name,
   email: user.email,

@@ -183,6 +183,30 @@ export interface UpdateBusinessRequest {
   assignedToId?: string | null;
 }
 
+export type ActivityType = (typeof ActivityType)[keyof typeof ActivityType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ActivityType = {
+  business_created: 'business_created',
+  business_assigned: 'business_assigned',
+  instagram_message_sent: 'instagram_message_sent',
+  email_sent: 'email_sent',
+  phone_call_done: 'phone_call_done',
+  visit_done: 'visit_done',
+  response_received: 'response_received',
+  dossier_sent: 'dossier_sent',
+  meeting_scheduled: 'meeting_scheduled',
+  meeting_done: 'meeting_done',
+  proposal_sent: 'proposal_sent',
+  follow_up_created: 'follow_up_created',
+  follow_up_done: 'follow_up_done',
+  follow_up_cancelled: 'follow_up_cancelled',
+  follow_up_updated: 'follow_up_updated',
+  status_changed: 'status_changed',
+  priority_changed: 'priority_changed',
+  note_added: 'note_added',
+} as const;
+
 /**
  * @nullable
  */
@@ -190,7 +214,7 @@ export type ActivityDtoMetadata = { [key: string]: unknown } | null;
 
 export interface ActivityDto {
   id: string;
-  type: string;
+  type: ActivityType;
   /** @nullable */
   notes: string | null;
   /** @nullable */

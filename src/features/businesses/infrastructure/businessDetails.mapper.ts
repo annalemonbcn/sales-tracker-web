@@ -1,4 +1,7 @@
-import { mapBusinessDtoToDomain } from './businesses.mapper';
+import {
+  mapBusinessDtoToDomain,
+  mapUserSummaryDtoToDomain,
+} from './businesses.mapper';
 import type {
   GetBusinessDetailsResponseDto,
   UpdateBusinessResponseDto,
@@ -7,19 +10,15 @@ import type {
   ActivityDto,
   BusinessDetailDto,
 } from '@/shared/api/generated/salesTrackerApi';
-import type { Activity, BusinessDetail } from '../domain/businessDetail.model';
+import type { BusinessDetail } from '../domain/businessDetail.model';
+import type { Activity } from '../domain/activity.model';
 
 const mapActivityDtoToDomain = (activity: ActivityDto): Activity => ({
   id: activity.id,
   type: activity.type,
   notes: activity.notes,
   metadata: activity.metadata ?? null,
-  user: {
-    id: activity.user.id,
-    name: activity.user.name,
-    email: activity.user.email,
-    role: activity.user.role,
-  },
+  user: mapUserSummaryDtoToDomain(activity.user),
   createdAt: activity.createdAt,
 });
 
