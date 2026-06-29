@@ -1,0 +1,121 @@
+.card,
+.emptyCard {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.875rem;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+}
+
+.card {
+  border: 1px solid #bfdbfe;
+  background: var(--color-primary-soft);
+}
+
+.emptyCard {
+  border: 1px solid var(--color-border);
+  background: var(--color-neutral-soft);
+}
+
+.icon {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  background: #dbeafe;
+  color: var(--color-primary);
+}
+
+.emptyCard .icon {
+  background: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+}
+
+.content {
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.content strong {
+  color: var(--color-text-primary);
+  font-size: 0.9375rem;
+}
+
+.content p {
+  margin: 0.5rem 0 0;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+.content span {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--color-text-secondary);
+  font-size: 0.8125rem;
+}
+
+.badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: #dbeafe;
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.tooltipWrapper {
+  position: relative;
+}
+
+.tooltipWrapper::before,
+.tooltipWrapper::after {
+  position: absolute;
+  left: 50%;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 0.25rem);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.tooltipWrapper::before {
+  bottom: calc(100% + 0.5rem);
+  width: max-content;
+  max-width: 16rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-text-primary);
+  color: #ffffff;
+  content: attr(data-tooltip);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.tooltipWrapper::after {
+  bottom: calc(100% + 0.25rem);
+  width: 0;
+  height: 0;
+  border-top: 0.25rem solid var(--color-text-primary);
+  border-right: 0.25rem solid transparent;
+  border-left: 0.25rem solid transparent;
+  content: '';
+}
+
+.tooltipWrapper:hover::before,
+.tooltipWrapper:hover::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}

@@ -1,4 +1,4 @@
-import { CalendarDays, X } from 'lucide-react';
+import { X } from 'lucide-react';
 
 import { useBusinessDetails } from '@/features/businesses/application/useBusinessDetails';
 import { useDashboardSelectedBusiness } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessProvider';
@@ -15,6 +15,7 @@ import { cn } from '@/shared/lib/cn';
 import { BusinessDetailsPanelHeader } from './BusinessDetailsPanelHeader';
 import { BusinessContactInformation } from './BusinessContactInformation';
 import { BusinessNotes } from './BusinessNotes';
+import { BusinessNextFollowUp } from './BusinessNextFollowUp';
 
 type BusinessDetailsPanelProps = {
   businessId: string;
@@ -64,32 +65,7 @@ export const BusinessDetailsPanel = ({
 
         <BusinessNotes business={business} />
 
-        <section className={styles.section}>
-          <SectionHeader title="Next action" actionLabel="Edit" />
-
-          <div className={styles.nextActionCard}>
-            <div className={styles.nextActionIcon}>
-              <CalendarDays size={20} />
-            </div>
-
-            <div className={styles.nextActionContent}>
-              <div className={styles.nextActionHeader}>
-                <strong>Follow-up</strong>
-
-                {business.nextFollowUpAt ? (
-                  <span className={styles.nextActionBadge}>Scheduled</span>
-                ) : null}
-              </div>
-
-              <p>{formatNullableDateTime(business.nextFollowUpAt)}</p>
-              <span>
-                {business.nextFollowUpAt
-                  ? 'Review the next planned contact.'
-                  : 'No next follow-up scheduled.'}
-              </span>
-            </div>
-          </div>
-        </section>
+        <BusinessNextFollowUp business={business} />
 
         <section className={styles.section}>
           <SectionHeader title="Activity" actionLabel="View all" />
