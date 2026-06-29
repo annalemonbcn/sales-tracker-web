@@ -12,7 +12,7 @@ import {
   getWebsiteUrl,
   removeInstagramPrefix,
 } from './contactInformation.helpers';
-import { ContactRow } from './contactRow';
+import { ContactRow } from './ContactRow';
 
 type BusinessContactInformationViewProps = {
   business: BusinessDetail;

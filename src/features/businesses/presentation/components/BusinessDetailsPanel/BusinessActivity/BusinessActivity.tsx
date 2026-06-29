@@ -10,25 +10,25 @@ type BusinessActivityProps = {
   business: BusinessDetail;
 };
 
-const DEFAULT_VISIBLE_ACTIVITIES = 3;
+const MAX_VISIBLE_ACTIVITIES = 3;
 
 export const BusinessActivity = ({ business }: BusinessActivityProps) => {
   const [showAllActivities, setShowAllActivities] = useState(false);
 
   const activities = business.activities;
   const hasActivities = activities.length > 0;
-  const hasHiddenActivities = activities.length > DEFAULT_VISIBLE_ACTIVITIES;
+  const hasMoreActivities = activities.length > MAX_VISIBLE_ACTIVITIES;
 
   const visibleActivities = showAllActivities
     ? activities
-    : activities.slice(0, DEFAULT_VISIBLE_ACTIVITIES);
+    : activities.slice(0, MAX_VISIBLE_ACTIVITIES);
 
   return (
     <section className={panelStyles.section}>
       <div className={panelStyles.sectionHeader}>
         <h3 className={panelStyles.sectionTitle}>Activity</h3>
 
-        {hasHiddenActivities ? (
+        {hasMoreActivities ? (
           <button
             className={panelStyles.sectionAction}
             type="button"
