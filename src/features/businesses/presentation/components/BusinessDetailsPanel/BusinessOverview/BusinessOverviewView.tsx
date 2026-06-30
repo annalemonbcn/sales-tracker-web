@@ -10,6 +10,7 @@ import panelStyles from '../BusinessDetailsPanel.module.css';
 import styles from './BusinessOverview.module.css';
 import type { SelectOption } from '@/shared/ui';
 import { cn } from '@/shared/lib/cn';
+import { getInitialsAvatarUrl } from '@/shared/lib/avatar';
 
 type BusinessOverviewViewProps = {
   business: BusinessDetail;
@@ -52,8 +53,13 @@ export const BusinessOverviewView = ({
         value={getPriorityLabel(business.priority)}
       />
       <OverviewField
+        avatarUrl={
+          business.assignedTo
+            ? getInitialsAvatarUrl(business.assignedTo.name)
+            : undefined
+        }
         label="Assignee"
-        value={business.assignedTo?.name || 'Unassigned'}
+        value={business.assignedTo?.name ?? 'Unassigned'}
       />
     </div>
   </section>
@@ -61,9 +67,16 @@ export const BusinessOverviewView = ({
 
 type OverviewFieldProps = SelectOption;
 
-const OverviewField = ({ label, value }: OverviewFieldProps) => (
+const OverviewField = ({ avatarUrl, label, value }: OverviewFieldProps) => (
   <div className={styles.field}>
     <span className={styles.label}>{label}</span>
-    <div className={styles.valueBox}>{value}</div>
+
+    <div className={styles.valueBox}>
+      {avatarUrl ? (
+        <img className={styles.valueAvatar} src={avatarUrl} alt="" />
+      ) : null}
+
+      <span className={styles.valueText}>{value}</span>
+    </div>
   </div>
 );

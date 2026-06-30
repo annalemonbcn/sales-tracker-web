@@ -15,6 +15,7 @@ import {
 
 import styles from './BusinessesTable.module.css';
 import { BusinessCategoryIcon } from '../BusinessCategoryIcon';
+import { getInitialsAvatarUrl } from '@/shared/lib/avatar';
 
 export const businessesTableColumns: ColumnDef<Business>[] = [
   {
@@ -74,7 +75,7 @@ export const businessesTableColumns: ColumnDef<Business>[] = [
     accessorFn: (business) => business.assignedTo?.name ?? 'Unassigned',
     cell: ({ row }) => {
       const name = row.original.assignedTo?.name ?? 'Unassigned';
-      const imgSrc = `https://api.dicebear.com/10.x/initials/svg?seed=${name}`;
+      const imgSrc = getInitialsAvatarUrl(name);
 
       return (
         <div className={styles.assigneeCell}>

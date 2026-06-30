@@ -1,5 +1,6 @@
 import { UNASSIGNED_ASSIGNEE_FILTER_VALUE } from '@/features/businesses/domain/businessFilters.model';
 import { useUsers } from '@/features/users/application/useUsers';
+import { getInitialsAvatarUrl } from '@/shared/lib/avatar';
 import type { SelectOption } from '@/shared/ui';
 
 type UseBusinessAssigneeOptionsParams = {
@@ -14,6 +15,7 @@ export const useBusinessAssigneeOptions = ({
   const assigneeOptions: SelectOption[] = users.map((user) => ({
     label: user.name,
     value: user.id,
+    avatarUrl: getInitialsAvatarUrl(user.name),
   }));
 
   const unassignedOption: SelectOption = {
