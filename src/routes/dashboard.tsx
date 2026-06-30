@@ -10,6 +10,7 @@ import type {
 } from '@/shared/api/generated/salesTrackerApi';
 
 import { Route as RootRoute } from './__root';
+import { DashboardSelectedBusinessProvider } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessProvider';
 
 type DashboardSearch = {
   status?: BusinessStatus;
@@ -22,7 +23,9 @@ type DashboardSearch = {
 
 const DashboardRouteComponent = () => (
   <DashboardBusinessFiltersProvider>
-    <DashboardPage />
+    <DashboardSelectedBusinessProvider>
+      <DashboardPage />
+    </DashboardSelectedBusinessProvider>
   </DashboardBusinessFiltersProvider>
 );
 

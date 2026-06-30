@@ -6,20 +6,29 @@ import type {
 import type { Business, UserSummary } from '../domain/business.model';
 import type { GetBusinessesResponseDto } from './businesses.dto';
 
-const mapUserSummaryDtoToDomain = (user: UserSummaryDto): UserSummary => ({
+export const mapUserSummaryDtoToDomain = (
+  user: UserSummaryDto,
+): UserSummary => ({
   id: user.id,
   name: user.name,
   email: user.email,
   role: user.role,
 });
 
-const mapBusinessDtoToDomain = (business: BusinessDto): Business => ({
+export const mapBusinessDtoToDomain = (business: BusinessDto): Business => ({
   id: business.id,
   name: business.name,
   category: business.category,
   status: business.status,
   priority: business.priority,
   source: business.source,
+  details: {
+    instagram: business.details.instagram,
+    email: business.details.email,
+    phone: business.details.phone,
+    website: business.details.website,
+    address: business.details.address,
+  },
   notes: business.notes,
   lastContactedAt: business.lastContactedAt,
   nextFollowUpAt: business.nextFollowUpAt,

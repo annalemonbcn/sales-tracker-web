@@ -1,0 +1,58 @@
+.icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--category-icon-bg);
+  color: var(--category-icon-color);
+}
+
+.sm {
+  width: 2rem;
+  height: 2rem;
+}
+
+.lg {
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.restaurant {
+  --category-icon-bg: var(--color-warning-soft);
+  --category-icon-color: var(--color-warning);
+}
+
+.hairdresser {
+  --category-icon-bg: var(--color-danger-soft);
+  --category-icon-color: var(--color-danger);
+}
+
+.beautyCenter {
+  --category-icon-bg: #f3e8ff;
+  --category-icon-color: #9333ea;
+}
+
+.hotel {
+  --category-icon-bg: var(--color-primary-soft);
+  --category-icon-color: var(--color-primary);
+}
+
+.shop {
+  --category-icon-bg: var(--color-success-soft);
+  --category-icon-color: var(--color-success);
+}
+
+.gym {
+  --category-icon-bg: #dcfce7;
+  --category-icon-color: #16a34a;
+}
+
+.clinic {
+  --category-icon-bg: #ccfbf1;
+  --category-icon-color: #0f766e;
+}
+
+.other {
+  --category-icon-bg: var(--color-neutral-soft);
+  --category-icon-color: var(--color-text-secondary);
+}

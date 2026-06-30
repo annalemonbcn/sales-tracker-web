@@ -1,0 +1,1 @@
+export { BusinessCategoryIcon } from './BusinessCategoryIcon';

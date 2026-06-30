@@ -15,7 +15,7 @@ import {
   getBusinessSourceLabel,
   getBusinessStatusLabel,
   getPriorityLabel,
-} from '../../lib/formatters';
+} from './formatters';
 
 const mapValuesToOptions = <Value extends string>(
   values: Value[],
@@ -31,17 +31,17 @@ export const businessStatusOptions = mapValuesToOptions(
   getBusinessStatusLabel,
 );
 
-export const categoryOptions = mapValuesToOptions(
+export const businessCategoryOptions = mapValuesToOptions(
   Object.values(Category) as CategoryType[],
   getBusinessCategoryLabel,
 );
 
-export const priorityOptions = mapValuesToOptions(
+export const businessPriorityOptions = mapValuesToOptions(
   Object.values(Priority) as PriorityType[],
   getPriorityLabel,
 );
 
-export const sourceOptions = mapValuesToOptions(
+export const businessSourceOptions = mapValuesToOptions(
   Object.values(LeadSource) as LeadSourceType[],
   getBusinessSourceLabel,
 );

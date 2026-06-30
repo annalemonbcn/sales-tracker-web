@@ -1,0 +1,1 @@
+export { BusinessContactInformation } from './BusinessContactInformation';

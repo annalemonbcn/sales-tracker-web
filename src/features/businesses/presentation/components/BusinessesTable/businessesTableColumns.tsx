@@ -14,20 +14,8 @@ import {
 } from '../../lib/formatters';
 
 import styles from './BusinessesTable.module.css';
-import { businessCategoryIconByCategory } from './businessCategoryIcons';
-import type { Category } from '@/shared/api/generated/salesTrackerApi';
-import { cn } from '@/shared/lib/cn';
-
-const categoryIconClassNameByCategory = {
-  restaurant: styles.categoryIconRestaurant,
-  hairdresser: styles.categoryIconHairdresser,
-  beauty_center: styles.categoryIconBeautyCenter,
-  hotel: styles.categoryIconHotel,
-  shop: styles.categoryIconShop,
-  gym: styles.categoryIconGym,
-  clinic: styles.categoryIconClinic,
-  other: styles.categoryIconOther,
-} satisfies Record<Category, string>;
+import { BusinessCategoryIcon } from '../BusinessCategoryIcon';
+import { getInitialsAvatarUrl } from '@/shared/lib/avatar';
 
 export const businessesTableColumns: ColumnDef<Business>[] = [
   {
@@ -35,21 +23,10 @@ export const businessesTableColumns: ColumnDef<Business>[] = [
     header: 'Business name',
     cell: ({ row }) => {
       const business = row.original;
-      const CategoryIcon = businessCategoryIconByCategory[business.category];
-      const categoryLabel = getBusinessCategoryLabel(business.category);
 
       return (
         <div className={styles.businessNameCell}>
-          <span
-            className={cn(
-              styles.categoryIcon,
-              categoryIconClassNameByCategory[business.category],
-            )}
-            aria-label={categoryLabel}
-            title={categoryLabel}
-          >
-            <CategoryIcon size={18} />
-          </span>
+          <BusinessCategoryIcon category={business.category} />
 
           <strong className={styles.businessName}>{business.name}</strong>
         </div>
@@ -98,7 +75,7 @@ export const businessesTableColumns: ColumnDef<Business>[] = [
     accessorFn: (business) => business.assignedTo?.name ?? 'Unassigned',
     cell: ({ row }) => {
       const name = row.original.assignedTo?.name ?? 'Unassigned';
-      const imgSrc = `https://api.dicebear.com/10.x/initials/svg?seed=${name}`;
+      const imgSrc = getInitialsAvatarUrl(name);
 
       return (
         <div className={styles.assigneeCell}>

@@ -10,3 +10,24 @@
   font-size: 0.75rem;
   font-weight: 800;
 }
+
+.singleValueWithAvatar {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.singleValueWithAvatar img {
+  width: 1.375rem;
+  height: 1.375rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+}
+
+.singleValueWithAvatar span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

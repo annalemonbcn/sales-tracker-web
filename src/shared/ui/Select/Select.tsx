@@ -1,4 +1,8 @@
-import ReactSelect, { type StylesConfig } from 'react-select';
+import ReactSelect, {
+  components,
+  type SingleValueProps,
+  type StylesConfig,
+} from 'react-select';
 
 import styles from './Select.module.css';
 import { selectStyles } from '@/features/businesses/presentation/components/BusinessesTable/selectStyles';
@@ -6,6 +10,7 @@ import { selectStyles } from '@/features/businesses/presentation/components/Busi
 export type SelectOption<Value extends string = string> = {
   label: string;
   value: Value;
+  avatarUrl?: string;
 };
 
 type SelectProps<Value extends string = string> = {
@@ -14,6 +19,7 @@ type SelectProps<Value extends string = string> = {
   options: SelectOption<Value>[];
   placeholder?: string;
   isDisabled?: boolean;
+  isClearable?: boolean;
   onChange: (value: Value | null) => void;
 };
 
@@ -23,6 +29,7 @@ export const Select = <Value extends string = string>({
   options,
   placeholder = 'Select...',
   isDisabled = false,
+  isClearable = true,
   onChange,
 }: SelectProps<Value>) => {
   const selectedOption =
@@ -34,7 +41,8 @@ export const Select = <Value extends string = string>({
 
       <ReactSelect<SelectOption<Value>, false>
         classNamePrefix="appSelect"
-        isClearable
+        components={{ SingleValue: SingleValueWithAvatar }}
+        isClearable={isClearable}
         isDisabled={isDisabled}
         isSearchable
         options={options}
@@ -46,5 +54,24 @@ export const Select = <Value extends string = string>({
         }}
       />
     </label>
+  );
+};
+
+const SingleValueWithAvatar = <Value extends string = string>(
+  props: SingleValueProps<SelectOption<Value>, false>,
+) => {
+  const avatarUrl = props.data.avatarUrl;
+
+  return (
+    <components.SingleValue {...props}>
+      {avatarUrl ? (
+        <span className={styles.singleValueWithAvatar}>
+          <img src={avatarUrl} alt="" />
+          <span>{props.data.label}</span>
+        </span>
+      ) : (
+        props.data.label
+      )}
+    </components.SingleValue>
   );
 };
