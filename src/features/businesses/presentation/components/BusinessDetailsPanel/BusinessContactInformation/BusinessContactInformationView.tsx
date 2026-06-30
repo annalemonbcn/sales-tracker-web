@@ -4,15 +4,15 @@ import type { BusinessDetail } from '@/features/businesses/domain/businessDetail
 import { InstagramIcon } from '@/shared/ui/icons/InstagramIcon';
 
 import panelStyles from '../BusinessDetailsPanel.module.css';
-import styles from './BusinessContactInformation.module.css';
-
+import { ContactInformationSection } from './ContactInformationSection';
+import { ContactRow } from './ContactRow';
 import {
   getInstagramUrl,
   getMapsUrl,
   getWebsiteUrl,
   removeInstagramPrefix,
 } from './contactInformation.helpers';
-import { ContactRow } from './ContactRow';
+import styles from './BusinessContactInformation.module.css';
 
 type BusinessContactInformationViewProps = {
   business: BusinessDetail;
@@ -32,10 +32,8 @@ export const BusinessContactInformationView = ({
   const mapsUrl = address ? getMapsUrl(address) : null;
 
   return (
-    <section className={panelStyles.section}>
-      <div className={panelStyles.sectionHeader}>
-        <h3 className={panelStyles.sectionTitle}>Contact information</h3>
-
+    <ContactInformationSection
+      action={
         <button
           className={panelStyles.sectionAction}
           type="button"
@@ -43,15 +41,16 @@ export const BusinessContactInformationView = ({
         >
           Edit
         </button>
-      </div>
-
+      }
+    >
       <div className={styles.contactList}>
         <ContactRow
           actionHref={instagramUrl ?? undefined}
           actionLabel="Open Instagram profile"
           icon={<InstagramIcon size={18} />}
           isMuted={!instagramUsername}
-          label={instagramUsername || 'No Instagram added yet'}
+          label="Instagram"
+          value={instagramUsername || 'No Instagram added yet'}
         />
 
         <ContactRow
@@ -59,16 +58,17 @@ export const BusinessContactInformationView = ({
           actionLabel="Send email"
           icon={<Mail size={18} />}
           isMuted={!email}
-          label={email || 'No email added yet'}
+          label="Email"
+          value={email || 'No email added yet'}
         />
 
         <ContactRow
           actionHref={phone ? `tel:${phone}` : undefined}
-          actionIcon={<Phone size={17} />}
           actionLabel="Call phone number"
           icon={<Phone size={18} />}
           isMuted={!phone}
-          label={phone || 'No phone added yet'}
+          label="Phone"
+          value={phone || 'No phone added yet'}
         />
 
         <ContactRow
@@ -76,7 +76,8 @@ export const BusinessContactInformationView = ({
           actionLabel="Open website"
           icon={<Globe size={18} />}
           isMuted={!website}
-          label={website || 'No website added yet'}
+          label="Website"
+          value={website || 'No website added yet'}
         />
 
         <ContactRow
@@ -84,9 +85,10 @@ export const BusinessContactInformationView = ({
           actionLabel="Open address in Google Maps"
           icon={<MapPin size={18} />}
           isMuted={!address}
-          label={address || 'No address added yet'}
+          label="Address"
+          value={address || 'No address added yet'}
         />
       </div>
-    </section>
+    </ContactInformationSection>
   );
 };

@@ -9,6 +9,7 @@ import {
 import panelStyles from '../BusinessDetailsPanel.module.css';
 import styles from './BusinessOverview.module.css';
 import type { SelectOption } from '@/shared/ui';
+import { cn } from '@/shared/lib/cn';
 
 type BusinessOverviewViewProps = {
   business: BusinessDetail;
@@ -19,7 +20,7 @@ export const BusinessOverviewView = ({
   business,
   onEdit,
 }: BusinessOverviewViewProps) => (
-  <section className={panelStyles.section}>
+  <section className={cn(panelStyles.section, panelStyles.sectionCard)}>
     <div className={panelStyles.sectionHeader}>
       <h3 className={panelStyles.sectionTitle}>Business details</h3>
 

@@ -2,6 +2,7 @@ import type { BusinessDetail } from '@/features/businesses/domain/businessDetail
 
 import panelStyles from '../BusinessDetailsPanel.module.css';
 import styles from './BusinessNotes.module.css';
+import { cn } from '@/shared/lib/cn';
 
 type BusinessNotesViewProps = {
   business: BusinessDetail;
@@ -12,7 +13,7 @@ export const BusinessNotesView = ({
   business,
   onEdit,
 }: BusinessNotesViewProps) => (
-  <section className={panelStyles.section}>
+  <section className={cn(panelStyles.section, panelStyles.sectionCard)}>
     <div className={panelStyles.sectionHeader}>
       <h3 className={panelStyles.sectionTitle}>Notes</h3>
 

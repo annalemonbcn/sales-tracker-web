@@ -6,25 +6,27 @@ import styles from './BusinessContactInformation.module.css';
 type ContactRowProps = {
   icon: ReactNode;
   label: string;
+  value: string;
   actionHref?: string;
   actionLabel?: string;
-  actionIcon?: ReactNode;
   isMuted?: boolean;
 };
 
 export const ContactRow = ({
   actionHref,
-  actionIcon = <ExternalLink size={17} />,
   actionLabel,
   icon,
   isMuted = false,
   label,
+  value,
 }: ContactRowProps) => (
   <div className={styles.contactRow}>
     <span className={styles.contactIcon}>{icon}</span>
 
-    <span className={isMuted ? styles.contactLabelMuted : styles.contactLabel}>
-      {label}
+    <span className={styles.contactLabel}>{label}</span>
+
+    <span className={isMuted ? styles.contactValueMuted : styles.contactValue}>
+      {value}
     </span>
 
     {actionHref ? (
@@ -35,7 +37,7 @@ export const ContactRow = ({
         rel="noreferrer"
         target={actionHref.startsWith('http') ? '_blank' : undefined}
       >
-        {actionIcon}
+        <ExternalLink size={17} />
       </a>
     ) : (
       <span />

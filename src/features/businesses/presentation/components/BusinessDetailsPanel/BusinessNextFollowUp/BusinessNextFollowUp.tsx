@@ -1,6 +1,7 @@
 import { CalendarDays } from 'lucide-react';
 
 import type { BusinessDetail } from '@/features/businesses/domain/businessDetail.model';
+import { cn } from '@/shared/lib/cn';
 import { formatNullableDateTime } from '@/shared/lib/date';
 
 import panelStyles from '../BusinessDetailsPanel.module.css';
@@ -19,7 +20,7 @@ export const BusinessNextFollowUp = ({
   const hasNextFollowUp = Boolean(business.nextFollowUpAt);
 
   const cardContent = (
-    <div className={hasNextFollowUp ? styles.card : styles.emptyCard}>
+    <div className={styles.cardContent}>
       <div className={styles.icon}>
         <CalendarDays size={20} />
       </div>
@@ -49,7 +50,16 @@ export const BusinessNextFollowUp = ({
   );
 
   return (
-    <section className={panelStyles.section}>
+    <section
+      className={cn(
+        panelStyles.section,
+        panelStyles.sectionCard,
+        styles.followUpSection,
+        hasNextFollowUp
+          ? styles.followUpSectionScheduled
+          : styles.followUpSectionEmpty,
+      )}
+    >
       <div className={panelStyles.sectionHeader}>
         <h3 className={panelStyles.sectionTitle}>Next action</h3>
       </div>

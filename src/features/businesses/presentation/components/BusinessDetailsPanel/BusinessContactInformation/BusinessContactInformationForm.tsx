@@ -2,12 +2,11 @@ import { useForm } from 'react-hook-form';
 
 import { useUpdateBusinessContactDetails } from '@/features/businesses/application/useUpdateBusinessContactDetails';
 import type { BusinessDetail } from '@/features/businesses/domain/businessDetail.model';
-import { Button } from '@/shared/ui';
+import { Button, Input } from '@/shared/ui';
 
-import panelStyles from '../BusinessDetailsPanel.module.css';
-import styles from './BusinessContactInformation.module.css';
-
+import { ContactInformationSection } from './ContactInformationSection';
 import { removeInstagramPrefix } from './contactInformation.helpers';
+import styles from './BusinessContactInformation.module.css';
 import type { ContactInformationFormValues } from './types';
 
 type BusinessContactInformationFormProps = {
@@ -55,15 +54,11 @@ export const BusinessContactInformationForm = ({
   };
 
   return (
-    <section className={panelStyles.section}>
-      <div className={panelStyles.sectionHeader}>
-        <h3 className={panelStyles.sectionTitle}>Contact information</h3>
-      </div>
-
+    <ContactInformationSection>
       <form className={styles.contactForm} onSubmit={handleSubmit(onSubmit)}>
         <label className={styles.contactField}>
           <span>Instagram</span>
-          <input
+          <Input
             placeholder="instagram_business_username"
             {...register('instagram')}
           />
@@ -71,7 +66,7 @@ export const BusinessContactInformationForm = ({
 
         <label className={styles.contactField}>
           <span>Email</span>
-          <input
+          <Input
             placeholder="hello@business.com"
             type="email"
             {...register('email')}
@@ -80,7 +75,7 @@ export const BusinessContactInformationForm = ({
 
         <label className={styles.contactField}>
           <span>Phone</span>
-          <input
+          <Input
             placeholder="+34 600 000 000"
             type="tel"
             {...register('phone')}
@@ -89,12 +84,12 @@ export const BusinessContactInformationForm = ({
 
         <label className={styles.contactField}>
           <span>Website</span>
-          <input placeholder="business.com" {...register('website')} />
+          <Input placeholder="business.com" {...register('website')} />
         </label>
 
         <label className={styles.contactField}>
           <span>Address</span>
-          <input placeholder="Street, city" {...register('address')} />
+          <Input placeholder="Street, city" {...register('address')} />
         </label>
 
         <div className={styles.contactFormActions}>
@@ -112,6 +107,6 @@ export const BusinessContactInformationForm = ({
           </Button>
         </div>
       </form>
-    </section>
+    </ContactInformationSection>
   );
 };

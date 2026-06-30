@@ -8,6 +8,7 @@ import panelStyles from '../BusinessDetailsPanel.module.css';
 import styles from './BusinessOverview.module.css';
 import type { BusinessOverviewFormValues } from './types';
 import { useBusinessOverview } from './useBusinessOverview';
+import { cn } from '@/shared/lib/cn';
 
 type BusinessOverviewFormProps = {
   business: BusinessDetail;
@@ -65,7 +66,7 @@ export const BusinessOverviewForm = ({
   };
 
   return (
-    <section className={panelStyles.section}>
+    <section className={cn(panelStyles.section, panelStyles.sectionCard)}>
       <div className={panelStyles.sectionHeader}>
         <h3 className={panelStyles.sectionTitle}>Business details</h3>
       </div>

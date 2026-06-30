@@ -1,20 +1,21 @@
-.card,
-.emptyCard {
-  display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr);
-  gap: 0.875rem;
+.followUpSection {
   padding: 1rem;
-  border-radius: var(--radius-md);
 }
 
-.card {
-  border: 1px solid #bfdbfe;
+.followUpSectionScheduled {
+  border-color: #bfdbfe;
   background: var(--color-primary-soft);
 }
 
-.emptyCard {
-  border: 1px solid var(--color-border);
+.followUpSectionEmpty {
   background: var(--color-neutral-soft);
+  cursor: help;
+}
+
+.cardContent {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.875rem;
 }
 
 .icon {
@@ -27,7 +28,7 @@
   color: var(--color-primary);
 }
 
-.emptyCard .icon {
+.followUpSectionEmpty .icon {
   background: var(--color-bg-surface);
   color: var(--color-text-secondary);
 }

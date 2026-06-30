@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useUpdateBusinessNotes } from '@/features/businesses/application/useUpdateBusinessNotes';
 import type { BusinessDetail } from '@/features/businesses/domain/businessDetail.model';
 import { Button } from '@/shared/ui';
+import { cn } from '@/shared/lib/cn';
 
 import panelStyles from '../BusinessDetailsPanel.module.css';
 import styles from './BusinessNotes.module.css';
@@ -43,7 +44,7 @@ export const BusinessNotesForm = ({
   };
 
   return (
-    <section className={panelStyles.section}>
+    <section className={cn(panelStyles.section, panelStyles.sectionCard)}>
       <div className={panelStyles.sectionHeader}>
         <h3 className={panelStyles.sectionTitle}>Notes</h3>
       </div>

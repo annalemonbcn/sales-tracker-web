@@ -1,6 +1,7 @@
 .panel {
   display: flex;
   min-height: 0;
+  width: 450px;
   flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--color-border);
@@ -64,6 +65,14 @@
 .section {
   display: grid;
   gap: 0.875rem;
+}
+
+.sectionCard {
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-surface);
+  box-shadow: 0 0.5rem 1.5rem rgb(15 23 42 / 0.025);
 }
 
 .sectionHeader {
