@@ -1,5 +1,7 @@
+import { useQueryClient } from '@tanstack/react-query';
 import type { UpdateBusinessRequestDto } from '../infrastructure/businessDetails.dto';
 import { useUpdateBusiness } from './useUpdateBusiness';
+import { dashboardQueryKeys } from '@/features/dashboard/application/dashboard.queryKeys';
 
 type UpdateBusinessOverviewData = Pick<
   UpdateBusinessRequestDto,
@@ -12,16 +14,32 @@ type UpdateBusinessOverviewParams = {
 };
 
 export const useUpdateBusinessOverview = () => {
+  const queryClient = useQueryClient();
   const updateBusinessMutation = useUpdateBusiness();
+
+  const invalidateDashboardSummary = () => {
+    queryClient.invalidateQueries({
+      queryKey: dashboardQueryKeys.summary(),
+    });
+  };
 
   return {
     ...updateBusinessMutation,
 
     mutate: (params: UpdateBusinessOverviewParams) => {
-      updateBusinessMutation.mutate(params);
+      updateBusinessMutation.mutate(params, {
+        onSuccess: () => {
+          invalidateDashboardSummary();
+        },
+      });
     },
 
-    mutateAsync: (params: UpdateBusinessOverviewParams) =>
-      updateBusinessMutation.mutateAsync(params),
+    mutateAsync: async (params: UpdateBusinessOverviewParams) => {
+      const updatedBusiness = await updateBusinessMutation.mutateAsync(params);
+
+      invalidateDashboardSummary();
+
+      return updatedBusiness;
+    },
   };
 };
