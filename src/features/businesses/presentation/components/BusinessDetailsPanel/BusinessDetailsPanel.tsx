@@ -49,12 +49,11 @@ export const BusinessDetailsPanel = ({
   }
 
   return (
-    <aside className={cn(styles.panel, className)}>
+    <div className={cn(styles.panel, className)}>
       <BusinessDetailsPanelHeader
         business={business}
         onClose={clearSelectedBusiness}
       />
-
       <div className={styles.content}>
         <BusinessOverview business={business} />
 
@@ -66,7 +65,7 @@ export const BusinessDetailsPanel = ({
 
         <BusinessActivity business={business} />
       </div>
-    </aside>
+    </div>
   );
 };
 

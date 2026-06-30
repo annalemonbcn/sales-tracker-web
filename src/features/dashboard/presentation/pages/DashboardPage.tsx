@@ -1,17 +1,17 @@
 import { Plus } from 'lucide-react';
 
+import { BusinessDetailsDrawer } from '@/features/businesses/presentation/components/BusinessDetailsDrawer';
 import { BusinessesSection } from '@/features/businesses/presentation/components/BusinessesSection';
+import { useDashboardSelectedBusiness } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessProvider';
 import { Button } from '@/shared/ui';
 
 import { DashboardMetricsSection } from '../components/DashboardMetricsSection';
 
 import styles from './DashboardPage.module.css';
-import { cn } from '@/shared/lib/cn';
-import { useDashboardSelectedBusiness } from '../providers/DashboardSelectedBusinessProvider';
-import { BusinessDetailsPanel } from '@/features/businesses/presentation/components/BusinessDetailsPanel';
 
 export const DashboardPage = () => {
-  const { selectedBusinessId } = useDashboardSelectedBusiness();
+  const { clearSelectedBusiness, selectedBusinessId } =
+    useDashboardSelectedBusiness();
 
   return (
     <div className={styles.page}>
@@ -29,19 +29,20 @@ export const DashboardPage = () => {
         </Button>
       </header>
 
-      <div
-        className={cn(styles.body, selectedBusinessId && styles.bodyWithPanel)}
-      >
+      <div className={styles.body}>
         <div className={styles.mainContent}>
           <DashboardMetricsSection />
 
           <BusinessesSection />
         </div>
-
-        {selectedBusinessId ? (
-          <BusinessDetailsPanel businessId={selectedBusinessId} />
-        ) : null}
       </div>
+
+      {selectedBusinessId ? (
+        <BusinessDetailsDrawer
+          businessId={selectedBusinessId}
+          onClose={clearSelectedBusiness}
+        />
+      ) : null}
     </div>
   );
 };
