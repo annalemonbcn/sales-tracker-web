@@ -14,6 +14,34 @@ export type BusinessFilters = {
   search: string;
 };
 
+export const UNASSIGNED_ASSIGNEE_FILTER_VALUE = '__unassigned__';
+
+export const UNASSIGNED_ASSIGNEE_SEARCH_VALUE = 'unassigned';
+
+const mapAssignedToIdSearchToFilter = (
+  assignedToId: string | undefined,
+): string | null => {
+  if (!assignedToId) return null;
+
+  if (assignedToId === UNASSIGNED_ASSIGNEE_SEARCH_VALUE) {
+    return UNASSIGNED_ASSIGNEE_FILTER_VALUE;
+  }
+
+  return assignedToId;
+};
+
+const mapAssignedToIdFilterToSearch = (
+  assignedToId: string | null,
+): string | undefined => {
+  if (!assignedToId) return undefined;
+
+  if (assignedToId === UNASSIGNED_ASSIGNEE_FILTER_VALUE) {
+    return UNASSIGNED_ASSIGNEE_SEARCH_VALUE;
+  }
+
+  return assignedToId;
+};
+
 export const initialBusinessFilters: BusinessFilters = {
   status: null,
   category: null,
@@ -42,7 +70,7 @@ export const mapSearchToBusinessFilters = (
   category: search.category ?? null,
   priority: search.priority ?? null,
   source: search.source ?? null,
-  assignedToId: search.assignedToId ?? null,
+  assignedToId: mapAssignedToIdSearchToFilter(search.assignedToId),
   search: search.search ?? '',
 });
 
@@ -53,6 +81,6 @@ export const mapBusinessFiltersToSearch = (
   category: filters.category ?? undefined,
   priority: filters.priority ?? undefined,
   source: filters.source ?? undefined,
-  assignedToId: filters.assignedToId ?? undefined,
+  assignedToId: mapAssignedToIdFilterToSearch(filters.assignedToId),
   search: filters.search || undefined,
 });

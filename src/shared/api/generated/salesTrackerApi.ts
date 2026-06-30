@@ -485,9 +485,9 @@ export type GetBusinessesParams = {
    */
   source?: string;
   /**
-   * Filter by assigned user.
+   * Filter by assigned user id or use "unassigned" to return businesses without assigned user.
    */
-  assignedToId?: string;
+  assignedToId?: string | 'unassigned';
   /**
    * Search by business name, instagram, email, phone or address.
    */

@@ -11,6 +11,7 @@ import { BusinessContactInformation } from './BusinessContactInformation';
 import { BusinessNotes } from './BusinessNotes';
 import { BusinessNextFollowUp } from './BusinessNextFollowUp';
 import { BusinessActivity } from './BusinessActivity';
+import { BusinessOverview } from './BusinessOverview/BusinessOverview';
 
 type BusinessDetailsPanelProps = {
   businessId: string;
@@ -55,6 +56,8 @@ export const BusinessDetailsPanel = ({
       />
 
       <div className={styles.content}>
+        <BusinessOverview business={business} />
+
         <BusinessContactInformation business={business} />
 
         <BusinessNotes business={business} />

@@ -1,24 +1,23 @@
 import { useDashboardBusinessFilters } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersProvider';
-import { useUsers } from '@/features/users/application/useUsers';
 import type {
   BusinessStatus,
   Category,
   LeadSource,
   Priority,
 } from '@/shared/api/generated/salesTrackerApi';
-import type { SelectOption } from '@/shared/ui';
 
-import {
-  businessStatusOptions,
-  categoryOptions,
-  priorityOptions,
-  sourceOptions,
-} from './filterOptions';
 import type {
   BusinessFilterSelectConfig,
   BusinessSelectFilterKey,
 } from './types';
 import { hasActiveBusinessFilters } from '@/features/businesses/domain/businessFilters.model';
+import {
+  businessCategoryOptions,
+  businessPriorityOptions,
+  businessSourceOptions,
+  businessStatusOptions,
+} from '../../lib/businessSelectOptions';
+import { useBusinessAssigneeOptions } from '../../hooks/useBusinessAssigneeOptions';
 
 type UseBusinessesFiltersParams = {
   isBusinessesFetching: boolean;
@@ -31,23 +30,15 @@ export const useBusinessesFilters = ({
 }: UseBusinessesFiltersParams) => {
   const { filters, updateFilter, clearFilters } = useDashboardBusinessFilters();
 
-  const {
-    data: users = [],
-    isError: isUsersError,
-    isLoading: isUsersLoading,
-  } = useUsers();
-
-  const assigneeOptions: SelectOption[] = users.map((user) => ({
-    label: user.name,
-    value: user.id,
-  }));
+  const { assigneeOptions, isAssigneeOptionsError, isAssigneeOptionsLoading } =
+    useBusinessAssigneeOptions({ includeUnassigned: true });
 
   const areBaseFiltersDisabled = isBusinessesFetching;
 
   const isAssigneeSelectDisabled =
     areBaseFiltersDisabled ||
-    isUsersLoading ||
-    isUsersError ||
+    isAssigneeOptionsLoading ||
+    isAssigneeOptionsError ||
     assigneeOptions.length === 0;
 
   const isAnyFilterActive = hasActiveBusinessFilters(filters);
@@ -73,7 +64,7 @@ export const useBusinessesFilters = ({
       label: 'Category',
       placeholder: 'All categories',
       value: filters.category,
-      options: categoryOptions,
+      options: businessCategoryOptions,
       isDisabled: areBaseFiltersDisabled,
       onChange: (value) => {
         updateFilter('category', value as Category | null);
@@ -85,7 +76,7 @@ export const useBusinessesFilters = ({
       label: 'Priority',
       placeholder: 'All priorities',
       value: filters.priority,
-      options: priorityOptions,
+      options: businessPriorityOptions,
       isDisabled: areBaseFiltersDisabled,
       onChange: (value) => {
         updateFilter('priority', value as Priority | null);
@@ -97,7 +88,7 @@ export const useBusinessesFilters = ({
       label: 'Source',
       placeholder: 'All sources',
       value: filters.source,
-      options: sourceOptions,
+      options: businessSourceOptions,
       isDisabled: areBaseFiltersDisabled,
       onChange: (value) => {
         updateFilter('source', value as LeadSource | null);

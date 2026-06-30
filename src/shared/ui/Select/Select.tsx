@@ -14,6 +14,7 @@ type SelectProps<Value extends string = string> = {
   options: SelectOption<Value>[];
   placeholder?: string;
   isDisabled?: boolean;
+  isClearable?: boolean;
   onChange: (value: Value | null) => void;
 };
 
@@ -23,6 +24,7 @@ export const Select = <Value extends string = string>({
   options,
   placeholder = 'Select...',
   isDisabled = false,
+  isClearable = true,
   onChange,
 }: SelectProps<Value>) => {
   const selectedOption =
@@ -34,7 +36,7 @@ export const Select = <Value extends string = string>({
 
       <ReactSelect<SelectOption<Value>, false>
         classNamePrefix="appSelect"
-        isClearable
+        isClearable={isClearable}
         isDisabled={isDisabled}
         isSearchable
         options={options}
