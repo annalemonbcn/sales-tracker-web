@@ -11,8 +11,7 @@ type BusinessNextFollowUpProps = {
   business: BusinessDetail;
 };
 
-const EMPTY_FOLLOW_UP_TOOLTIP =
-  'Create and manage follow-ups from the Tasks view.';
+const FOLLOW_UP_TOOLTIP = 'Create and manage follow-ups from the Tasks view.';
 
 export const BusinessNextFollowUp = ({
   business,
@@ -50,30 +49,23 @@ export const BusinessNextFollowUp = ({
   );
 
   return (
-    <section
-      className={cn(
-        panelStyles.section,
-        panelStyles.sectionCard,
-        styles.followUpSection,
-        hasNextFollowUp
-          ? styles.followUpSectionScheduled
-          : styles.followUpSectionEmpty,
-      )}
-    >
-      <div className={panelStyles.sectionHeader}>
-        <h3 className={panelStyles.sectionTitle}>Next action</h3>
-      </div>
-
-      {hasNextFollowUp ? (
-        cardContent
-      ) : (
-        <div
-          className={styles.tooltipWrapper}
-          data-tooltip={EMPTY_FOLLOW_UP_TOOLTIP}
-        >
-          {cardContent}
+    <div className={styles.tooltipWrapper} data-tooltip={FOLLOW_UP_TOOLTIP}>
+      <section
+        className={cn(
+          panelStyles.section,
+          panelStyles.sectionCard,
+          styles.followUpSection,
+          hasNextFollowUp
+            ? styles.followUpSectionScheduled
+            : styles.followUpSectionEmpty,
+        )}
+      >
+        <div className={panelStyles.sectionHeader}>
+          <h3 className={panelStyles.sectionTitle}>Next action</h3>
         </div>
-      )}
-    </section>
+
+        {cardContent}
+      </section>
+    </div>
   );
 };

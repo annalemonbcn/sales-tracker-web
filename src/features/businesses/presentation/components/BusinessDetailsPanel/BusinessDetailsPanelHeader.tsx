@@ -1,4 +1,4 @@
-import { MoreVertical, X } from 'lucide-react';
+import { X } from 'lucide-react';
 
 import type { BusinessDetail } from '@/features/businesses/domain/businessDetail.model';
 import { Badge, IconButton } from '@/shared/ui';
@@ -43,10 +43,6 @@ export const BusinessDetailsPanelHeader = ({
     <div className={styles.headerActions}>
       <IconButton label="Close business details" onClick={onClose}>
         <X size={18} />
-      </IconButton>
-
-      <IconButton label="More actions">
-        <MoreVertical size={18} />
       </IconButton>
     </div>
   </div>
