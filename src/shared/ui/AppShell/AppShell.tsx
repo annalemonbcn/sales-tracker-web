@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+import { AppSidebar } from '@/shared/ui/AppSidebar';
+
 import styles from './AppShell.module.css';
 
 type AppShellProps = {
@@ -8,10 +10,7 @@ type AppShellProps = {
 
 export const AppShell = ({ children }: AppShellProps) => (
   <div className={styles.shell}>
-    <aside className={styles.sidebar}>
-      <div className={styles.logo}>ST</div>
-      <span className={styles.brandName}>Sales Tracker</span>
-    </aside>
+    <AppSidebar />
 
     <div className={styles.content}>
       <main className={styles.main}>{children}</main>
