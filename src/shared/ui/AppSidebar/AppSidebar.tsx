@@ -2,13 +2,17 @@ import {
   Building2,
   Calendar,
   ChartNoAxesCombined,
+  ChevronDown,
   ChevronsLeft,
+  ChevronsRight,
+  ChevronUp,
   Clock,
   LayoutDashboard,
   Settings,
   SquareCheckBig,
 } from 'lucide-react';
 import { Link, useRouterState } from '@tanstack/react-router';
+import { useState } from 'react';
 
 import { cn } from '@/shared/lib/cn';
 import { IconButton } from '@/shared/ui';
@@ -65,12 +69,20 @@ const isRouteActive = (pathname: string, to: string) =>
   pathname === to || pathname.startsWith(`${to}/`);
 
 export const AppSidebar = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMainMenuOpen, setIsMainMenuOpen] = useState(true);
+
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
   });
 
+  const expandSidebar = () => setIsCollapsed(false);
+
   return (
-    <aside className={styles.sidebar}>
+    <aside
+      className={cn(styles.sidebar, isCollapsed && styles.collapsed)}
+      data-collapsed={isCollapsed}
+    >
       <div className={styles.header}>
         <div className={styles.brand}>
           <div className={styles.logo}>
@@ -81,20 +93,42 @@ export const AppSidebar = () => {
 
         <IconButton
           className={styles.collapseButton}
-          disabled
-          label="Collapse sidebar"
+          label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          onClick={() => {
+            setIsCollapsed((currentValue) => !currentValue);
+          }}
           variant="secondary"
+          aria-expanded={!isCollapsed}
         >
-          <ChevronsLeft size={18} />
+          {isCollapsed ? (
+            <ChevronsRight size={18} />
+          ) : (
+            <ChevronsLeft size={18} />
+          )}
         </IconButton>
       </div>
 
       <nav className={styles.menu} aria-label="Main menu">
-        <div className={styles.menuHeader}>
+        <button
+          aria-controls="sidebar-main-menu"
+          aria-expanded={isMainMenuOpen}
+          className={styles.menuHeader}
+          type="button"
+          onClick={() => {
+            setIsMainMenuOpen((currentValue) => !currentValue);
+          }}
+        >
           <span>Main menu</span>
-        </div>
+          {isMainMenuOpen ? <ChevronUp size={17} /> : <ChevronDown size={17} />}
+        </button>
 
-        <ul className={styles.navList}>
+        <ul
+          className={cn(
+            styles.navList,
+            !isMainMenuOpen && !isCollapsed && styles.navListClosed,
+          )}
+          id="sidebar-main-menu"
+        >
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = isRouteActive(pathname, item.to);
@@ -107,18 +141,25 @@ export const AppSidebar = () => {
             return (
               <li key={item.to}>
                 {item.isEnabled ? (
-                  <Link className={itemClassName} to={item.to}>
+                  <Link
+                    aria-label={isCollapsed ? item.label : undefined}
+                    className={itemClassName}
+                    onClick={expandSidebar}
+                    to={item.to}
+                  >
                     <Icon size={20} />
-                    <span>{item.label}</span>
+                    <span className={styles.navLabel}>{item.label}</span>
                   </Link>
                 ) : (
                   <span
+                    aria-label={isCollapsed ? item.label : undefined}
                     aria-disabled="true"
                     className={itemClassName}
+                    onClick={isCollapsed ? expandSidebar : undefined}
                     role="link"
                   >
                     <Icon size={20} />
-                    <span>{item.label}</span>
+                    <span className={styles.navLabel}>{item.label}</span>
                   </span>
                 )}
               </li>
