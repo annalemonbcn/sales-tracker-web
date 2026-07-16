@@ -1,15 +1,9 @@
 import {
-  Building2,
-  Calendar,
   ChartNoAxesCombined,
   ChevronDown,
   ChevronsLeft,
   ChevronsRight,
   ChevronUp,
-  Clock,
-  LayoutDashboard,
-  Settings,
-  SquareCheckBig,
 } from 'lucide-react';
 import { Link, useRouterState } from '@tanstack/react-router';
 import { useState } from 'react';
@@ -18,52 +12,8 @@ import { cn } from '@/shared/lib/cn';
 import { IconButton } from '@/shared/ui';
 
 import styles from './AppSidebar.module.css';
-
-type SidebarNavItem = {
-  icon: typeof LayoutDashboard;
-  isEnabled: boolean;
-  label: string;
-  to: string;
-};
-
-const navItems: SidebarNavItem[] = [
-  {
-    icon: LayoutDashboard,
-    isEnabled: true,
-    label: 'Dashboard',
-    to: '/dashboard',
-  },
-  {
-    icon: Building2,
-    isEnabled: false,
-    label: 'Businesses',
-    to: '/businesses',
-  },
-  {
-    icon: SquareCheckBig,
-    isEnabled: false,
-    label: 'Tasks',
-    to: '/tasks',
-  },
-  {
-    icon: Calendar,
-    isEnabled: false,
-    label: 'Calendar',
-    to: '/calendar',
-  },
-  {
-    icon: Clock,
-    isEnabled: false,
-    label: 'Activity',
-    to: '/activity',
-  },
-  {
-    icon: Settings,
-    isEnabled: false,
-    label: 'Settings',
-    to: '/settings',
-  },
-];
+import { SidebarMiniCalendar } from './SidebarMiniCalendar';
+import { navItems } from './navItems';
 
 const isRouteActive = (pathname: string, to: string) =>
   pathname === to || pathname.startsWith(`${to}/`);
@@ -167,6 +117,8 @@ export const AppSidebar = () => {
           })}
         </ul>
       </nav>
+
+      <SidebarMiniCalendar />
     </aside>
   );
 };
