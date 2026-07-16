@@ -1,22 +1,12 @@
-import type {
-  FollowUpTaskDtoStatus,
-  Priority,
-} from '@/shared/api/generated/salesTrackerApi';
+import type { FollowUpTaskDtoStatus } from '@/shared/api/generated/salesTrackerApi';
+import type { BusinessSummary } from '@/features/businesses/domain/business.model';
 import type { UserSummary } from '@/features/users/domain/user.model';
 
 export type FollowUpTaskStatus = FollowUpTaskDtoStatus;
 
-export type FollowUpTaskBusiness = {
-  id: string;
-  name: string;
-  category: string;
-  status: string;
-  priority: Priority | string;
-};
-
 export type FollowUpTask = {
   assignedTo: UserSummary;
-  business: FollowUpTaskBusiness;
+  business: BusinessSummary;
   completedAt: string | null;
   createdAt: string;
   dueDate: string;

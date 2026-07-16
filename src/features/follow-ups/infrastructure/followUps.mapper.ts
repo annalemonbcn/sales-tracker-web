@@ -2,17 +2,15 @@ import type {
   FollowUpBusinessDto,
   FollowUpTaskDto,
 } from '@/shared/api/generated/salesTrackerApi';
+import type { BusinessSummary } from '@/features/businesses/domain/business.model';
 import { mapUserSummaryDtoToDomain } from '@/features/users/infrastructure/users.mapper';
 
-import type {
-  FollowUpTask,
-  FollowUpTaskBusiness,
-} from '../domain/followUpTask.model';
+import type { FollowUpTask } from '../domain/followUpTask.model';
 import type { GetFollowUpsResponseDto } from './followUps.dto';
 
 const mapFollowUpBusinessDtoToDomain = (
   business: FollowUpBusinessDto,
-): FollowUpTaskBusiness => ({
+): BusinessSummary => ({
   id: business.id,
   name: business.name,
   category: business.category,
@@ -20,7 +18,6 @@ const mapFollowUpBusinessDtoToDomain = (
   priority: business.priority,
 });
 
-// TODO: double check mappers
 export const mapFollowUpTaskDtoToDomain = (
   followUp: FollowUpTaskDto,
 ): FollowUpTask => ({

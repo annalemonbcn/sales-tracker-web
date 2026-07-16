@@ -14,6 +14,14 @@ export type BusinessContactDetails = {
   address: string | null;
 };
 
+export type BusinessSummary = {
+  id: string;
+  name: string;
+  category: Category;
+  status: BusinessStatus;
+  priority: Priority;
+};
+
 export type Business = {
   id: string;
   name: string;
