@@ -1,24 +1,14 @@
 import type {
   FollowUpBusinessDto,
   FollowUpTaskDto,
-  UserSummaryDto,
 } from '@/shared/api/generated/salesTrackerApi';
+import { mapUserSummaryDtoToDomain } from '@/features/users/infrastructure/users.mapper';
 
 import type {
   FollowUpTask,
-  FollowUpTaskAssignee,
   FollowUpTaskBusiness,
 } from '../domain/followUpTask.model';
 import type { GetFollowUpsResponseDto } from './followUps.dto';
-
-const mapFollowUpAssigneeDtoToDomain = (
-  assignee: UserSummaryDto,
-): FollowUpTaskAssignee => ({
-  id: assignee.id,
-  name: assignee.name,
-  email: assignee.email,
-  role: assignee.role,
-});
 
 const mapFollowUpBusinessDtoToDomain = (
   business: FollowUpBusinessDto,
@@ -39,7 +29,7 @@ export const mapFollowUpTaskDtoToDomain = (
   dueDate: followUp.dueDate,
   note: followUp.note,
   completedAt: followUp.completedAt,
-  assignedTo: mapFollowUpAssigneeDtoToDomain(followUp.assignedTo),
+  assignedTo: mapUserSummaryDtoToDomain(followUp.assignedTo),
   business: mapFollowUpBusinessDtoToDomain(followUp.business),
   createdAt: followUp.createdAt,
   updatedAt: followUp.updatedAt,

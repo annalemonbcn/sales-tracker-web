@@ -1,7 +1,6 @@
-import {
-  mapBusinessDtoToDomain,
-  mapUserSummaryDtoToDomain,
-} from './businesses.mapper';
+import { mapUserSummaryDtoToDomain } from '@/features/users/infrastructure/users.mapper';
+
+import { mapBusinessDtoToDomain } from './businesses.mapper';
 import type {
   GetBusinessDetailsResponseDto,
   UpdateBusinessResponseDto,

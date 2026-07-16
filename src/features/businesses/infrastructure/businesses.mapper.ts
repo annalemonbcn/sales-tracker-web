@@ -1,19 +1,8 @@
-import type {
-  BusinessDto,
-  UserSummaryDto,
-} from '@/shared/api/generated/salesTrackerApi';
+import type { BusinessDto } from '@/shared/api/generated/salesTrackerApi';
+import { mapUserSummaryDtoToDomain } from '@/features/users/infrastructure/users.mapper';
 
-import type { Business, UserSummary } from '../domain/business.model';
+import type { Business } from '../domain/business.model';
 import type { GetBusinessesResponseDto } from './businesses.dto';
-
-export const mapUserSummaryDtoToDomain = (
-  user: UserSummaryDto,
-): UserSummary => ({
-  id: user.id,
-  name: user.name,
-  email: user.email,
-  role: user.role,
-});
 
 export const mapBusinessDtoToDomain = (business: BusinessDto): Business => ({
   id: business.id,
