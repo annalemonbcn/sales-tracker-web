@@ -1,5 +1,7 @@
 import { Plus } from 'lucide-react';
+import { useState } from 'react';
 
+import { AddBusinessModal } from '@/features/businesses/presentation/components/AddBusinessModal';
 import { BusinessDetailsDrawer } from '@/features/businesses/presentation/components/BusinessDetailsDrawer';
 import { BusinessesSection } from '@/features/businesses/presentation/components/BusinessesSection';
 import { useDashboardSelectedBusiness } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessProvider';
@@ -10,7 +12,8 @@ import { DashboardMetricsSection } from '../components/DashboardMetricsSection';
 import styles from './DashboardPage.module.css';
 
 export const DashboardPage = () => {
-  const { clearSelectedBusiness, selectedBusinessId } =
+  const [isAddBusinessModalOpen, setIsAddBusinessModalOpen] = useState(false);
+  const { clearSelectedBusiness, selectBusiness, selectedBusinessId } =
     useDashboardSelectedBusiness();
 
   return (
@@ -23,7 +26,11 @@ export const DashboardPage = () => {
           </p>
         </div>
 
-        <Button>
+        <Button
+          onClick={() => {
+            setIsAddBusinessModalOpen(true);
+          }}
+        >
           <Plus size={18} />
           Add business
         </Button>
@@ -43,6 +50,14 @@ export const DashboardPage = () => {
           onClose={clearSelectedBusiness}
         />
       ) : null}
+
+      <AddBusinessModal
+        isOpen={isAddBusinessModalOpen}
+        onOpenChange={setIsAddBusinessModalOpen}
+        onSuccess={(business) => {
+          selectBusiness(business.id);
+        }}
+      />
     </div>
   );
 };

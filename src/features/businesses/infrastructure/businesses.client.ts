@@ -5,7 +5,11 @@ import {
   UNASSIGNED_ASSIGNEE_SEARCH_VALUE,
   type BusinessFilters,
 } from '../domain/businessFilters.model';
-import type { GetBusinessesResponseDto } from './businesses.dto';
+import type {
+  CreateBusinessRequestDto,
+  CreateBusinessResponseDto,
+  GetBusinessesResponseDto,
+} from './businesses.dto';
 
 const salesTrackerApi = getSalesTrackerAPI();
 
@@ -33,4 +37,7 @@ const mapBusinessFiltersToParams = (filters: BusinessFilters) => ({
 export const businessesClient = {
   getAll: async (filters: BusinessFilters): Promise<GetBusinessesResponseDto> =>
     salesTrackerApi.getBusinesses(mapBusinessFiltersToParams(filters)),
+  create: async (
+    data: CreateBusinessRequestDto,
+  ): Promise<CreateBusinessResponseDto> => salesTrackerApi.postBusinesses(data),
 };
