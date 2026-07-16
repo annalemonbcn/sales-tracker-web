@@ -7,4 +7,5 @@ export { IconButton } from './IconButton/IconButton';
 export { Input } from './Input/Input';
 export { LoadingState } from './Feedback/LoadingState';
 export { Modal } from './Modal/Modal';
+export { PageHeader } from './PageHeader/PageHeader';
 export { Select, type SelectOption } from './Select/Select';

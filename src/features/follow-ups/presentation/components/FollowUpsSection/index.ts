@@ -1,0 +1,1 @@
+export { FollowUpsSection } from './FollowUpsSection';

@@ -1,0 +1,70 @@
+.tableWrapper {
+  min-height: 0;
+  overflow: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-align: left;
+}
+
+.headerButton {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 1rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  vertical-align: middle;
+}
+
+.row {
+  background: var(--color-bg-surface);
+  transition: background 0.15s ease;
+}
+
+.row:hover {
+  background: var(--color-bg-app);
+}
+
+.taskName {
+  color: var(--color-text-primary);
+}
+
+.assigneeCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.assigneeCell img {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+}

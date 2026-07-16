@@ -29,7 +29,7 @@ export const navItems: SidebarNavItem[] = [
   },
   {
     icon: SquareCheckBig,
-    isEnabled: false,
+    isEnabled: true,
     label: 'Tasks',
     to: '/tasks',
   },
