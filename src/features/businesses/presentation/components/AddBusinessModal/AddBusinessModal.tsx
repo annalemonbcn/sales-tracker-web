@@ -1,5 +1,7 @@
 import { Controller, useForm } from 'react-hook-form';
 
+import { useCreateBusiness } from '@/features/businesses/application/useCreateBusiness';
+import type { Business } from '@/features/businesses/domain/business.model';
 import {
   businessCategoryOptions,
   businessPriorityOptions,
@@ -12,9 +14,12 @@ import { useBusinessAssigneeOptions } from '../../hooks/useBusinessAssigneeOptio
 import styles from './AddBusinessModal.module.css';
 import type { AddBusinessFormValues } from './types';
 
+const temporaryCreatedById = '22222222-2222-4222-8222-222222222222';
+
 type AddBusinessModalProps = {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
+  onSuccess?: (business: Business) => void;
 };
 
 const defaultValues: AddBusinessFormValues = {
@@ -34,7 +39,9 @@ const defaultValues: AddBusinessFormValues = {
 export const AddBusinessModal = ({
   isOpen,
   onOpenChange,
+  onSuccess,
 }: AddBusinessModalProps) => {
+  const { mutateAsync, isPending } = useCreateBusiness();
   const { assigneeOptions, isAssigneeSelectDisabled } =
     useBusinessAssigneeOptions();
 
@@ -57,7 +64,36 @@ export const AddBusinessModal = ({
     }
   };
 
-  const onSubmit = (_values: AddBusinessFormValues) => {};
+  const mapOptionalTextValue = (value: string): string | undefined => {
+    const trimmedValue = value.trim();
+
+    return trimmedValue.length > 0 ? trimmedValue : undefined;
+  };
+
+  const onSubmit = async (values: AddBusinessFormValues) => {
+    if (!values.category || !values.priority || !values.source) {
+      return;
+    }
+
+    const createdBusiness = await mutateAsync({
+      name: values.name.trim(),
+      category: values.category,
+      source: values.source,
+      priority: values.priority,
+      instagram: mapOptionalTextValue(values.instagram),
+      email: mapOptionalTextValue(values.email),
+      phone: mapOptionalTextValue(values.phone),
+      website: mapOptionalTextValue(values.website),
+      address: mapOptionalTextValue(values.address),
+      notes: mapOptionalTextValue(values.notes),
+      createdById: temporaryCreatedById,
+      assignedToId: values.assignedToId ?? undefined,
+    });
+
+    reset(defaultValues);
+    onOpenChange(false);
+    onSuccess?.(createdBusiness);
+  };
 
   return (
     <Modal
@@ -180,6 +216,7 @@ export const AddBusinessModal = ({
 
         <div className={styles.footer}>
           <Button
+            disabled={isPending}
             type="button"
             variant="secondary"
             onClick={() => {
@@ -189,8 +226,8 @@ export const AddBusinessModal = ({
             Cancel
           </Button>
 
-          <Button disabled={!isValid} type="submit">
-            Add business
+          <Button disabled={isPending || !isValid} type="submit">
+            {isPending ? 'Adding...' : 'Add business'}
           </Button>
         </div>
       </form>

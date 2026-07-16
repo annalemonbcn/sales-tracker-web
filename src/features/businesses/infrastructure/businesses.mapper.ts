@@ -2,7 +2,10 @@ import type { BusinessDto } from '@/shared/api/generated/salesTrackerApi';
 import { mapUserSummaryDtoToDomain } from '@/features/users/infrastructure/users.mapper';
 
 import type { Business } from '../domain/business.model';
-import type { GetBusinessesResponseDto } from './businesses.dto';
+import type {
+  CreateBusinessResponseDto,
+  GetBusinessesResponseDto,
+} from './businesses.dto';
 
 export const mapBusinessDtoToDomain = (business: BusinessDto): Business => ({
   id: business.id,
@@ -32,3 +35,13 @@ export const mapBusinessDtoToDomain = (business: BusinessDto): Business => ({
 export const mapGetBusinessesResponseDtoToDomain = (
   response: GetBusinessesResponseDto,
 ): Business[] => response.data.businesses?.map(mapBusinessDtoToDomain) ?? [];
+
+export const mapCreateBusinessResponseDtoToDomain = (
+  response: CreateBusinessResponseDto,
+): Business => {
+  if (!response.data.business) {
+    throw new Error('Business was not returned after create');
+  }
+
+  return mapBusinessDtoToDomain(response.data.business);
+};
