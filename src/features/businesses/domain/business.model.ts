@@ -4,6 +4,7 @@ import type {
   LeadSource,
   Priority,
 } from '@/shared/api/generated/salesTrackerApi';
+import type { UserSummary } from '@/features/users/domain/user.model';
 
 export type BusinessContactDetails = {
   instagram: string | null;
@@ -11,14 +12,6 @@ export type BusinessContactDetails = {
   phone: string | null;
   website: string | null;
   address: string | null;
-};
-
-// TODO: reusar features/User ?
-export type UserSummary = {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
 };
 
 export type Business = {
