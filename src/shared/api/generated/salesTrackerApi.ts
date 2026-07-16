@@ -280,9 +280,9 @@ export interface FollowUpDto {
 export interface FollowUpBusinessDto {
   id: string;
   name: string;
-  category: string;
-  status: string;
-  priority: string;
+  category: Category;
+  status: BusinessStatus;
+  priority: Priority;
 }
 
 export type FollowUpTaskDtoStatus =
