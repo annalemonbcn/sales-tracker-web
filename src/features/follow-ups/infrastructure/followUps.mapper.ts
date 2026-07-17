@@ -23,6 +23,7 @@ export const mapFollowUpTaskDtoToDomain = (
 ): FollowUpTask => ({
   id: followUp.id,
   status: followUp.status,
+  type: followUp.type,
   dueDate: followUp.dueDate,
   note: followUp.note,
   completedAt: followUp.completedAt,

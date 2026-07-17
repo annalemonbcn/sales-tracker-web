@@ -1,5 +1,7 @@
 import { useFollowUps } from '@/features/follow-ups/application/useFollowUps';
+import { mapFollowUpListFiltersToApiFilters } from '@/features/follow-ups/domain/followUpFilters.model';
 import type { FollowUpTask } from '@/features/follow-ups/domain/followUpTask.model';
+import { useFollowUpsFilters } from '@/features/follow-ups/presentation/providers';
 import { Card, EmptyState, ErrorState, LoadingState } from '@/shared/ui';
 
 import { FollowUpsFilters } from '../FollowUpsFilters';
@@ -12,6 +14,8 @@ type FollowUpsSectionContentProps = {
   isError: boolean;
   isFetching: boolean;
   isLoading: boolean;
+  onFollowUpSelect: (followUp: FollowUpTask) => void;
+  selectedFollowUpId: string | null;
 };
 
 const FollowUpsSectionContent = ({
@@ -19,6 +23,8 @@ const FollowUpsSectionContent = ({
   isError,
   isFetching,
   isLoading,
+  onFollowUpSelect,
+  selectedFollowUpId,
 }: FollowUpsSectionContentProps) => {
   if (isLoading) {
     return <LoadingState message="Loading tasks..." />;
@@ -48,18 +54,33 @@ const FollowUpsSectionContent = ({
         <p className={styles.updatingText}>Refreshing tasks...</p>
       ) : null}
 
-      <FollowUpsTable followUps={followUps} />
+      <FollowUpsTable
+        followUps={followUps}
+        selectedFollowUpId={selectedFollowUpId}
+        onFollowUpSelect={onFollowUpSelect}
+      />
     </>
   );
 };
 
-export const FollowUpsSection = () => {
+type FollowUpsSectionProps = {
+  onFollowUpSelect: (followUp: FollowUpTask) => void;
+  selectedFollowUpId: string | null;
+};
+
+export const FollowUpsSection = ({
+  onFollowUpSelect,
+  selectedFollowUpId,
+}: FollowUpsSectionProps) => {
+  const { filters } = useFollowUpsFilters();
+  const apiFilters = mapFollowUpListFiltersToApiFilters(filters);
+
   const {
     data: followUps = [],
     isError,
     isFetching,
     isLoading,
-  } = useFollowUps({});
+  } = useFollowUps(apiFilters);
 
   return (
     <Card className={styles.section}>
@@ -78,6 +99,8 @@ export const FollowUpsSection = () => {
           isError={isError}
           isFetching={isFetching}
           isLoading={isLoading}
+          selectedFollowUpId={selectedFollowUpId}
+          onFollowUpSelect={onFollowUpSelect}
         />
       </Card.Content>
     </Card>

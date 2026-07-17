@@ -1,0 +1,1 @@
+export { FollowUpDetailsDrawer } from './FollowUpDetailsDrawer';

@@ -12,6 +12,8 @@ import styles from './FollowUpsTable.module.css';
 import {
   followUpStatusLabelMap,
   followUpStatusVariantMap,
+  followUpTypeLabelMap,
+  followUpTypeVariantMap,
   formatFollowUpDueDate,
 } from './followUpsTableFormatters';
 
@@ -24,6 +26,19 @@ export const followUpsTableColumns: ColumnDef<FollowUpTask>[] = [
         {row.original.note || 'Follow-up task'}
       </strong>
     ),
+  },
+  {
+    accessorKey: 'type',
+    header: 'Type',
+    cell: ({ row }) => {
+      const { type } = row.original;
+
+      return (
+        <Badge variant={followUpTypeVariantMap[type]}>
+          {followUpTypeLabelMap[type]}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: 'business.name',

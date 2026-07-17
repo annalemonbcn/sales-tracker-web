@@ -254,6 +254,20 @@ export interface CreateActivityRequest {
   metadata?: CreateActivityRequestMetadata;
 }
 
+export type FollowUpType = (typeof FollowUpType)[keyof typeof FollowUpType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const FollowUpType = {
+  call: 'call',
+  email: 'email',
+  instagram_message: 'instagram_message',
+  visit: 'visit',
+  meeting: 'meeting',
+  proposal: 'proposal',
+  dossier: 'dossier',
+  other: 'other',
+} as const;
+
 export type FollowUpDtoStatus =
   (typeof FollowUpDtoStatus)[keyof typeof FollowUpDtoStatus];
 
@@ -267,6 +281,7 @@ export const FollowUpDtoStatus = {
 export interface FollowUpDto {
   id: string;
   status: FollowUpDtoStatus;
+  type: FollowUpType;
   dueDate: string;
   /** @nullable */
   note: string | null;
@@ -298,6 +313,7 @@ export const FollowUpTaskDtoStatus = {
 export interface FollowUpTaskDto {
   id: string;
   status: FollowUpTaskDtoStatus;
+  type: FollowUpType;
   dueDate: string;
   /** @nullable */
   note: string | null;
@@ -310,6 +326,7 @@ export interface FollowUpTaskDto {
 }
 
 export interface CreateFollowUpRequest {
+  type: FollowUpType;
   assignedToId: string;
   dueDate: string;
   note?: string;

@@ -3,42 +3,43 @@ import { Button, Select, type SelectOption } from '@/shared/ui';
 import styles from './FollowUpsFilters.module.css';
 
 type FollowUpFilterSelectConfig = {
+  isDisabled: boolean;
   key: string;
   label: string;
+  onChange: (value: string | null) => void;
   options: SelectOption[];
-  value: string;
+  placeholder: string;
+  value: string | null;
 };
 
 type FollowUpsFiltersViewProps = {
+  clearFilters: () => void;
   filterSelects: FollowUpFilterSelectConfig[];
   isClearButtonDisabled: boolean;
-  isDisabled: boolean;
-  onClearFilters: () => void;
 };
 
 export const FollowUpsFiltersView = ({
+  clearFilters,
   filterSelects,
   isClearButtonDisabled,
-  isDisabled,
-  onClearFilters,
 }: FollowUpsFiltersViewProps) => (
   <div className={styles.filters}>
     {filterSelects.map((filter) => (
       <Select
         key={filter.key}
-        isClearable={false}
-        isDisabled={isDisabled}
+        isDisabled={filter.isDisabled}
         label={filter.label}
         options={filter.options}
+        placeholder={filter.placeholder}
         value={filter.value}
-        onChange={() => {}}
+        onChange={filter.onChange}
       />
     ))}
 
     <Button
-      disabled={isClearButtonDisabled || isDisabled}
+      disabled={isClearButtonDisabled}
       variant="secondary"
-      onClick={onClearFilters}
+      onClick={clearFilters}
     >
       Clear filters
     </Button>
