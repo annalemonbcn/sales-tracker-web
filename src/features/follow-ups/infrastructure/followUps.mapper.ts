@@ -6,7 +6,12 @@ import type { BusinessSummary } from '@/features/businesses/domain/business.mode
 import { mapUserSummaryDtoToDomain } from '@/features/users/infrastructure/users.mapper';
 
 import type { FollowUpTask } from '../domain/followUpTask.model';
-import type { GetFollowUpsResponseDto } from './followUps.dto';
+import type {
+  CancelFollowUpResponseDto,
+  GetFollowUpsResponseDto,
+  MarkFollowUpDoneResponseDto,
+  UpdateFollowUpResponseDto,
+} from './followUps.dto';
 
 const mapFollowUpBusinessDtoToDomain = (
   business: FollowUpBusinessDto,
@@ -24,6 +29,7 @@ export const mapFollowUpTaskDtoToDomain = (
   id: followUp.id,
   status: followUp.status,
   type: followUp.type,
+  title: followUp.title,
   dueDate: followUp.dueDate,
   note: followUp.note,
   completedAt: followUp.completedAt,
@@ -37,3 +43,33 @@ export const mapGetFollowUpsResponseDtoToDomain = (
   response: GetFollowUpsResponseDto,
 ): FollowUpTask[] =>
   response.data.followUps?.map(mapFollowUpTaskDtoToDomain) ?? [];
+
+export const mapUpdateFollowUpResponseDtoToDomain = (
+  response: UpdateFollowUpResponseDto,
+) => {
+  if (!response.data.followUp) {
+    throw new Error('Follow-up was not returned after update');
+  }
+
+  return response.data.followUp;
+};
+
+export const mapMarkFollowUpDoneResponseDtoToDomain = (
+  response: MarkFollowUpDoneResponseDto,
+) => {
+  if (!response.data.followUp) {
+    throw new Error('Follow-up was not returned after marking it done');
+  }
+
+  return response.data.followUp;
+};
+
+export const mapCancelFollowUpResponseDtoToDomain = (
+  response: CancelFollowUpResponseDto,
+) => {
+  if (!response.data.followUp) {
+    throw new Error('Follow-up was not returned after cancelling it');
+  }
+
+  return response.data.followUp;
+};

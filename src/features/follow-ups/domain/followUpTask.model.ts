@@ -17,6 +17,7 @@ export type FollowUpTask = {
   id: string;
   note: string | null;
   status: FollowUpTaskStatus;
+  title: string;
   type: FollowUpTaskType;
   updatedAt: string;
 };

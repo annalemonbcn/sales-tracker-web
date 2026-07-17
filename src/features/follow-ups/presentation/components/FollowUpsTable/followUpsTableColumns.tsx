@@ -19,13 +19,16 @@ import {
 
 export const followUpsTableColumns: ColumnDef<FollowUpTask>[] = [
   {
-    accessorKey: 'note',
+    accessorKey: 'title',
     header: 'Task',
     cell: ({ row }) => (
-      <strong className={styles.taskName}>
-        {row.original.note || 'Follow-up task'}
-      </strong>
+      <strong className={styles.taskName}>{row.original.title}</strong>
     ),
+  },
+  {
+    accessorKey: 'business.name',
+    header: 'Business',
+    cell: ({ row }) => row.original.business.name,
   },
   {
     accessorKey: 'type',
@@ -39,11 +42,6 @@ export const followUpsTableColumns: ColumnDef<FollowUpTask>[] = [
         </Badge>
       );
     },
-  },
-  {
-    accessorKey: 'business.name',
-    header: 'Business',
-    cell: ({ row }) => row.original.business.name,
   },
   {
     accessorKey: 'business.priority',
