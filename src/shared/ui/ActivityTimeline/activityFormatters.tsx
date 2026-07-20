@@ -14,12 +14,7 @@ import {
 
 import type { ActivityType } from '@/shared/api/generated/salesTrackerApi';
 
-export type ActivityVariant =
-  | 'success'
-  | 'primary'
-  | 'warning'
-  | 'danger'
-  | 'neutral';
+import type { ActivityTimelineVariant } from './ActivityTimeline';
 
 const activityTypeLabelMap = {
   business_created: 'Business created',
@@ -82,12 +77,13 @@ const activityVariantMap = {
   status_changed: 'neutral',
   priority_changed: 'neutral',
   note_added: 'neutral',
-} satisfies Record<ActivityType, ActivityVariant>;
+} satisfies Record<ActivityType, ActivityTimelineVariant>;
 
 export const getActivityTypeLabel = (type: ActivityType): string =>
   activityTypeLabelMap[type];
 
 export const getActivityIcon = (type: ActivityType) => activityIconMap[type];
 
-export const getActivityVariant = (type: ActivityType): ActivityVariant =>
-  activityVariantMap[type];
+export const getActivityVariant = (
+  type: ActivityType,
+): ActivityTimelineVariant => activityVariantMap[type];

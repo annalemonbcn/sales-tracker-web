@@ -1,0 +1,1 @@
+export { FollowUpsTable } from './FollowUpsTable';

@@ -254,6 +254,20 @@ export interface CreateActivityRequest {
   metadata?: CreateActivityRequestMetadata;
 }
 
+export type FollowUpType = (typeof FollowUpType)[keyof typeof FollowUpType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const FollowUpType = {
+  call: 'call',
+  email: 'email',
+  instagram_message: 'instagram_message',
+  visit: 'visit',
+  meeting: 'meeting',
+  proposal: 'proposal',
+  dossier: 'dossier',
+  other: 'other',
+} as const;
+
 export type FollowUpDtoStatus =
   (typeof FollowUpDtoStatus)[keyof typeof FollowUpDtoStatus];
 
@@ -267,6 +281,8 @@ export const FollowUpDtoStatus = {
 export interface FollowUpDto {
   id: string;
   status: FollowUpDtoStatus;
+  type: FollowUpType;
+  title: string;
   dueDate: string;
   /** @nullable */
   note: string | null;
@@ -298,6 +314,8 @@ export const FollowUpTaskDtoStatus = {
 export interface FollowUpTaskDto {
   id: string;
   status: FollowUpTaskDtoStatus;
+  type: FollowUpType;
+  title: string;
   dueDate: string;
   /** @nullable */
   note: string | null;
@@ -305,20 +323,24 @@ export interface FollowUpTaskDto {
   completedAt: string | null;
   assignedTo: UserSummaryDto;
   business: FollowUpBusinessDto;
+  activities: ActivityDto[];
   createdAt: string;
   updatedAt: string;
 }
 
 export interface CreateFollowUpRequest {
+  title: string;
+  type: FollowUpType;
   assignedToId: string;
   dueDate: string;
   note?: string;
 }
 
 /**
- * At least one field is required. Only assignedToId, dueDate and note can be updated from this endpoint.
+ * At least one field is required. Only title, assignedToId, dueDate and note can be updated from this endpoint.
  */
 export interface UpdateFollowUpRequest {
+  title?: string;
   assignedToId?: string;
   dueDate?: string;
   note?: string;
@@ -356,6 +378,10 @@ export type GetFollowUpsParams = {
    */
   status?: GetFollowUpsStatus;
   /**
+   * Filter by follow-up type.
+   */
+  type?: GetFollowUpsType;
+  /**
    * Filter by assigned user.
    */
   assignedToId?: string;
@@ -385,6 +411,21 @@ export const GetFollowUpsStatus = {
   pending: 'pending',
   done: 'done',
   cancelled: 'cancelled',
+} as const;
+
+export type GetFollowUpsType =
+  (typeof GetFollowUpsType)[keyof typeof GetFollowUpsType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetFollowUpsType = {
+  call: 'call',
+  email: 'email',
+  instagram_message: 'instagram_message',
+  visit: 'visit',
+  meeting: 'meeting',
+  proposal: 'proposal',
+  dossier: 'dossier',
+  other: 'other',
 } as const;
 
 export type GetFollowUpsPriority =
@@ -576,7 +617,7 @@ export const getSalesTrackerAPI = () => {
   };
 
   /**
-   * Updates a follow-up task. Only assignedToId, dueDate and note can be updated. Updating dueDate creates a follow_up_updated activity and may recalculate business.nextFollowUpAt.
+   * Updates a follow-up task. Only title, assignedToId, dueDate and note can be updated. Updating dueDate creates a follow_up_updated activity and may recalculate business.nextFollowUpAt.
    * @summary Update follow-up
    */
   const patchFollowUpsFollowUpId = (

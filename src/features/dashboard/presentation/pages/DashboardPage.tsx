@@ -1,11 +1,10 @@
-import { Plus } from 'lucide-react';
 import { useState } from 'react';
 
 import { AddBusinessModal } from '@/features/businesses/presentation/components/AddBusinessModal';
 import { BusinessDetailsDrawer } from '@/features/businesses/presentation/components/BusinessDetailsDrawer';
 import { BusinessesSection } from '@/features/businesses/presentation/components/BusinessesSection';
 import { useDashboardSelectedBusiness } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessProvider';
-import { Button } from '@/shared/ui';
+import { PageHeader } from '@/shared/ui';
 
 import { DashboardMetricsSection } from '../components/DashboardMetricsSection';
 
@@ -18,23 +17,14 @@ export const DashboardPage = () => {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Dashboard</h1>
-          <p className={styles.subtitle}>
-            Overview of your leads and businesses.
-          </p>
-        </div>
-
-        <Button
-          onClick={() => {
-            setIsAddBusinessModalOpen(true);
-          }}
-        >
-          <Plus size={18} />
-          Add business
-        </Button>
-      </header>
+      <PageHeader
+        actionLabel="Add business"
+        subtitle="Overview of your leads and businesses."
+        title="Dashboard"
+        onActionClick={() => {
+          setIsAddBusinessModalOpen(true);
+        }}
+      />
 
       <div className={styles.body}>
         <div className={styles.mainContent}>

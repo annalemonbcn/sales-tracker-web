@@ -1,57 +1,31 @@
-import { useState } from 'react';
-
 import type { BusinessDetail } from '@/features/businesses/domain/businessDetail.model';
-
-import panelStyles from '../BusinessDetailsPanel.module.css';
-import styles from './BusinessActivity.module.css';
-import { BusinessActivityItem } from './BusinessActivityItem';
+import { formatNullableDateTime } from '@/shared/lib/date';
+import {
+  ActivityTimeline,
+  type ActivityTimelineItem,
+  getActivityIcon,
+  getActivityTypeLabel,
+  getActivityVariant,
+} from '@/shared/ui';
 
 type BusinessActivityProps = {
   business: BusinessDetail;
 };
 
-const MAX_VISIBLE_ACTIVITIES = 3;
-
 export const BusinessActivity = ({ business }: BusinessActivityProps) => {
-  const [showAllActivities, setShowAllActivities] = useState(false);
-
-  const activities = business.activities;
-  const hasActivities = activities.length > 0;
-  const hasMoreActivities = activities.length > MAX_VISIBLE_ACTIVITIES;
-
-  const visibleActivities = showAllActivities
-    ? activities
-    : activities.slice(0, MAX_VISIBLE_ACTIVITIES);
+  const items: ActivityTimelineItem[] = business.activities.map((activity) => ({
+    description: activity.notes || `Created by ${activity.user.name}`,
+    icon: getActivityIcon(activity.type),
+    id: activity.id,
+    timestamp: formatNullableDateTime(activity.createdAt),
+    title: getActivityTypeLabel(activity.type),
+    variant: getActivityVariant(activity.type),
+  }));
 
   return (
-    <section className={panelStyles.section}>
-      <div className={panelStyles.sectionHeader}>
-        <h3 className={panelStyles.sectionTitle}>Activity</h3>
-
-        {hasMoreActivities ? (
-          <button
-            className={panelStyles.sectionAction}
-            type="button"
-            onClick={() => {
-              setShowAllActivities((currentValue) => !currentValue);
-            }}
-          >
-            {showAllActivities ? 'Show less' : 'View all'}
-          </button>
-        ) : null}
-      </div>
-
-      {hasActivities ? (
-        <div className={styles.activityList}>
-          {visibleActivities.map((activity) => (
-            <BusinessActivityItem key={activity.id} activity={activity} />
-          ))}
-        </div>
-      ) : (
-        <div className={styles.emptyState}>
-          No activity has been recorded for this business yet.
-        </div>
-      )}
-    </section>
+    <ActivityTimeline
+      emptyMessage="No activity has been recorded for this business yet."
+      items={items}
+    />
   );
 };

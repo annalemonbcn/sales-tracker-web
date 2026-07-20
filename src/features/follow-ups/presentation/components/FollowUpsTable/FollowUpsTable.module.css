@@ -1,0 +1,17 @@
+.taskName {
+  color: var(--color-text-primary);
+}
+
+.assigneeCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.assigneeCell img {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+}

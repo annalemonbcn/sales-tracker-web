@@ -1,3 +1,30 @@
+.section {
+  display: grid;
+  gap: 0.875rem;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.sectionAction {
+  border: 0;
+  background: transparent;
+  color: var(--color-primary);
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+
 .activityList {
   position: relative;
   display: grid;

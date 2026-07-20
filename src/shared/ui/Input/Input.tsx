@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes } from 'react';
+import { forwardRef, type InputHTMLAttributes } from 'react';
 
 import { cn } from '@/shared/lib/cn';
 
@@ -8,13 +8,18 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: string;
 };
 
-export const Input = ({ className, error, ...props }: InputProps) => (
-  <div className={styles.wrapper}>
-    <input
-      className={cn(styles.input, error && styles.inputError, className)}
-      {...props}
-    />
+export const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ className, error, ...props }, ref) => (
+    <div className={styles.wrapper}>
+      <input
+        className={cn(styles.input, error && styles.inputError, className)}
+        ref={ref}
+        {...props}
+      />
 
-    {error ? <p className={styles.error}>{error}</p> : null}
-  </div>
+      {error ? <p className={styles.error}>{error}</p> : null}
+    </div>
+  ),
 );
+
+Input.displayName = 'Input';

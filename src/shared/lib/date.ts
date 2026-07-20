@@ -31,3 +31,13 @@ export const formatNullableDateTime = (date: string | null): string => {
 
   return format(parsedDate, 'dd MMM yyyy, HH:mm');
 };
+
+const ISO_DATE_TIME_PATTERN =
+  /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})/g;
+
+export const formatDateTimesInText = (text: string): string =>
+  text.replace(ISO_DATE_TIME_PATTERN, (dateTime) => {
+    const parsedDate = parseNullableDate(dateTime);
+
+    return parsedDate ? format(parsedDate, 'dd MMM yyyy, HH:mm') : dateTime;
+  });

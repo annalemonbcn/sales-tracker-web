@@ -25,6 +25,7 @@ export const AppSidebar = () => {
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
   });
+  const shouldShowMiniCalendar = !isRouteActive(pathname, '/tasks');
 
   const expandSidebar = () => setIsCollapsed(false);
 
@@ -118,7 +119,7 @@ export const AppSidebar = () => {
         </ul>
       </nav>
 
-      <SidebarMiniCalendar />
+      {shouldShowMiniCalendar ? <SidebarMiniCalendar /> : null}
     </aside>
   );
 };
