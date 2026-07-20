@@ -10,7 +10,7 @@ type FollowUpDetailsFooterProps = {
   followUp: FollowUpTask;
   isCancelling: boolean;
   isMarkingComplete: boolean;
-  isSavingBusinessDetails: boolean;
+  isSavingFollowUpDetails: boolean;
   onCancel: () => void;
   onMarkComplete: () => void;
   onReschedule: () => void;
@@ -20,7 +20,7 @@ export const FollowUpDetailsFooter = ({
   followUp,
   isCancelling,
   isMarkingComplete,
-  isSavingBusinessDetails,
+  isSavingFollowUpDetails,
   onCancel,
   onMarkComplete,
   onReschedule,
@@ -43,7 +43,7 @@ export const FollowUpDetailsFooter = ({
     <div className={styles.secondaryActions}>
       <Button
         className={styles.secondaryAction}
-        disabled={isSavingBusinessDetails}
+        disabled={isSavingFollowUpDetails}
         variant="secondary"
         onClick={onReschedule}
       >

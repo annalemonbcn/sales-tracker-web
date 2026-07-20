@@ -13,10 +13,21 @@ import type {
 } from '../domain/followUpActivity.model';
 import type {
   CancelFollowUpResponseDto,
+  CreateFollowUpResponseDto,
   GetFollowUpsResponseDto,
   MarkFollowUpDoneResponseDto,
   UpdateFollowUpResponseDto,
 } from './followUps.dto';
+
+export const mapCreateFollowUpResponseDtoToDomain = (
+  response: CreateFollowUpResponseDto,
+) => {
+  if (!response.data.followUp) {
+    throw new Error('Follow-up was not returned after create');
+  }
+
+  return response.data.followUp;
+};
 
 const mapFollowUpBusinessDtoToDomain = (
   business: FollowUpBusinessDto,

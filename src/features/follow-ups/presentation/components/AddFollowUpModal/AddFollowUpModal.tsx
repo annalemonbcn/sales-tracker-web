@@ -1,5 +1,6 @@
 import { Controller, useForm } from 'react-hook-form';
 
+import { useCreateFollowUp } from '@/features/follow-ups/application/useCreateFollowUp';
 import {
   FOLLOW_UP_TASK_TYPES,
   type FollowUpTaskType,
@@ -9,7 +10,7 @@ import { useAssigneeOptions, useBusinessesOptions } from '@/hooks';
 import { Button, Input, Modal, Select, type SelectOption } from '@/shared/ui';
 
 import styles from './AddFollowUpModal.module.css';
-import type { AddFollowUpFormValues, AddFollowUpPriority } from './types';
+import type { AddFollowUpFormValues } from './types';
 
 type AddFollowUpModalProps = {
   isOpen: boolean;
@@ -21,7 +22,6 @@ const defaultValues: AddFollowUpFormValues = {
   businessId: null,
   dueDate: '',
   note: '',
-  priority: null,
   title: '',
   type: null,
 };
@@ -33,25 +33,11 @@ const typeOptions: SelectOption<FollowUpTaskType>[] = FOLLOW_UP_TASK_TYPES.map(
   }),
 );
 
-const priorityLabels: Record<AddFollowUpPriority, string> = {
-  high: 'High',
-  low: 'Low',
-  medium: 'Medium',
-};
-
-const priorities: AddFollowUpPriority[] = ['low', 'medium', 'high'];
-
-const priorityOptions: SelectOption<AddFollowUpPriority>[] = priorities.map(
-  (priority) => ({
-    label: priorityLabels[priority],
-    value: priority,
-  }),
-);
-
 export const AddFollowUpModal = ({
   isOpen,
   onOpenChange,
 }: AddFollowUpModalProps) => {
+  const { isPending, mutateAsync } = useCreateFollowUp();
   const { businessOptions, isBusinessSelectDisabled } = useBusinessesOptions();
   const { assigneeOptions, isAssigneeSelectDisabled } = useAssigneeOptions();
 
@@ -74,6 +60,27 @@ export const AddFollowUpModal = ({
     }
   };
 
+  const onSubmit = async (values: AddFollowUpFormValues) => {
+    if (!values.assignedToId || !values.businessId || !values.type) {
+      return;
+    }
+
+    const trimmedNote = values.note.trim();
+
+    await mutateAsync({
+      businessId: values.businessId,
+      data: {
+        assignedToId: values.assignedToId,
+        dueDate: new Date(values.dueDate).toISOString(),
+        note: trimmedNote || undefined,
+        title: values.title.trim(),
+        type: values.type,
+      },
+    });
+
+    handleOpenChange(false);
+  };
+
   return (
     <Modal
       description="Schedule a task for a business and assign its owner."
@@ -81,7 +88,7 @@ export const AddFollowUpModal = ({
       title="Create new task"
       onOpenChange={handleOpenChange}
     >
-      <form className={styles.form} onSubmit={handleSubmit(() => undefined)}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.body}>
           <Controller
             control={control}
@@ -153,21 +160,6 @@ export const AddFollowUpModal = ({
             )}
           />
 
-          <Controller
-            control={control}
-            name="priority"
-            rules={{ required: true }}
-            render={({ field }) => (
-              <Select
-                isClearable={false}
-                label="Priority *"
-                options={priorityOptions}
-                value={field.value}
-                onChange={field.onChange}
-              />
-            )}
-          />
-
           <label className={styles.fieldWide}>
             <span className={styles.fieldLabel}>Note</span>
             <textarea
@@ -180,6 +172,7 @@ export const AddFollowUpModal = ({
 
         <div className={styles.footer}>
           <Button
+            disabled={isPending}
             type="button"
             variant="secondary"
             onClick={() => {
@@ -189,8 +182,8 @@ export const AddFollowUpModal = ({
             Cancel
           </Button>
 
-          <Button disabled={!isValid} type="submit">
-            Create task
+          <Button disabled={isPending || !isValid} type="submit">
+            {isPending ? 'Creating...' : 'Create task'}
           </Button>
         </div>
       </form>

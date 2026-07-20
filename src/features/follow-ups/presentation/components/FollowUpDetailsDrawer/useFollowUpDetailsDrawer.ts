@@ -3,20 +3,16 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { flushSync } from 'react-dom';
 
-import { useUpdateBusiness } from '@/features/businesses/application/useUpdateBusiness';
-import { businessPriorityOptions } from '@/features/businesses/presentation/lib/businessSelectOptions';
 import { useAssigneeOptions } from '@/hooks';
 import { useCancelFollowUp } from '@/features/follow-ups/application/useCancelFollowUp';
 import { followUpsQueryKeys } from '@/features/follow-ups/application/followUps.queryKeys';
 import { useMarkFollowUpDone } from '@/features/follow-ups/application/useMarkFollowUpDone';
 import { useUpdateFollowUp } from '@/features/follow-ups/application/useUpdateFollowUp';
 import type { FollowUpTask } from '@/features/follow-ups/domain/followUpTask.model';
-import type { Priority } from '@/shared/api/generated/salesTrackerApi';
 
-export type BusinessDetailsFormValues = {
+export type FollowUpDetailsFormValues = {
   assignedToId: string;
   dueDate: string;
-  priority: Priority;
 };
 
 export type NotesFormValues = {
@@ -48,24 +44,22 @@ export const useFollowUpDetailsDrawer = ({
   followUp,
 }: UseFollowUpDetailsDrawerParams) => {
   const [currentFollowUp, setCurrentFollowUp] = useState(followUp);
-  const [isEditingBusinessDetails, setIsEditingBusinessDetails] =
+  const [isEditingFollowUpDetails, setIsEditingFollowUpDetails] =
     useState(false);
   const [isEditingNotes, setIsEditingNotes] = useState(false);
   const dueDateInputRef = useRef<HTMLInputElement | null>(null);
 
   const queryClient = useQueryClient();
   const updateFollowUpMutation = useUpdateFollowUp();
-  const updateBusinessMutation = useUpdateBusiness();
   const markFollowUpDoneMutation = useMarkFollowUpDone();
   const cancelFollowUpMutation = useCancelFollowUp();
   const { assigneeOptions, isAssigneeSelectDisabled } = useAssigneeOptions();
 
-  const businessDetailsForm = useForm<BusinessDetailsFormValues>({
+  const followUpDetailsForm = useForm<FollowUpDetailsFormValues>({
     mode: 'onChange',
     defaultValues: {
       assignedToId: currentFollowUp.assignedTo.id,
       dueDate: formatDateForInput(currentFollowUp.dueDate),
-      priority: currentFollowUp.business.priority,
     },
   });
   const notesForm = useForm<NotesFormValues>({
@@ -79,20 +73,18 @@ export const useFollowUpDetailsDrawer = ({
   }, [followUp]);
 
   useEffect(() => {
-    businessDetailsForm.reset({
+    followUpDetailsForm.reset({
       assignedToId: currentFollowUp.assignedTo.id,
       dueDate: formatDateForInput(currentFollowUp.dueDate),
-      priority: currentFollowUp.business.priority,
     });
     notesForm.reset({
       note: currentFollowUp.note ?? '',
     });
-  }, [businessDetailsForm, currentFollowUp, notesForm]);
+  }, [currentFollowUp, followUpDetailsForm, notesForm]);
 
-  const isSavingBusinessDetails =
-    updateFollowUpMutation.isPending || updateBusinessMutation.isPending;
+  const isSavingFollowUpDetails = updateFollowUpMutation.isPending;
 
-  const handleBusinessDetailsSubmit = businessDetailsForm.handleSubmit(
+  const handleFollowUpDetailsSubmit = followUpDetailsForm.handleSubmit(
     async (values) => {
       const updatedFollowUp = await updateFollowUpMutation.mutateAsync({
         followUpId: currentFollowUp.id,
@@ -102,20 +94,9 @@ export const useFollowUpDetailsDrawer = ({
         },
       });
 
-      const updatedBusiness = await updateBusinessMutation.mutateAsync({
-        businessId: currentFollowUp.business.id,
-        data: {
-          priority: values.priority,
-        },
-      });
-
       setCurrentFollowUp((previousFollowUp) => ({
         ...previousFollowUp,
         assignedTo: updatedFollowUp.assignedTo,
-        business: {
-          ...previousFollowUp.business,
-          priority: updatedBusiness.priority,
-        },
         dueDate: updatedFollowUp.dueDate,
         updatedAt: updatedFollowUp.updatedAt,
       }));
@@ -124,7 +105,7 @@ export const useFollowUpDetailsDrawer = ({
         queryKey: followUpsQueryKeys.lists,
       });
 
-      setIsEditingBusinessDetails(false);
+      setIsEditingFollowUpDetails(false);
     },
   );
 
@@ -177,7 +158,7 @@ export const useFollowUpDetailsDrawer = ({
 
   const handleReschedule = () => {
     flushSync(() => {
-      setIsEditingBusinessDetails(true);
+      setIsEditingFollowUpDetails(true);
     });
 
     const dueDateInput = dueDateInputRef.current;
@@ -197,9 +178,9 @@ export const useFollowUpDetailsDrawer = ({
     }
   };
 
-  const handleCancelBusinessDetailsEdit = () => {
-    businessDetailsForm.reset();
-    setIsEditingBusinessDetails(false);
+  const handleCancelFollowUpDetailsEdit = () => {
+    followUpDetailsForm.reset();
+    setIsEditingFollowUpDetails(false);
   };
 
   const handleCancelNotesEdit = () => {
@@ -209,33 +190,32 @@ export const useFollowUpDetailsDrawer = ({
 
   return {
     assigneeOptions,
-    businessPriorityOptions,
     cancelFollowUp: handleCancelFollowUp,
     currentFollowUp,
-    dueDateField: businessDetailsForm.register('dueDate', { required: true }),
+    dueDateField: followUpDetailsForm.register('dueDate', { required: true }),
     dueDateInputRef,
-    editBusinessDetails: () => {
-      setIsEditingBusinessDetails(true);
+    editFollowUpDetails: () => {
+      setIsEditingFollowUpDetails(true);
     },
     editNotes: () => {
       setIsEditingNotes(true);
     },
-    formControl: businessDetailsForm.control,
-    formState: businessDetailsForm.formState,
+    formControl: followUpDetailsForm.control,
+    formState: followUpDetailsForm.formState,
     isAssigneeSelectDisabled,
     isCancellingFollowUp: cancelFollowUpMutation.isPending,
-    isEditingBusinessDetails,
+    isEditingFollowUpDetails,
     isEditingNotes,
     isMarkingComplete: markFollowUpDoneMutation.isPending,
     isSavingNotes: updateFollowUpMutation.isPending,
-    isSavingBusinessDetails,
+    isSavingFollowUpDetails,
     markComplete: handleMarkComplete,
     notesFormState: notesForm.formState,
     notesField: notesForm.register('note'),
     reschedule: handleReschedule,
-    saveBusinessDetails: handleBusinessDetailsSubmit,
+    saveFollowUpDetails: handleFollowUpDetailsSubmit,
     saveNotes: handleNotesSubmit,
-    stopEditingBusinessDetails: handleCancelBusinessDetailsEdit,
+    stopEditingFollowUpDetails: handleCancelFollowUpDetailsEdit,
     stopEditingNotes: handleCancelNotesEdit,
   };
 };
