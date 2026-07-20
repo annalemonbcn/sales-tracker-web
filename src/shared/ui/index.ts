@@ -1,4 +1,14 @@
 export { Badge } from './Badge/Badge';
+export {
+  ActivityTimeline,
+  type ActivityTimelineItem,
+  type ActivityTimelineVariant,
+} from './ActivityTimeline/ActivityTimeline';
+export {
+  getActivityIcon,
+  getActivityTypeLabel,
+  getActivityVariant,
+} from './ActivityTimeline/activityFormatters';
 export { Button } from './Button/Button';
 export { Card } from './Card/Card';
 export { DataTable } from './DataTable/DataTable';

@@ -323,6 +323,7 @@ export interface FollowUpTaskDto {
   completedAt: string | null;
   assignedTo: UserSummaryDto;
   business: FollowUpBusinessDto;
+  activities: ActivityDto[];
   createdAt: string;
   updatedAt: string;
 }
