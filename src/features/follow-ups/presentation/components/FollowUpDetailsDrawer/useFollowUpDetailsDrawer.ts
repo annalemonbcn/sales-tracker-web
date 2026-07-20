@@ -5,7 +5,7 @@ import { flushSync } from 'react-dom';
 
 import { useUpdateBusiness } from '@/features/businesses/application/useUpdateBusiness';
 import { businessPriorityOptions } from '@/features/businesses/presentation/lib/businessSelectOptions';
-import { useBusinessAssigneeOptions } from '@/features/businesses/presentation/hooks/useBusinessAssigneeOptions';
+import { useAssigneeOptions } from '@/hooks';
 import { useCancelFollowUp } from '@/features/follow-ups/application/useCancelFollowUp';
 import { followUpsQueryKeys } from '@/features/follow-ups/application/followUps.queryKeys';
 import { useMarkFollowUpDone } from '@/features/follow-ups/application/useMarkFollowUpDone';
@@ -58,8 +58,7 @@ export const useFollowUpDetailsDrawer = ({
   const updateBusinessMutation = useUpdateBusiness();
   const markFollowUpDoneMutation = useMarkFollowUpDone();
   const cancelFollowUpMutation = useCancelFollowUp();
-  const { assigneeOptions, isAssigneeSelectDisabled } =
-    useBusinessAssigneeOptions();
+  const { assigneeOptions, isAssigneeSelectDisabled } = useAssigneeOptions();
 
   const businessDetailsForm = useForm<BusinessDetailsFormValues>({
     mode: 'onChange',

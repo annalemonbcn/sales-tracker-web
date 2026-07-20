@@ -1,14 +1,16 @@
 import type {
-  FollowUpType,
-  Priority,
-} from '@/shared/api/generated/salesTrackerApi';
+  FollowUpTask,
+  FollowUpTaskType,
+} from '@/features/follow-ups/domain/followUpTask.model';
+
+export type AddFollowUpPriority = FollowUpTask['business']['priority'];
 
 export type AddFollowUpFormValues = {
   assignedToId: string | null;
   businessId: string | null;
   dueDate: string;
   note: string;
-  priority: Priority | null;
+  priority: AddFollowUpPriority | null;
   title: string;
-  type: FollowUpType | null;
+  type: FollowUpTaskType | null;
 };

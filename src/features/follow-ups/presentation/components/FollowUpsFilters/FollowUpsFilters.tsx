@@ -1,11 +1,3 @@
-import { useMemo } from 'react';
-
-import {
-  initialBusinessFilters,
-  type BusinessFilters,
-} from '@/features/businesses/domain/businessFilters.model';
-import { useBusinesses } from '@/features/businesses/application/useBusinesses';
-import { useBusinessAssigneeOptions } from '@/features/businesses/presentation/hooks/useBusinessAssigneeOptions';
 import { businessPriorityOptions } from '@/features/businesses/presentation/lib/businessSelectOptions';
 import {
   hasActiveFollowUpFilters,
@@ -13,6 +5,7 @@ import {
 } from '@/features/follow-ups/domain/followUpFilters.model';
 import type { FollowUpTaskType } from '@/features/follow-ups/domain/followUpTask.model';
 import { useFollowUpsFilters } from '@/features/follow-ups/presentation/providers';
+import { useAssigneeOptions, useBusinessesOptions } from '@/hooks';
 import {
   FollowUpType,
   GetFollowUpsStatus,
@@ -70,23 +63,9 @@ export const FollowUpsFilters = ({
 }: FollowUpsFiltersProps) => {
   const { clearFilters, filters, updateFilter } = useFollowUpsFilters();
   const { assigneeOptions, isAssigneeOptionsError, isAssigneeOptionsLoading } =
-    useBusinessAssigneeOptions();
-
-  const businessFilters: BusinessFilters = initialBusinessFilters;
-  const {
-    data: businesses = [],
-    isError: isBusinessesError,
-    isLoading: isBusinessesLoading,
-  } = useBusinesses(businessFilters);
-
-  const businessOptions = useMemo<SelectOption[]>(
-    () =>
-      businesses.map((business) => ({
-        label: business.name,
-        value: business.id,
-      })),
-    [businesses],
-  );
+    useAssigneeOptions();
+  const { businessOptions, isBusinessOptionsError, isBusinessOptionsLoading } =
+    useBusinessesOptions();
 
   const isAssigneeSelectDisabled =
     isFollowUpsFetching ||
@@ -96,8 +75,8 @@ export const FollowUpsFilters = ({
 
   const isBusinessSelectDisabled =
     isFollowUpsFetching ||
-    isBusinessesLoading ||
-    isBusinessesError ||
+    isBusinessOptionsLoading ||
+    isBusinessOptionsError ||
     businessOptions.length === 0;
 
   return (

@@ -8,8 +8,7 @@ import {
   businessSourceOptions,
 } from '@/features/businesses/presentation/lib/businessSelectOptions';
 import { Button, Input, Modal, Select } from '@/shared/ui';
-
-import { useBusinessAssigneeOptions } from '../../hooks/useBusinessAssigneeOptions';
+import { useAssigneeOptions } from '@/hooks';
 
 import styles from './AddBusinessModal.module.css';
 import type { AddBusinessFormValues } from './types';
@@ -42,8 +41,7 @@ export const AddBusinessModal = ({
   onSuccess,
 }: AddBusinessModalProps) => {
   const { mutateAsync, isPending } = useCreateBusiness();
-  const { assigneeOptions, isAssigneeSelectDisabled } =
-    useBusinessAssigneeOptions();
+  const { assigneeOptions, isAssigneeSelectDisabled } = useAssigneeOptions();
 
   const {
     control,

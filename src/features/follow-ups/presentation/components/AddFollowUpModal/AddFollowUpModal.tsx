@@ -1,21 +1,15 @@
-import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { useBusinesses } from '@/features/businesses/application/useBusinesses';
-import { initialBusinessFilters } from '@/features/businesses/domain/businessFilters.model';
-import { useUsers } from '@/features/users/application/useUsers';
-import { followUpTypeLabelMap } from '@/features/follow-ups/presentation/components/FollowUpsTable/followUpsTableFormatters';
-import { getInitialsAvatarUrl } from '@/shared/lib/avatar';
 import {
-  FollowUpType,
-  Priority,
-  type FollowUpType as FollowUpTypeValue,
-  type Priority as PriorityValue,
-} from '@/shared/api/generated/salesTrackerApi';
+  FOLLOW_UP_TASK_TYPES,
+  type FollowUpTaskType,
+} from '@/features/follow-ups/domain/followUpTask.model';
+import { followUpTypeLabelMap } from '@/features/follow-ups/presentation/components/FollowUpsTable/followUpsTableFormatters';
+import { useAssigneeOptions, useBusinessesOptions } from '@/hooks';
 import { Button, Input, Modal, Select, type SelectOption } from '@/shared/ui';
 
 import styles from './AddFollowUpModal.module.css';
-import type { AddFollowUpFormValues } from './types';
+import type { AddFollowUpFormValues, AddFollowUpPriority } from './types';
 
 type AddFollowUpModalProps = {
   isOpen: boolean;
@@ -32,52 +26,34 @@ const defaultValues: AddFollowUpFormValues = {
   type: null,
 };
 
-const typeOptions: SelectOption<FollowUpTypeValue>[] = Object.values(
-  FollowUpType,
-).map((type) => ({
-  label: followUpTypeLabelMap[type],
-  value: type,
-}));
+const typeOptions: SelectOption<FollowUpTaskType>[] = FOLLOW_UP_TASK_TYPES.map(
+  (type) => ({
+    label: followUpTypeLabelMap[type],
+    value: type,
+  }),
+);
 
-const priorityLabels: Record<PriorityValue, string> = {
+const priorityLabels: Record<AddFollowUpPriority, string> = {
   high: 'High',
   low: 'Low',
   medium: 'Medium',
 };
 
-const priorityOptions: SelectOption<PriorityValue>[] = Object.values(
-  Priority,
-).map((priority) => ({
-  label: priorityLabels[priority],
-  value: priority,
-}));
+const priorities: AddFollowUpPriority[] = ['low', 'medium', 'high'];
+
+const priorityOptions: SelectOption<AddFollowUpPriority>[] = priorities.map(
+  (priority) => ({
+    label: priorityLabels[priority],
+    value: priority,
+  }),
+);
 
 export const AddFollowUpModal = ({
   isOpen,
   onOpenChange,
 }: AddFollowUpModalProps) => {
-  const { data: businesses = [], isLoading: isBusinessesLoading } =
-    useBusinesses(initialBusinessFilters);
-  const { data: users = [], isLoading: isUsersLoading } = useUsers();
-
-  const businessOptions = useMemo<SelectOption[]>(
-    () =>
-      businesses.map((business) => ({
-        label: business.name,
-        value: business.id,
-      })),
-    [businesses],
-  );
-
-  const assigneeOptions = useMemo<SelectOption[]>(
-    () =>
-      users.map((user) => ({
-        avatarUrl: getInitialsAvatarUrl(user.name),
-        label: user.name,
-        value: user.id,
-      })),
-    [users],
-  );
+  const { businessOptions, isBusinessSelectDisabled } = useBusinessesOptions();
+  const { assigneeOptions, isAssigneeSelectDisabled } = useAssigneeOptions();
 
   const {
     control,
@@ -114,7 +90,7 @@ export const AddFollowUpModal = ({
             render={({ field }) => (
               <Select
                 isClearable={false}
-                isDisabled={isBusinessesLoading}
+                isDisabled={isBusinessSelectDisabled}
                 label="Business *"
                 options={businessOptions}
                 value={field.value}
@@ -130,7 +106,7 @@ export const AddFollowUpModal = ({
             render={({ field }) => (
               <Select
                 isClearable={false}
-                isDisabled={isUsersLoading}
+                isDisabled={isAssigneeSelectDisabled}
                 label="Assignee *"
                 options={assigneeOptions}
                 value={field.value}
@@ -140,7 +116,7 @@ export const AddFollowUpModal = ({
           />
 
           <label className={styles.field}>
-            <span>Due date *</span>
+            <span className={styles.fieldLabel}>Due date *</span>
             <Input
               error={errors.dueDate?.message}
               type="datetime-local"
@@ -151,7 +127,7 @@ export const AddFollowUpModal = ({
           </label>
 
           <label className={styles.field}>
-            <span>Title *</span>
+            <span className={styles.fieldLabel}>Title *</span>
             <Input
               error={errors.title?.message}
               placeholder="Follow up with the business"
@@ -193,7 +169,7 @@ export const AddFollowUpModal = ({
           />
 
           <label className={styles.fieldWide}>
-            <span>Note</span>
+            <span className={styles.fieldLabel}>Note</span>
             <textarea
               className={styles.textarea}
               placeholder="Add context or next steps..."
