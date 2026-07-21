@@ -148,6 +148,10 @@ export const useFollowUpDetailsDrawer = ({
   });
 
   const handleMarkComplete = async () => {
+    if (currentFollowUp.status !== 'pending') {
+      return;
+    }
+
     const updatedFollowUp = await markFollowUpDoneMutation.mutateAsync(
       currentFollowUp.id,
     );
@@ -161,7 +165,7 @@ export const useFollowUpDetailsDrawer = ({
   };
 
   const handleCancelFollowUp = async () => {
-    if (currentFollowUp.status === 'done') {
+    if (currentFollowUp.status !== 'pending') {
       return;
     }
 

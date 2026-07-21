@@ -28,7 +28,7 @@ export const FollowUpDetailsFooter = ({
   <Drawer.Footer className={styles.footer}>
     <Button
       className={styles.primaryAction}
-      disabled={followUp.status === 'done' || isMarkingComplete}
+      disabled={followUp.status !== 'pending' || isMarkingComplete}
       size="lg"
       onClick={onMarkComplete}
     >
@@ -43,7 +43,7 @@ export const FollowUpDetailsFooter = ({
     <div className={styles.secondaryActions}>
       <Button
         className={styles.secondaryAction}
-        disabled={followUp.status === 'done' || isSavingFollowUpDetails}
+        disabled={followUp.status !== 'pending' || isSavingFollowUpDetails}
         variant="secondary"
         onClick={onReschedule}
       >
