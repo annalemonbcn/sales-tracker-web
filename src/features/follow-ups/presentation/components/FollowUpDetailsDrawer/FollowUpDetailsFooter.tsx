@@ -43,7 +43,7 @@ export const FollowUpDetailsFooter = ({
     <div className={styles.secondaryActions}>
       <Button
         className={styles.secondaryAction}
-        disabled={isSavingFollowUpDetails}
+        disabled={followUp.status === 'done' || isSavingFollowUpDetails}
         variant="secondary"
         onClick={onReschedule}
       >
@@ -53,7 +53,11 @@ export const FollowUpDetailsFooter = ({
 
       <Button
         className={cn(styles.secondaryAction, styles.cancelAction)}
-        disabled={followUp.status === 'cancelled' || isCancelling}
+        disabled={
+          followUp.status === 'done' ||
+          followUp.status === 'cancelled' ||
+          isCancelling
+        }
         variant="secondary"
         onClick={onCancel}
       >

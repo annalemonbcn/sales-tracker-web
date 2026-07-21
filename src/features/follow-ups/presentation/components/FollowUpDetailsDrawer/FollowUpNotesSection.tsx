@@ -12,6 +12,7 @@ import type { FormState, UseFormRegisterReturn } from 'react-hook-form';
 type FollowUpNotesSectionProps = {
   followUp: FollowUpTask;
   isEditing: boolean;
+  isEditable: boolean;
   isSaving: boolean;
   notesField: UseFormRegisterReturn<'note'>;
   notesFormState: FormState<NotesFormValues>;
@@ -23,6 +24,7 @@ type FollowUpNotesSectionProps = {
 export const FollowUpNotesSection = ({
   followUp,
   isEditing,
+  isEditable,
   isSaving,
   notesField,
   notesFormState,
@@ -41,7 +43,8 @@ export const FollowUpNotesSection = ({
       <h3 className={panelStyles.sectionTitle}>Notes</h3>
       {!isEditing ? (
         <button
-          className={panelStyles.sectionAction}
+          className={cn(panelStyles.sectionAction, styles.editAction)}
+          disabled={!isEditable}
           type="button"
           onClick={onEdit}
         >
@@ -50,7 +53,7 @@ export const FollowUpNotesSection = ({
       ) : null}
     </div>
 
-    {isEditing ? (
+    {isEditing && isEditable ? (
       <form className={notesStyles.notesForm} onSubmit={onSubmit}>
         <label className={notesStyles.notesField}>
           <span>Notes</span>

@@ -72,6 +72,15 @@ export const useFollowUpDetailsDrawer = ({
     setCurrentFollowUp(followUp);
   }, [followUp]);
 
+  const canEditFollowUp = currentFollowUp.status === 'pending';
+
+  useEffect(() => {
+    if (!canEditFollowUp) {
+      setIsEditingFollowUpDetails(false);
+      setIsEditingNotes(false);
+    }
+  }, [canEditFollowUp]);
+
   useEffect(() => {
     followUpDetailsForm.reset({
       assignedToId: currentFollowUp.assignedTo.id,
@@ -86,6 +95,10 @@ export const useFollowUpDetailsDrawer = ({
 
   const handleFollowUpDetailsSubmit = followUpDetailsForm.handleSubmit(
     async (values) => {
+      if (!canEditFollowUp) {
+        return;
+      }
+
       const updatedFollowUp = await updateFollowUpMutation.mutateAsync({
         followUpId: currentFollowUp.id,
         data: {
@@ -110,6 +123,10 @@ export const useFollowUpDetailsDrawer = ({
   );
 
   const handleNotesSubmit = notesForm.handleSubmit(async (values) => {
+    if (!canEditFollowUp) {
+      return;
+    }
+
     const updatedFollowUp = await updateFollowUpMutation.mutateAsync({
       followUpId: currentFollowUp.id,
       data: {
@@ -144,6 +161,10 @@ export const useFollowUpDetailsDrawer = ({
   };
 
   const handleCancelFollowUp = async () => {
+    if (currentFollowUp.status === 'done') {
+      return;
+    }
+
     const updatedFollowUp = await cancelFollowUpMutation.mutateAsync(
       currentFollowUp.id,
     );
@@ -157,6 +178,10 @@ export const useFollowUpDetailsDrawer = ({
   };
 
   const handleReschedule = () => {
+    if (!canEditFollowUp) {
+      return;
+    }
+
     flushSync(() => {
       setIsEditingFollowUpDetails(true);
     });
@@ -190,15 +215,20 @@ export const useFollowUpDetailsDrawer = ({
 
   return {
     assigneeOptions,
+    canEditFollowUp,
     cancelFollowUp: handleCancelFollowUp,
     currentFollowUp,
     dueDateField: followUpDetailsForm.register('dueDate', { required: true }),
     dueDateInputRef,
     editFollowUpDetails: () => {
-      setIsEditingFollowUpDetails(true);
+      if (canEditFollowUp) {
+        setIsEditingFollowUpDetails(true);
+      }
     },
     editNotes: () => {
-      setIsEditingNotes(true);
+      if (canEditFollowUp) {
+        setIsEditingNotes(true);
+      }
     },
     formControl: followUpDetailsForm.control,
     formState: followUpDetailsForm.formState,

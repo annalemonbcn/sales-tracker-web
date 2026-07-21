@@ -40,6 +40,7 @@ export const FollowUpDetailsDrawer = ({
           dueDateField={drawer.dueDateField}
           dueDateInputRef={drawer.dueDateInputRef}
           followUp={drawer.currentFollowUp}
+          isEditable={drawer.canEditFollowUp}
           isAssigneeSelectDisabled={drawer.isAssigneeSelectDisabled}
           isDirty={drawer.formState.isDirty}
           isEditing={drawer.isEditingFollowUpDetails}
@@ -53,6 +54,7 @@ export const FollowUpDetailsDrawer = ({
         <FollowUpNotesSection
           followUp={drawer.currentFollowUp}
           isEditing={drawer.isEditingNotes}
+          isEditable={drawer.canEditFollowUp}
           isSaving={drawer.isSavingNotes}
           notesField={drawer.notesField}
           notesFormState={drawer.notesFormState}

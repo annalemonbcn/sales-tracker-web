@@ -26,6 +26,7 @@ type FollowUpTaskDetailsCardProps = {
   dueDateField: UseFormRegisterReturn<'dueDate'>;
   dueDateInputRef: React.MutableRefObject<HTMLInputElement | null>;
   followUp: FollowUpTask;
+  isEditable: boolean;
   isAssigneeSelectDisabled: boolean;
   isDirty: boolean;
   isEditing: boolean;
@@ -42,6 +43,7 @@ export const FollowUpTaskDetailsCard = ({
   dueDateField,
   dueDateInputRef,
   followUp,
+  isEditable,
   isAssigneeSelectDisabled,
   isDirty,
   isEditing,
@@ -62,7 +64,8 @@ export const FollowUpTaskDetailsCard = ({
       <h3 className={panelStyles.sectionTitle}>Follow-up details</h3>
       {!isEditing ? (
         <button
-          className={panelStyles.sectionAction}
+          className={cn(panelStyles.sectionAction, styles.editAction)}
+          disabled={!isEditable}
           type="button"
           onClick={onEdit}
         >
@@ -71,7 +74,7 @@ export const FollowUpTaskDetailsCard = ({
       ) : null}
     </div>
 
-    {isEditing ? (
+    {isEditing && isEditable ? (
       <form className={businessOverviewStyles.form} onSubmit={onSubmit}>
         <div className={businessOverviewStyles.formGrid}>
           <Controller
