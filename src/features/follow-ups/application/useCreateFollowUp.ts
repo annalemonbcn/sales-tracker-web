@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { getCurrentUserId } from '@/auth/currentUser';
 import { businessesQueryKeys } from '@/features/businesses/application/businesses.queryKeys';
 import { dashboardQueryKeys } from '@/features/dashboard/application/dashboard.queryKeys';
 
@@ -9,7 +10,7 @@ import { followUpsQueryKeys } from './followUps.queryKeys';
 
 type CreateFollowUpParams = {
   businessId: string;
-  data: CreateFollowUpRequestDto;
+  data: Omit<CreateFollowUpRequestDto, 'userId'>;
 };
 
 export const useCreateFollowUp = () => {
@@ -17,7 +18,10 @@ export const useCreateFollowUp = () => {
 
   return useMutation({
     mutationFn: ({ businessId, data }: CreateFollowUpParams) =>
-      createFollowUp(businessId, data),
+      createFollowUp(businessId, {
+        ...data,
+        userId: getCurrentUserId(),
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: followUpsQueryKeys.lists });
       queryClient.invalidateQueries({ queryKey: businessesQueryKeys.all });

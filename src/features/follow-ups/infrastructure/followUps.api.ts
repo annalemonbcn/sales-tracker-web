@@ -3,6 +3,8 @@ import type { FollowUpTask } from '../domain/followUpTask.model';
 import { followUpsClient } from './followUps.client';
 import type {
   CreateFollowUpRequestDto,
+  CancelFollowUpRequestDto,
+  MarkFollowUpDoneRequestDto,
   UpdateFollowUpRequestDto,
 } from './followUps.dto';
 import {
@@ -39,14 +41,20 @@ export const updateFollowUp = async (
   return mapUpdateFollowUpResponseDtoToDomain(response);
 };
 
-export const markFollowUpDone = async (followUpId: string) => {
-  const response = await followUpsClient.markDone(followUpId);
+export const markFollowUpDone = async (
+  followUpId: string,
+  data: MarkFollowUpDoneRequestDto,
+) => {
+  const response = await followUpsClient.markDone(followUpId, data);
 
   return mapMarkFollowUpDoneResponseDtoToDomain(response);
 };
 
-export const cancelFollowUp = async (followUpId: string) => {
-  const response = await followUpsClient.cancel(followUpId);
+export const cancelFollowUp = async (
+  followUpId: string,
+  data: CancelFollowUpRequestDto,
+) => {
+  const response = await followUpsClient.cancel(followUpId, data);
 
   return mapCancelFollowUpResponseDtoToDomain(response);
 };

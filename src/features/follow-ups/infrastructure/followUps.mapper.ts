@@ -58,14 +58,61 @@ const mapFollowUpActivityDtoToDomain = (
     throw new Error(`Unexpected follow-up activity type: ${activity.type}`);
   }
 
-  return {
+  const baseActivity = {
     createdAt: activity.createdAt,
     id: activity.id,
-    metadata: activity.metadata ?? null,
     notes: activity.notes,
-    type: activity.type,
     user: mapUserSummaryDtoToDomain(activity.user),
   };
+
+  switch (activity.type) {
+    case 'follow_up_created':
+      return {
+        ...baseActivity,
+        metadata: { dueDate: getActivityMetadataDate(activity, 'dueDate') },
+        type: activity.type,
+      };
+    case 'follow_up_updated':
+      return {
+        ...baseActivity,
+        metadata: {
+          nextDueDate: getActivityMetadataDate(activity, 'nextDueDate'),
+          previousDueDate: getActivityMetadataDate(activity, 'previousDueDate'),
+        },
+        type: activity.type,
+      };
+    case 'follow_up_done':
+      return {
+        ...baseActivity,
+        metadata: {
+          completedAt: getActivityMetadataDate(activity, 'completedAt'),
+        },
+        type: activity.type,
+      };
+    case 'follow_up_cancelled':
+      return {
+        ...baseActivity,
+        metadata: {
+          cancelledAt: getActivityMetadataDate(activity, 'cancelledAt'),
+        },
+        type: activity.type,
+      };
+  }
+};
+
+const getActivityMetadataDate = (
+  activity: ActivityDto,
+  key: string,
+): string => {
+  const value = activity.metadata?.[key];
+
+  if (typeof value !== 'string') {
+    throw new Error(
+      `Missing ${key} metadata for follow-up activity ${activity.id}`,
+    );
+  }
+
+  return value;
 };
 
 export const mapFollowUpTaskDtoToDomain = (

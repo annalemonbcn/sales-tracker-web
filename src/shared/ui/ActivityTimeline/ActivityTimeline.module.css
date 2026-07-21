@@ -86,7 +86,7 @@
   min-width: 0;
 }
 
-.activityContent strong {
+.activityTitle {
   display: block;
   color: var(--color-text-primary);
   font-size: 0.9375rem;
@@ -104,6 +104,13 @@
   color: var(--color-text-secondary);
   font-size: 0.8125rem;
   line-height: 1.4;
+  white-space: pre-line;
+}
+
+.activityContent span strong {
+  color: var(--color-text-primary);
+  font-size: inherit;
+  font-weight: 500;
 }
 
 .emptyState {

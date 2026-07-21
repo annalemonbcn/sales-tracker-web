@@ -1,5 +1,6 @@
 import { Controller, useForm } from 'react-hook-form';
 
+import { getCurrentUserId } from '@/auth/currentUser';
 import { useCreateBusiness } from '@/features/businesses/application/useCreateBusiness';
 import type { Business } from '@/features/businesses/domain/business.model';
 import {
@@ -12,8 +13,6 @@ import { useAssigneeOptions } from '@/hooks';
 
 import styles from './AddBusinessModal.module.css';
 import type { AddBusinessFormValues } from './types';
-
-const temporaryCreatedById = '22222222-2222-4222-8222-222222222222';
 
 type AddBusinessModalProps = {
   isOpen: boolean;
@@ -84,7 +83,7 @@ export const AddBusinessModal = ({
       website: mapOptionalTextValue(values.website),
       address: mapOptionalTextValue(values.address),
       notes: mapOptionalTextValue(values.notes),
-      createdById: temporaryCreatedById,
+      createdById: getCurrentUserId(),
       assignedToId: values.assignedToId ?? undefined,
     });
 

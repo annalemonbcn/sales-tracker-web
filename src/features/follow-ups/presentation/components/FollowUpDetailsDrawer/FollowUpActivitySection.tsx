@@ -1,13 +1,12 @@
 import type { FollowUpTask } from '@/features/follow-ups/domain/followUpTask.model';
 import {
-  formatDateTimesInText,
-  formatNullableDateTime,
-} from '@/shared/lib/date';
+  getFollowUpActivityDescription,
+  getFollowUpActivityTypeLabel,
+} from '@/features/follow-ups/presentation/lib/followUpActivityFormatters';
 import {
   ActivityTimeline,
   type ActivityTimelineItem,
   getActivityIcon,
-  getActivityTypeLabel,
   getActivityVariant,
 } from '@/shared/ui';
 
@@ -21,13 +20,10 @@ export const FollowUpActivitySection = ({
   followUp,
 }: FollowUpActivitySectionProps) => {
   const items: ActivityTimelineItem[] = followUp.activities.map((activity) => ({
-    description: activity.notes
-      ? formatDateTimesInText(activity.notes)
-      : `Created by ${activity.user.name}`,
+    description: getFollowUpActivityDescription(activity),
     icon: getActivityIcon(activity.type),
     id: activity.id,
-    timestamp: formatNullableDateTime(activity.createdAt),
-    title: getActivityTypeLabel(activity.type),
+    title: getFollowUpActivityTypeLabel(activity.type),
     variant: getActivityVariant(activity.type),
   }));
 

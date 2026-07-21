@@ -11,8 +11,7 @@ import { useMonthlyFollowUps } from '@/features/follow-ups/application/useMonthl
 import type { FollowUpTask } from '@/features/follow-ups/domain/followUpTask.model';
 
 import styles from './AppSidebar.module.css';
-
-const sidebarCalendarAssignedToId = '22222222-2222-4222-8222-222222222222';
+import { getCurrentUserId } from '@/auth/currentUser';
 
 const dayPickerClassNames: Partial<ClassNames> = {
   button_next: styles.calendarNavButton,
@@ -141,7 +140,7 @@ export const SidebarMiniCalendar = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const { data: followUps = [] } = useMonthlyFollowUps({
-    assignedToId: sidebarCalendarAssignedToId,
+    assignedToId: getCurrentUserId(),
     month: visibleMonth,
   });
 
