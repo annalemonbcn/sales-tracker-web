@@ -9,11 +9,35 @@ export type FollowUpActivityType = Extract<
   | 'follow_up_cancelled'
 >;
 
-export type FollowUpActivity = {
+type FollowUpActivityBase = {
   createdAt: string;
   id: string;
-  metadata: unknown;
   notes: string | null;
-  type: FollowUpActivityType;
   user: UserSummary;
 };
+
+type FollowUpCreatedActivity = FollowUpActivityBase & {
+  metadata: { dueDate: string };
+  type: 'follow_up_created';
+};
+
+type FollowUpUpdatedActivity = FollowUpActivityBase & {
+  metadata: { nextDueDate: string; previousDueDate: string };
+  type: 'follow_up_updated';
+};
+
+type FollowUpDoneActivity = FollowUpActivityBase & {
+  metadata: { completedAt: string };
+  type: 'follow_up_done';
+};
+
+type FollowUpCancelledActivity = FollowUpActivityBase & {
+  metadata: { cancelledAt: string };
+  type: 'follow_up_cancelled';
+};
+
+export type FollowUpActivity =
+  | FollowUpCreatedActivity
+  | FollowUpUpdatedActivity
+  | FollowUpDoneActivity
+  | FollowUpCancelledActivity;

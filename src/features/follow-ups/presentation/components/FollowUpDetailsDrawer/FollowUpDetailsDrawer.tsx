@@ -7,6 +7,7 @@ import { FollowUpBusinessDetailsCard } from './FollowUpBusinessDetailsCard';
 import { FollowUpDetailsFooter } from './FollowUpDetailsFooter';
 import { FollowUpDetailsHeader } from './FollowUpDetailsHeader';
 import { FollowUpNotesSection } from './FollowUpNotesSection';
+import { FollowUpTaskDetailsCard } from './FollowUpTaskDetailsCard';
 import { useFollowUpDetailsDrawer } from './useFollowUpDetailsDrawer';
 
 type FollowUpDetailsDrawerProps = {
@@ -31,26 +32,29 @@ export const FollowUpDetailsDrawer = ({
       </Drawer.Header>
 
       <Drawer.Body className={styles.content}>
-        <FollowUpBusinessDetailsCard
+        <FollowUpBusinessDetailsCard followUp={drawer.currentFollowUp} />
+
+        <FollowUpTaskDetailsCard
           assigneeOptions={drawer.assigneeOptions}
-          businessPriorityOptions={drawer.businessPriorityOptions}
           control={drawer.formControl}
           dueDateField={drawer.dueDateField}
           dueDateInputRef={drawer.dueDateInputRef}
           followUp={drawer.currentFollowUp}
+          isEditable={drawer.canEditFollowUp}
           isAssigneeSelectDisabled={drawer.isAssigneeSelectDisabled}
           isDirty={drawer.formState.isDirty}
-          isEditing={drawer.isEditingBusinessDetails}
-          isSaving={drawer.isSavingBusinessDetails}
+          isEditing={drawer.isEditingFollowUpDetails}
+          isSaving={drawer.isSavingFollowUpDetails}
           isValid={drawer.formState.isValid}
-          onCancel={drawer.stopEditingBusinessDetails}
-          onEdit={drawer.editBusinessDetails}
-          onSubmit={drawer.saveBusinessDetails}
+          onCancel={drawer.stopEditingFollowUpDetails}
+          onEdit={drawer.editFollowUpDetails}
+          onSubmit={drawer.saveFollowUpDetails}
         />
 
         <FollowUpNotesSection
           followUp={drawer.currentFollowUp}
           isEditing={drawer.isEditingNotes}
+          isEditable={drawer.canEditFollowUp}
           isSaving={drawer.isSavingNotes}
           notesField={drawer.notesField}
           notesFormState={drawer.notesFormState}
@@ -66,7 +70,7 @@ export const FollowUpDetailsDrawer = ({
         followUp={drawer.currentFollowUp}
         isCancelling={drawer.isCancellingFollowUp}
         isMarkingComplete={drawer.isMarkingComplete}
-        isSavingBusinessDetails={drawer.isSavingBusinessDetails}
+        isSavingFollowUpDetails={drawer.isSavingFollowUpDetails}
         onCancel={drawer.cancelFollowUp}
         onMarkComplete={drawer.markComplete}
         onReschedule={drawer.reschedule}

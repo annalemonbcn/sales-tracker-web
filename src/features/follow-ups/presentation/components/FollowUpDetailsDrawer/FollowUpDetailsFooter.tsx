@@ -10,7 +10,7 @@ type FollowUpDetailsFooterProps = {
   followUp: FollowUpTask;
   isCancelling: boolean;
   isMarkingComplete: boolean;
-  isSavingBusinessDetails: boolean;
+  isSavingFollowUpDetails: boolean;
   onCancel: () => void;
   onMarkComplete: () => void;
   onReschedule: () => void;
@@ -20,7 +20,7 @@ export const FollowUpDetailsFooter = ({
   followUp,
   isCancelling,
   isMarkingComplete,
-  isSavingBusinessDetails,
+  isSavingFollowUpDetails,
   onCancel,
   onMarkComplete,
   onReschedule,
@@ -28,7 +28,7 @@ export const FollowUpDetailsFooter = ({
   <Drawer.Footer className={styles.footer}>
     <Button
       className={styles.primaryAction}
-      disabled={followUp.status === 'done' || isMarkingComplete}
+      disabled={followUp.status !== 'pending' || isMarkingComplete}
       size="lg"
       onClick={onMarkComplete}
     >
@@ -43,7 +43,7 @@ export const FollowUpDetailsFooter = ({
     <div className={styles.secondaryActions}>
       <Button
         className={styles.secondaryAction}
-        disabled={isSavingBusinessDetails}
+        disabled={followUp.status !== 'pending' || isSavingFollowUpDetails}
         variant="secondary"
         onClick={onReschedule}
       >
@@ -53,7 +53,11 @@ export const FollowUpDetailsFooter = ({
 
       <Button
         className={cn(styles.secondaryAction, styles.cancelAction)}
-        disabled={followUp.status === 'cancelled' || isCancelling}
+        disabled={
+          followUp.status === 'done' ||
+          followUp.status === 'cancelled' ||
+          isCancelling
+        }
         variant="secondary"
         onClick={onCancel}
       >

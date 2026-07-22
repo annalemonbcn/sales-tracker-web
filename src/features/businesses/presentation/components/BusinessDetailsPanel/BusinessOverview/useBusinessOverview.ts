@@ -4,11 +4,10 @@ import {
   businessSourceOptions,
   businessStatusOptions,
 } from '../../../lib/businessSelectOptions';
-import { useBusinessAssigneeOptions } from '../../../hooks/useBusinessAssigneeOptions';
+import { useAssigneeOptions } from '@/hooks';
 
 export const useBusinessOverview = () => {
-  const { assigneeOptions, isAssigneeSelectDisabled } =
-    useBusinessAssigneeOptions();
+  const { assigneeOptions, isAssigneeSelectDisabled } = useAssigneeOptions();
 
   return {
     assigneeOptions,

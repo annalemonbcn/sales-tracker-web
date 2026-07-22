@@ -1,5 +1,6 @@
 import { Controller, useForm } from 'react-hook-form';
 
+import { getCurrentUserId } from '@/auth/currentUser';
 import { useCreateBusiness } from '@/features/businesses/application/useCreateBusiness';
 import type { Business } from '@/features/businesses/domain/business.model';
 import {
@@ -8,13 +9,10 @@ import {
   businessSourceOptions,
 } from '@/features/businesses/presentation/lib/businessSelectOptions';
 import { Button, Input, Modal, Select } from '@/shared/ui';
-
-import { useBusinessAssigneeOptions } from '../../hooks/useBusinessAssigneeOptions';
+import { useAssigneeOptions } from '@/hooks';
 
 import styles from './AddBusinessModal.module.css';
 import type { AddBusinessFormValues } from './types';
-
-const temporaryCreatedById = '22222222-2222-4222-8222-222222222222';
 
 type AddBusinessModalProps = {
   isOpen: boolean;
@@ -42,8 +40,7 @@ export const AddBusinessModal = ({
   onSuccess,
 }: AddBusinessModalProps) => {
   const { mutateAsync, isPending } = useCreateBusiness();
-  const { assigneeOptions, isAssigneeSelectDisabled } =
-    useBusinessAssigneeOptions();
+  const { assigneeOptions, isAssigneeSelectDisabled } = useAssigneeOptions();
 
   const {
     control,
@@ -86,7 +83,7 @@ export const AddBusinessModal = ({
       website: mapOptionalTextValue(values.website),
       address: mapOptionalTextValue(values.address),
       notes: mapOptionalTextValue(values.notes),
-      createdById: temporaryCreatedById,
+      createdById: getCurrentUserId(),
       assignedToId: values.assignedToId ?? undefined,
     });
 

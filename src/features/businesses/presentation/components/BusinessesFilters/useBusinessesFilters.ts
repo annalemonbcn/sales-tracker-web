@@ -1,4 +1,5 @@
 import { useDashboardBusinessFilters } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersProvider';
+import { useAssigneeOptions } from '@/hooks';
 import type {
   BusinessStatus,
   Category,
@@ -17,7 +18,6 @@ import {
   businessSourceOptions,
   businessStatusOptions,
 } from '../../lib/businessSelectOptions';
-import { useBusinessAssigneeOptions } from '../../hooks/useBusinessAssigneeOptions';
 
 type UseBusinessesFiltersParams = {
   isBusinessesFetching: boolean;
@@ -31,7 +31,7 @@ export const useBusinessesFilters = ({
   const { filters, updateFilter, clearFilters } = useDashboardBusinessFilters();
 
   const { assigneeOptions, isAssigneeOptionsError, isAssigneeOptionsLoading } =
-    useBusinessAssigneeOptions({ includeUnassigned: true });
+    useAssigneeOptions({ includeUnassigned: true });
 
   const areBaseFiltersDisabled = isBusinessesFetching;
 

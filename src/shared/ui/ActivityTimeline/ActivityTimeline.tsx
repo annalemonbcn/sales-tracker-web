@@ -1,4 +1,4 @@
-import { useState, type ComponentType } from 'react';
+import { useState, type ComponentType, type ReactNode } from 'react';
 
 import { cn } from '@/shared/lib/cn';
 
@@ -12,10 +12,10 @@ export type ActivityTimelineVariant =
   | 'neutral';
 
 export type ActivityTimelineItem = {
-  description: string;
+  description?: ReactNode;
   icon: ComponentType<{ size?: number }>;
   id: string;
-  timestamp: string;
+  timestamp?: string;
   title: string;
   variant: ActivityTimelineVariant;
 };
@@ -73,9 +73,13 @@ export const ActivityTimeline = ({
                 </span>
 
                 <div className={styles.activityContent}>
-                  <strong>{activity.title}</strong>
-                  <p>{activity.timestamp}</p>
-                  <span>{activity.description}</span>
+                  <strong className={styles.activityTitle}>
+                    {activity.title}
+                  </strong>
+                  {activity.timestamp ? <p>{activity.timestamp}</p> : null}
+                  {activity.description ? (
+                    <span>{activity.description}</span>
+                  ) : null}
                 </div>
               </div>
             );

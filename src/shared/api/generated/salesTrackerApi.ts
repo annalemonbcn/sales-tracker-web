@@ -329,6 +329,8 @@ export interface FollowUpTaskDto {
 }
 
 export interface CreateFollowUpRequest {
+  /** Temporary actor ID until authentication is implemented. */
+  userId: string;
   title: string;
   type: FollowUpType;
   assignedToId: string;
@@ -337,9 +339,11 @@ export interface CreateFollowUpRequest {
 }
 
 /**
- * At least one field is required. Only title, assignedToId, dueDate and note can be updated from this endpoint.
+ * userId identifies the actor temporarily. At least one of title, assignedToId, dueDate or note is also required.
  */
 export interface UpdateFollowUpRequest {
+  /** Temporary actor ID until authentication is implemented. */
+  userId: string;
   title?: string;
   assignedToId?: string;
   dueDate?: string;
@@ -456,6 +460,11 @@ export type PatchFollowUpsFollowUpId200 = {
   data: PatchFollowUpsFollowUpId200Data;
 };
 
+export type PatchFollowUpsFollowUpIdDoneBody = {
+  /** Temporary actor ID until authentication is implemented. */
+  userId: string;
+};
+
 export type PatchFollowUpsFollowUpIdDone200Data = {
   followUp?: FollowUpDto;
 };
@@ -463,6 +472,11 @@ export type PatchFollowUpsFollowUpIdDone200Data = {
 export type PatchFollowUpsFollowUpIdDone200 = {
   success: boolean;
   data: PatchFollowUpsFollowUpIdDone200Data;
+};
+
+export type PatchFollowUpsFollowUpIdCancelBody = {
+  /** Temporary actor ID until authentication is implemented. */
+  userId: string;
 };
 
 export type PatchFollowUpsFollowUpIdCancel200Data = {
@@ -642,12 +656,18 @@ export const getSalesTrackerAPI = () => {
    */
   const patchFollowUpsFollowUpIdDone = (
     followUpId: string,
+    patchFollowUpsFollowUpIdDoneBody: PatchFollowUpsFollowUpIdDoneBody,
     options?: SecondParameter<
       typeof orvalMutator<PatchFollowUpsFollowUpIdDone200>
     >,
   ) => {
     return orvalMutator<PatchFollowUpsFollowUpIdDone200>(
-      { url: `/follow-ups/${followUpId}/done`, method: 'PATCH' },
+      {
+        url: `/follow-ups/${followUpId}/done`,
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        data: patchFollowUpsFollowUpIdDoneBody,
+      },
       options,
     );
   };
@@ -658,12 +678,18 @@ export const getSalesTrackerAPI = () => {
    */
   const patchFollowUpsFollowUpIdCancel = (
     followUpId: string,
+    patchFollowUpsFollowUpIdCancelBody: PatchFollowUpsFollowUpIdCancelBody,
     options?: SecondParameter<
       typeof orvalMutator<PatchFollowUpsFollowUpIdCancel200>
     >,
   ) => {
     return orvalMutator<PatchFollowUpsFollowUpIdCancel200>(
-      { url: `/follow-ups/${followUpId}/cancel`, method: 'PATCH' },
+      {
+        url: `/follow-ups/${followUpId}/cancel`,
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        data: patchFollowUpsFollowUpIdCancelBody,
+      },
       options,
     );
   };
