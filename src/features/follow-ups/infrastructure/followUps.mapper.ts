@@ -51,6 +51,47 @@ const isFollowUpActivityType = (
 ): type is FollowUpActivityType =>
   followUpActivityTypes.has(type as FollowUpActivityType);
 
+type FollowUpActivityBase = Pick<
+  FollowUpActivity,
+  'createdAt' | 'id' | 'notes' | 'user'
+>;
+
+const followUpActivityMappers: Record<
+  FollowUpActivityType,
+  (
+    activity: ActivityDto,
+    baseActivity: FollowUpActivityBase,
+  ) => FollowUpActivity
+> = {
+  follow_up_created: (activity, baseActivity) => ({
+    ...baseActivity,
+    metadata: { dueDate: getActivityMetadataDate(activity, 'dueDate') },
+    type: 'follow_up_created',
+  }),
+  follow_up_updated: (activity, baseActivity) => ({
+    ...baseActivity,
+    metadata: {
+      nextDueDate: getActivityMetadataDate(activity, 'nextDueDate'),
+      previousDueDate: getActivityMetadataDate(activity, 'previousDueDate'),
+    },
+    type: 'follow_up_updated',
+  }),
+  follow_up_done: (activity, baseActivity) => ({
+    ...baseActivity,
+    metadata: {
+      completedAt: getActivityMetadataDate(activity, 'completedAt'),
+    },
+    type: 'follow_up_done',
+  }),
+  follow_up_cancelled: (activity, baseActivity) => ({
+    ...baseActivity,
+    metadata: {
+      cancelledAt: getActivityMetadataDate(activity, 'cancelledAt'),
+    },
+    type: 'follow_up_cancelled',
+  }),
+};
+
 const mapFollowUpActivityDtoToDomain = (
   activity: ActivityDto,
 ): FollowUpActivity => {
@@ -65,39 +106,7 @@ const mapFollowUpActivityDtoToDomain = (
     user: mapUserSummaryDtoToDomain(activity.user),
   };
 
-  switch (activity.type) {
-    case 'follow_up_created':
-      return {
-        ...baseActivity,
-        metadata: { dueDate: getActivityMetadataDate(activity, 'dueDate') },
-        type: activity.type,
-      };
-    case 'follow_up_updated':
-      return {
-        ...baseActivity,
-        metadata: {
-          nextDueDate: getActivityMetadataDate(activity, 'nextDueDate'),
-          previousDueDate: getActivityMetadataDate(activity, 'previousDueDate'),
-        },
-        type: activity.type,
-      };
-    case 'follow_up_done':
-      return {
-        ...baseActivity,
-        metadata: {
-          completedAt: getActivityMetadataDate(activity, 'completedAt'),
-        },
-        type: activity.type,
-      };
-    case 'follow_up_cancelled':
-      return {
-        ...baseActivity,
-        metadata: {
-          cancelledAt: getActivityMetadataDate(activity, 'cancelledAt'),
-        },
-        type: activity.type,
-      };
-  }
+  return followUpActivityMappers[activity.type](activity, baseActivity);
 };
 
 const getActivityMetadataDate = (
