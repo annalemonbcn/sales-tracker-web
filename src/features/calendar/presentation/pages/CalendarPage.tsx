@@ -1,5 +1,8 @@
 import { PageHeader } from '@/shared/ui';
 
+import { CalendarFilters } from '../components/CalendarFilters/CalendarFilters';
+import { MonthCalendar } from '../components/MonthCalendar/MonthCalendar';
+
 import styles from './CalendarPage.module.css';
 
 export const CalendarPage = () => (
@@ -9,8 +12,9 @@ export const CalendarPage = () => (
       title="Calendar"
     />
 
-    <main className={styles.calendar}>
-      <h1>Calendar Here</h1>
+    <main className={styles.content}>
+      <CalendarFilters />
+      <MonthCalendar />
     </main>
   </div>
 );

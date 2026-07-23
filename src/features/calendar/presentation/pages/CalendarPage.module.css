@@ -7,11 +7,11 @@
   gap: 1.5rem;
 }
 
-.calendar {
+.content {
+  display: flex;
   min-height: 0;
   flex: 1;
-}
-
-.calendar h1 {
-  margin: 0;
+  flex-direction: column;
+  gap: 1.25rem;
+  overflow: auto;
 }
