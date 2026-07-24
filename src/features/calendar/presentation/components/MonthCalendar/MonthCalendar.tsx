@@ -26,6 +26,7 @@ import {
 } from 'react-day-picker';
 
 import { useFollowUps } from '@/features/follow-ups/application/useFollowUps';
+import type { FollowUpFilters } from '@/features/follow-ups/domain/followUpFilters.model';
 import type {
   FollowUpTask,
   FollowUpTaskType,
@@ -227,7 +228,11 @@ const CalendarDayCell = ({
   </Day>
 );
 
-export const MonthCalendar = () => {
+type MonthCalendarProps = {
+  filters: FollowUpFilters;
+};
+
+export const MonthCalendar = ({ filters }: MonthCalendarProps) => {
   const today = useMemo(() => new Date(), []);
   const [visibleMonth, setVisibleMonth] = useState(() => startOfMonth(today));
   const [openPopoverDate, setOpenPopoverDate] = useState<string | null>(null);
@@ -236,6 +241,7 @@ export const MonthCalendar = () => {
   );
   const apiFilters = useMemo(
     () => ({
+      ...filters,
       dueAfter: startOfWeek(startOfMonth(visibleMonth), {
         weekStartsOn: 1,
       }).toISOString(),
@@ -243,7 +249,7 @@ export const MonthCalendar = () => {
         weekStartsOn: 1,
       }).toISOString(),
     }),
-    [visibleMonth],
+    [filters, visibleMonth],
   );
   const { data: followUps = [] } = useFollowUps(apiFilters);
   const followUpsByDate = useMemo(
