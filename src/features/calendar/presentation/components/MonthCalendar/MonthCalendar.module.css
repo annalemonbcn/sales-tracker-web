@@ -220,6 +220,7 @@
   overflow: hidden;
   border: 0.0625rem solid;
   border-radius: var(--radius-sm);
+  cursor: pointer;
   text-align: left;
 }
 
@@ -367,6 +368,7 @@
   padding: 0.5rem 0.625rem;
   border: 0.0625rem solid;
   border-radius: var(--radius-sm);
+  cursor: pointer;
   text-align: left;
 }
 

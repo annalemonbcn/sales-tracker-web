@@ -30,6 +30,7 @@ import type {
   FollowUpTask,
   FollowUpTaskType,
 } from '@/features/follow-ups/domain/followUpTask.model';
+import { FollowUpDetailsDrawer } from '@/features/follow-ups/presentation/components/FollowUpDetailsDrawer';
 import { cn } from '@/shared/lib/cn';
 import { Button, IconButton } from '@/shared/ui';
 
@@ -101,12 +102,17 @@ const groupFollowUpsByDate = (
 
 type CalendarDayButtonProps = DayButtonProps & {
   followUps: FollowUpTask[];
+  onFollowUpClick: (
+    followUp: FollowUpTask,
+    event: ReactMouseEvent<HTMLSpanElement>,
+  ) => void;
   onMoreClick: (event: ReactMouseEvent<HTMLSpanElement>) => void;
 };
 
 const CalendarDayButton = ({
   children,
   followUps,
+  onFollowUpClick,
   onMoreClick,
   ...props
 }: CalendarDayButtonProps) => {
@@ -127,6 +133,9 @@ const CalendarDayButton = ({
                 followUpTypeClassNameMap[followUp.type],
               )}
               key={followUp.id}
+              onClick={(event) => {
+                onFollowUpClick(followUp, event);
+              }}
             >
               <span className={styles.followUpTitle}>
                 {format(new Date(followUp.dueDate), 'HH:mm')} {followUp.title}
@@ -151,6 +160,7 @@ const CalendarDayButton = ({
 type CalendarDayCellProps = DayProps & {
   followUps: FollowUpTask[];
   isPopoverOpen: boolean;
+  onFollowUpClick: (followUp: FollowUpTask) => void;
   onPopoverClose: () => void;
 };
 
@@ -158,6 +168,7 @@ const CalendarDayCell = ({
   children,
   followUps,
   isPopoverOpen,
+  onFollowUpClick,
   onPopoverClose,
   ...props
 }: CalendarDayCellProps) => (
@@ -192,6 +203,17 @@ const CalendarDayCell = ({
                 followUpTypeClassNameMap[followUp.type],
               )}
               key={followUp.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                onFollowUpClick(followUp);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  onFollowUpClick(followUp);
+                }
+              }}
             >
               <strong>
                 {format(new Date(followUp.dueDate), 'HH:mm')} {followUp.title}
@@ -209,6 +231,9 @@ export const MonthCalendar = () => {
   const today = useMemo(() => new Date(), []);
   const [visibleMonth, setVisibleMonth] = useState(() => startOfMonth(today));
   const [openPopoverDate, setOpenPopoverDate] = useState<string | null>(null);
+  const [selectedFollowUp, setSelectedFollowUp] = useState<FollowUpTask | null>(
+    null,
+  );
   const apiFilters = useMemo(
     () => ({
       dueAfter: startOfWeek(startOfMonth(visibleMonth), {
@@ -230,6 +255,11 @@ export const MonthCalendar = () => {
     <CalendarDayButton
       {...props}
       followUps={followUpsByDate.get(getDateKey(props.day.date)) ?? []}
+      onFollowUpClick={(followUp, event) => {
+        event.stopPropagation();
+        setSelectedFollowUp(followUp);
+        setOpenPopoverDate(null);
+      }}
       onMoreClick={(event) => {
         event.stopPropagation();
         setOpenPopoverDate(getDateKey(props.day.date));
@@ -244,6 +274,10 @@ export const MonthCalendar = () => {
         {...props}
         followUps={followUpsByDate.get(dateKey) ?? []}
         isPopoverOpen={openPopoverDate === dateKey}
+        onFollowUpClick={(followUp) => {
+          setSelectedFollowUp(followUp);
+          setOpenPopoverDate(null);
+        }}
         onPopoverClose={() => {
           setOpenPopoverDate(null);
         }}
@@ -279,81 +313,92 @@ export const MonthCalendar = () => {
   };
 
   return (
-    <section className={styles.calendarCard} aria-label="Monthly calendar">
-      <div className={styles.toolbar}>
-        <div className={styles.navigation}>
-          <IconButton
-            label="Previous month"
-            onClick={() => {
-              setVisibleMonth((month) => addMonths(month, -1));
-            }}
-            variant="secondary"
-          >
-            <ChevronLeft size={18} />
-          </IconButton>
+    <>
+      <section className={styles.calendarCard} aria-label="Monthly calendar">
+        <div className={styles.toolbar}>
+          <div className={styles.navigation}>
+            <IconButton
+              label="Previous month"
+              onClick={() => {
+                setVisibleMonth((month) => addMonths(month, -1));
+              }}
+              variant="secondary"
+            >
+              <ChevronLeft size={18} />
+            </IconButton>
 
-          <IconButton
-            label="Next month"
-            onClick={() => {
-              setVisibleMonth((month) => addMonths(month, 1));
-            }}
-            variant="secondary"
-          >
-            <ChevronRight size={18} />
-          </IconButton>
+            <IconButton
+              label="Next month"
+              onClick={() => {
+                setVisibleMonth((month) => addMonths(month, 1));
+              }}
+              variant="secondary"
+            >
+              <ChevronRight size={18} />
+            </IconButton>
 
-          <Button
-            className={styles.todayButton}
-            size="sm"
-            variant="secondary"
-            onClick={showToday}
-          >
-            Today
-          </Button>
+            <Button
+              className={styles.todayButton}
+              size="sm"
+              variant="secondary"
+              onClick={showToday}
+            >
+              Today
+            </Button>
+          </div>
+
+          <h2>{format(visibleMonth, 'MMMM yyyy')}</h2>
+
+          <label className={styles.monthSelect}>
+            <span>Month</span>
+            <select
+              aria-label="Select month"
+              value={getMonth(visibleMonth)}
+              onChange={(event) => {
+                setVisibleMonth((month) =>
+                  startOfMonth(setMonth(month, Number(event.target.value))),
+                );
+              }}
+            >
+              {monthOptions.map((month) => (
+                <option key={month.value} value={month.value}>
+                  {month.label} {getYear(visibleMonth)}
+                </option>
+              ))}
+            </select>
+            <ChevronDown aria-hidden="true" size={16} />
+          </label>
         </div>
 
-        <h2>{format(visibleMonth, 'MMMM yyyy')}</h2>
+        <DayPicker
+          classNames={dayPickerClassNames}
+          components={{ Day: renderDay, DayButton: renderDayButton }}
+          hideNavigation
+          mode="single"
+          month={visibleMonth}
+          onDayClick={(day, modifiers) => {
+            if (modifiers.outside) {
+              setVisibleMonth(startOfMonth(day));
+              setOpenPopoverDate(null);
+            }
+          }}
+          onMonthChange={setVisibleMonth}
+          onSelect={() => undefined}
+          selected={undefined}
+          showOutsideDays
+          today={today}
+          weekStartsOn={1}
+        />
+      </section>
 
-        <label className={styles.monthSelect}>
-          <span>Month</span>
-          <select
-            aria-label="Select month"
-            value={getMonth(visibleMonth)}
-            onChange={(event) => {
-              setVisibleMonth((month) =>
-                startOfMonth(setMonth(month, Number(event.target.value))),
-              );
-            }}
-          >
-            {monthOptions.map((month) => (
-              <option key={month.value} value={month.value}>
-                {month.label} {getYear(visibleMonth)}
-              </option>
-            ))}
-          </select>
-          <ChevronDown aria-hidden="true" size={16} />
-        </label>
-      </div>
-
-      <DayPicker
-        classNames={dayPickerClassNames}
-        components={{ Day: renderDay, DayButton: renderDayButton }}
-        hideNavigation
-        mode="single"
-        month={visibleMonth}
-        onDayClick={(day, modifiers) => {
-          if (modifiers.outside) {
-            setVisibleMonth(startOfMonth(day));
-            setOpenPopoverDate(null);
-          }
-        }}
-        onMonthChange={setVisibleMonth}
-        onSelect={() => undefined}
-        selected={undefined}
-        showOutsideDays
-        today={today}
-        weekStartsOn={1}
-      />
-    </section>
+      {selectedFollowUp ? (
+        <FollowUpDetailsDrawer
+          followUp={selectedFollowUp}
+          onClose={() => {
+            setSelectedFollowUp(null);
+          }}
+        />
+      ) : null}
+    </>
   );
 };
