@@ -1,20 +1,36 @@
 import {
   addMonths,
+  endOfMonth,
+  endOfWeek,
   format,
   getMonth,
   getYear,
   setMonth,
   startOfMonth,
+  startOfWeek,
 } from 'date-fns';
-import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { ChevronDown, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import {
+  type MouseEvent as ReactMouseEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {
+  Day,
   DayButton,
   DayPicker,
   type ClassNames,
   type DayButtonProps,
+  type DayProps,
 } from 'react-day-picker';
 
+import { useFollowUps } from '@/features/follow-ups/application/useFollowUps';
+import type {
+  FollowUpTask,
+  FollowUpTaskType,
+} from '@/features/follow-ups/domain/followUpTask.model';
+import { cn } from '@/shared/lib/cn';
 import { Button, IconButton } from '@/shared/ui';
 
 import styles from './MonthCalendar.module.css';
@@ -41,15 +57,222 @@ const dayPickerClassNames: Partial<ClassNames> = {
   weeks: styles.weeks,
 };
 
-const CalendarDayButton = ({ children, ...props }: DayButtonProps) => (
-  <DayButton {...props}>
-    <span className={styles.dayNumber}>{children}</span>
-  </DayButton>
+const followUpTypeClassNameMap: Record<FollowUpTaskType, string> = {
+  call: styles.call,
+  dossier: styles.dossier,
+  email: styles.email,
+  instagram_message: styles.instagramMessage,
+  meeting: styles.meeting,
+  other: styles.other,
+  proposal: styles.proposal,
+  visit: styles.visit,
+};
+
+const getDateKey = (date: Date) => format(date, 'yyyy-MM-dd');
+
+const groupFollowUpsByDate = (
+  followUps: FollowUpTask[],
+): Map<string, FollowUpTask[]> => {
+  const groupedFollowUps = new Map<string, FollowUpTask[]>();
+
+  followUps.forEach((followUp) => {
+    const dueDate = new Date(followUp.dueDate);
+
+    if (Number.isNaN(dueDate.getTime())) {
+      return;
+    }
+
+    const dateKey = getDateKey(dueDate);
+    const dateFollowUps = groupedFollowUps.get(dateKey) ?? [];
+    dateFollowUps.push(followUp);
+    groupedFollowUps.set(dateKey, dateFollowUps);
+  });
+
+  groupedFollowUps.forEach((dateFollowUps) => {
+    dateFollowUps.sort(
+      (firstFollowUp, secondFollowUp) =>
+        new Date(firstFollowUp.dueDate).getTime() -
+        new Date(secondFollowUp.dueDate).getTime(),
+    );
+  });
+
+  return groupedFollowUps;
+};
+
+type CalendarDayButtonProps = DayButtonProps & {
+  followUps: FollowUpTask[];
+  onMoreClick: (event: ReactMouseEvent<HTMLSpanElement>) => void;
+};
+
+const CalendarDayButton = ({
+  children,
+  followUps,
+  onMoreClick,
+  ...props
+}: CalendarDayButtonProps) => {
+  const visibleFollowUps =
+    followUps.length > 2 ? followUps.slice(0, 1) : followUps;
+  const hiddenFollowUpsCount = followUps.length - visibleFollowUps.length;
+
+  return (
+    <DayButton {...props}>
+      <span className={styles.dayNumber}>{children}</span>
+
+      {visibleFollowUps.length > 0 ? (
+        <span className={styles.followUps}>
+          {visibleFollowUps.map((followUp) => (
+            <span
+              className={cn(
+                styles.followUp,
+                followUpTypeClassNameMap[followUp.type],
+              )}
+              key={followUp.id}
+            >
+              <span className={styles.followUpTitle}>
+                {format(new Date(followUp.dueDate), 'HH:mm')} {followUp.title}
+              </span>
+              <span className={styles.followUpBusiness}>
+                {followUp.business.name}
+              </span>
+            </span>
+          ))}
+
+          {hiddenFollowUpsCount > 0 ? (
+            <span className={styles.moreFollowUps} onClick={onMoreClick}>
+              +{hiddenFollowUpsCount} more
+            </span>
+          ) : null}
+        </span>
+      ) : null}
+    </DayButton>
+  );
+};
+
+type CalendarDayCellProps = DayProps & {
+  followUps: FollowUpTask[];
+  isPopoverOpen: boolean;
+  onPopoverClose: () => void;
+};
+
+const CalendarDayCell = ({
+  children,
+  followUps,
+  isPopoverOpen,
+  onPopoverClose,
+  ...props
+}: CalendarDayCellProps) => (
+  <Day {...props}>
+    {children}
+
+    {isPopoverOpen ? (
+      <div
+        className={styles.followUpsPopover}
+        role="dialog"
+        aria-label={`${format(props.day.date, 'MMMM d')} follow-ups`}
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
+      >
+        <div className={styles.popoverHeader}>
+          <strong>{format(props.day.date, 'MMM d')} follow-ups</strong>
+          <button
+            aria-label="Close follow-ups"
+            type="button"
+            onClick={onPopoverClose}
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        <div className={styles.popoverList}>
+          {followUps.map((followUp) => (
+            <div
+              className={cn(
+                styles.popoverFollowUp,
+                followUpTypeClassNameMap[followUp.type],
+              )}
+              key={followUp.id}
+            >
+              <strong>
+                {format(new Date(followUp.dueDate), 'HH:mm')} {followUp.title}
+              </strong>
+              <span>{followUp.business.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : null}
+  </Day>
 );
 
 export const MonthCalendar = () => {
   const today = useMemo(() => new Date(), []);
   const [visibleMonth, setVisibleMonth] = useState(() => startOfMonth(today));
+  const [openPopoverDate, setOpenPopoverDate] = useState<string | null>(null);
+  const apiFilters = useMemo(
+    () => ({
+      dueAfter: startOfWeek(startOfMonth(visibleMonth), {
+        weekStartsOn: 1,
+      }).toISOString(),
+      dueBefore: endOfWeek(endOfMonth(visibleMonth), {
+        weekStartsOn: 1,
+      }).toISOString(),
+    }),
+    [visibleMonth],
+  );
+  const { data: followUps = [] } = useFollowUps(apiFilters);
+  const followUpsByDate = useMemo(
+    () => groupFollowUpsByDate(followUps),
+    [followUps],
+  );
+
+  const renderDayButton = (props: DayButtonProps) => (
+    <CalendarDayButton
+      {...props}
+      followUps={followUpsByDate.get(getDateKey(props.day.date)) ?? []}
+      onMoreClick={(event) => {
+        event.stopPropagation();
+        setOpenPopoverDate(getDateKey(props.day.date));
+      }}
+    />
+  );
+  const renderDay = (props: DayProps) => {
+    const dateKey = getDateKey(props.day.date);
+
+    return (
+      <CalendarDayCell
+        {...props}
+        followUps={followUpsByDate.get(dateKey) ?? []}
+        isPopoverOpen={openPopoverDate === dateKey}
+        onPopoverClose={() => {
+          setOpenPopoverDate(null);
+        }}
+      />
+    );
+  };
+
+  useEffect(() => {
+    if (!openPopoverDate) {
+      return;
+    }
+
+    const closePopover = () => {
+      setOpenPopoverDate(null);
+    };
+    const closePopoverOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closePopover();
+      }
+    };
+
+    document.addEventListener('click', closePopover);
+    document.addEventListener('keydown', closePopoverOnEscape);
+
+    return () => {
+      document.removeEventListener('click', closePopover);
+      document.removeEventListener('keydown', closePopoverOnEscape);
+    };
+  }, [openPopoverDate]);
 
   const showToday = () => {
     setVisibleMonth(startOfMonth(today));
@@ -114,10 +337,16 @@ export const MonthCalendar = () => {
 
       <DayPicker
         classNames={dayPickerClassNames}
-        components={{ DayButton: CalendarDayButton }}
+        components={{ Day: renderDay, DayButton: renderDayButton }}
         hideNavigation
         mode="single"
         month={visibleMonth}
+        onDayClick={(day, modifiers) => {
+          if (modifiers.outside) {
+            setVisibleMonth(startOfMonth(day));
+            setOpenPopoverDate(null);
+          }
+        }}
         onMonthChange={setVisibleMonth}
         onSelect={() => undefined}
         selected={undefined}

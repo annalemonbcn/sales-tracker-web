@@ -13,5 +13,5 @@
   flex: 1;
   flex-direction: column;
   gap: 1.25rem;
-  overflow: auto;
+  overflow: hidden;
 }
