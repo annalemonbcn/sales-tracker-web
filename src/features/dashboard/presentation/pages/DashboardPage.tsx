@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { AddBusinessModal } from '@/features/businesses/presentation/components/AddBusinessModal';
 import { BusinessDetailsDrawer } from '@/features/businesses/presentation/components/BusinessDetailsDrawer';
 import { BusinessesSection } from '@/features/businesses/presentation/components/BusinessesSection';
-import { useDashboardSelectedBusiness } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessProvider';
+import { useDashboardSelectedBusiness } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessContext';
 import { PageHeader } from '@/shared/ui';
 
 import { DashboardMetricsSection } from '../components/DashboardMetricsSection';

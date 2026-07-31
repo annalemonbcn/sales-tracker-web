@@ -39,5 +39,5 @@ export const businessesClient = {
     salesTrackerApi.getBusinesses(mapBusinessFiltersToParams(filters)),
   create: async (
     data: CreateBusinessRequestDto,
-  ): Promise<CreateBusinessResponseDto> => salesTrackerApi.postBusinesses(data),
+  ): Promise<CreateBusinessResponseDto> => salesTrackerApi.createBusiness(data),
 };

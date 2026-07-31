@@ -1,4 +1,4 @@
-import { createContext, useContext, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import type { BusinessFilters } from '@/features/businesses/domain/businessFilters.model';
 import {
@@ -7,19 +7,7 @@ import {
   mapSearchToBusinessFilters,
 } from '@/features/businesses/domain/businessFilters.model';
 import { Route } from '@/routes/dashboard';
-
-type DashboardBusinessFiltersContextValue = {
-  filters: BusinessFilters;
-  updateFilter: <Key extends keyof BusinessFilters>(
-    key: Key,
-    value: BusinessFilters[Key],
-  ) => void;
-  updateFilters: (filters: BusinessFilters) => void;
-  clearFilters: () => void;
-};
-
-const DashboardBusinessFiltersContext =
-  createContext<DashboardBusinessFiltersContextValue | null>(null);
+import { DashboardBusinessFiltersContext } from './DashboardBusinessFiltersContext';
 
 type DashboardBusinessFiltersProviderProps = {
   children: ReactNode;
@@ -65,16 +53,4 @@ export const DashboardBusinessFiltersProvider = ({
       {children}
     </DashboardBusinessFiltersContext.Provider>
   );
-};
-
-export const useDashboardBusinessFilters = () => {
-  const context = useContext(DashboardBusinessFiltersContext);
-
-  if (!context) {
-    throw new Error(
-      'useDashboardBusinessFilters must be used within DashboardBusinessFiltersProvider',
-    );
-  }
-
-  return context;
 };

@@ -1,21 +1,21 @@
 import type {
+  CancelFollowUp200,
+  CancelFollowUpBody,
+  CreateFollowUp201,
   CreateFollowUpRequest,
   GetFollowUps200,
-  PatchFollowUpsFollowUpId200,
-  PatchFollowUpsFollowUpIdCancelBody,
-  PatchFollowUpsFollowUpIdCancel200,
-  PatchFollowUpsFollowUpIdDoneBody,
-  PatchFollowUpsFollowUpIdDone200,
-  PostBusinessesBusinessIdFollowUps201,
+  MarkFollowUpDone200,
+  MarkFollowUpDoneBody,
+  UpdateFollowUp200,
   UpdateFollowUpRequest,
 } from '@/shared/api/generated/salesTrackerApi';
 
 export type CreateFollowUpRequestDto = CreateFollowUpRequest;
-export type CreateFollowUpResponseDto = PostBusinessesBusinessIdFollowUps201;
+export type CreateFollowUpResponseDto = CreateFollowUp201;
 export type GetFollowUpsResponseDto = GetFollowUps200;
-export type CancelFollowUpRequestDto = PatchFollowUpsFollowUpIdCancelBody;
-export type CancelFollowUpResponseDto = PatchFollowUpsFollowUpIdCancel200;
-export type MarkFollowUpDoneRequestDto = PatchFollowUpsFollowUpIdDoneBody;
-export type MarkFollowUpDoneResponseDto = PatchFollowUpsFollowUpIdDone200;
+export type CancelFollowUpRequestDto = CancelFollowUpBody;
+export type CancelFollowUpResponseDto = CancelFollowUp200;
+export type MarkFollowUpDoneRequestDto = MarkFollowUpDoneBody;
+export type MarkFollowUpDoneResponseDto = MarkFollowUpDone200;
 export type UpdateFollowUpRequestDto = UpdateFollowUpRequest;
-export type UpdateFollowUpResponseDto = PatchFollowUpsFollowUpId200;
+export type UpdateFollowUpResponseDto = UpdateFollowUp200;

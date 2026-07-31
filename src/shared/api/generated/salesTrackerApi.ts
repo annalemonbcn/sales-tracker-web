@@ -367,6 +367,26 @@ export interface ErrorResponse {
   error: ErrorResponseError;
 }
 
+export type CreateFollowUpBody = CreateFollowUpRequest;
+
+export type UpdateFollowUpBody = UpdateFollowUpRequest;
+
+export type MarkFollowUpDoneBody = {
+  /** Temporary actor ID until authentication is implemented. */
+  userId: string;
+};
+
+export type CancelFollowUpBody = {
+  /** Temporary actor ID until authentication is implemented. */
+  userId: string;
+};
+
+export type CreateBusinessBody = CreateBusinessRequest;
+
+export type UpdateBusinessBody = UpdateBusinessRequest;
+
+export type CreateActivityBody = CreateActivityRequest;
+
 export type GetUsers200Data = {
   users?: UserDto[];
 };
@@ -374,6 +394,24 @@ export type GetUsers200Data = {
 export type GetUsers200 = {
   success: boolean;
   data: GetUsers200Data;
+};
+
+export type GetBusinessFollowUps200Data = {
+  followUps?: FollowUpDto[];
+};
+
+export type GetBusinessFollowUps200 = {
+  success: boolean;
+  data: GetBusinessFollowUps200Data;
+};
+
+export type CreateFollowUp201Data = {
+  followUp?: FollowUpDto;
+};
+
+export type CreateFollowUp201 = {
+  success: boolean;
+  data: CreateFollowUp201Data;
 };
 
 export type GetFollowUpsParams = {
@@ -451,59 +489,31 @@ export type GetFollowUps200 = {
   data: GetFollowUps200Data;
 };
 
-export type PatchFollowUpsFollowUpId200Data = {
+export type UpdateFollowUp200Data = {
   followUp?: FollowUpDto;
 };
 
-export type PatchFollowUpsFollowUpId200 = {
+export type UpdateFollowUp200 = {
   success: boolean;
-  data: PatchFollowUpsFollowUpId200Data;
+  data: UpdateFollowUp200Data;
 };
 
-export type PatchFollowUpsFollowUpIdDoneBody = {
-  /** Temporary actor ID until authentication is implemented. */
-  userId: string;
-};
-
-export type PatchFollowUpsFollowUpIdDone200Data = {
+export type MarkFollowUpDone200Data = {
   followUp?: FollowUpDto;
 };
 
-export type PatchFollowUpsFollowUpIdDone200 = {
+export type MarkFollowUpDone200 = {
   success: boolean;
-  data: PatchFollowUpsFollowUpIdDone200Data;
+  data: MarkFollowUpDone200Data;
 };
 
-export type PatchFollowUpsFollowUpIdCancelBody = {
-  /** Temporary actor ID until authentication is implemented. */
-  userId: string;
-};
-
-export type PatchFollowUpsFollowUpIdCancel200Data = {
+export type CancelFollowUp200Data = {
   followUp?: FollowUpDto;
 };
 
-export type PatchFollowUpsFollowUpIdCancel200 = {
+export type CancelFollowUp200 = {
   success: boolean;
-  data: PatchFollowUpsFollowUpIdCancel200Data;
-};
-
-export type GetBusinessesBusinessIdFollowUps200Data = {
-  followUps?: FollowUpDto[];
-};
-
-export type GetBusinessesBusinessIdFollowUps200 = {
-  success: boolean;
-  data: GetBusinessesBusinessIdFollowUps200Data;
-};
-
-export type PostBusinessesBusinessIdFollowUps201Data = {
-  followUp?: FollowUpDto;
-};
-
-export type PostBusinessesBusinessIdFollowUps201 = {
-  success: boolean;
-  data: PostBusinessesBusinessIdFollowUps201Data;
+  data: CancelFollowUp200Data;
 };
 
 export type GetDashboardSummary200DataMetrics = {
@@ -558,49 +568,49 @@ export type GetBusinesses200 = {
   data: GetBusinesses200Data;
 };
 
-export type PostBusinesses201Data = {
+export type CreateBusiness201Data = {
   business?: BusinessDto;
 };
 
-export type PostBusinesses201 = {
+export type CreateBusiness201 = {
   success: boolean;
-  data: PostBusinesses201Data;
+  data: CreateBusiness201Data;
 };
 
-export type GetBusinessesBusinessId200Data = {
+export type GetBusiness200Data = {
   business: BusinessDetailDto;
 };
 
-export type GetBusinessesBusinessId200 = {
+export type GetBusiness200 = {
   success: boolean;
-  data: GetBusinessesBusinessId200Data;
+  data: GetBusiness200Data;
 };
 
-export type PatchBusinessesBusinessId200Data = {
+export type UpdateBusiness200Data = {
   business?: BusinessDetailDto;
 };
 
-export type PatchBusinessesBusinessId200 = {
+export type UpdateBusiness200 = {
   success: boolean;
-  data: PatchBusinessesBusinessId200Data;
+  data: UpdateBusiness200Data;
 };
 
-export type GetBusinessesBusinessIdActivities200Data = {
+export type GetBusinessActivities200Data = {
   activities?: ActivityDto[];
 };
 
-export type GetBusinessesBusinessIdActivities200 = {
+export type GetBusinessActivities200 = {
   success: boolean;
-  data: GetBusinessesBusinessIdActivities200Data;
+  data: GetBusinessActivities200Data;
 };
 
-export type PostBusinessesBusinessIdActivities201Data = {
+export type CreateActivity201Data = {
   activity?: ActivityDto;
 };
 
-export type PostBusinessesBusinessIdActivities201 = {
+export type CreateActivity201 = {
   success: boolean;
-  data: PostBusinessesBusinessIdActivities201Data;
+  data: CreateActivity201Data;
 };
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -614,6 +624,40 @@ export const getSalesTrackerAPI = () => {
     options?: SecondParameter<typeof orvalMutator<GetUsers200>>,
   ) => {
     return orvalMutator<GetUsers200>({ url: `/users`, method: 'GET' }, options);
+  };
+
+  /**
+   * Returns follow-ups linked to a specific business.
+   * @summary Get business follow-ups
+   */
+  const getBusinessFollowUps = (
+    businessId: string,
+    options?: SecondParameter<typeof orvalMutator<GetBusinessFollowUps200>>,
+  ) => {
+    return orvalMutator<GetBusinessFollowUps200>(
+      { url: `/businesses/${businessId}/follow-ups`, method: 'GET' },
+      options,
+    );
+  };
+
+  /**
+   * Creates a follow-up task for a specific business. It also creates a follow_up_created activity and updates business.nextFollowUpAt when the new task is the nearest pending follow-up.
+   * @summary Create business follow-up
+   */
+  const createFollowUp = (
+    businessId: string,
+    createFollowUpBody: CreateFollowUpBody,
+    options?: SecondParameter<typeof orvalMutator<CreateFollowUp201>>,
+  ) => {
+    return orvalMutator<CreateFollowUp201>(
+      {
+        url: `/businesses/${businessId}/follow-ups`,
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        data: createFollowUpBody,
+      },
+      options,
+    );
   };
 
   /**
@@ -634,17 +678,17 @@ export const getSalesTrackerAPI = () => {
    * Updates a follow-up task. Only title, assignedToId, dueDate and note can be updated. Updating dueDate creates a follow_up_updated activity and may recalculate business.nextFollowUpAt.
    * @summary Update follow-up
    */
-  const patchFollowUpsFollowUpId = (
+  const updateFollowUp = (
     followUpId: string,
-    updateFollowUpRequest: UpdateFollowUpRequest,
-    options?: SecondParameter<typeof orvalMutator<PatchFollowUpsFollowUpId200>>,
+    updateFollowUpBody: UpdateFollowUpBody,
+    options?: SecondParameter<typeof orvalMutator<UpdateFollowUp200>>,
   ) => {
-    return orvalMutator<PatchFollowUpsFollowUpId200>(
+    return orvalMutator<UpdateFollowUp200>(
       {
         url: `/follow-ups/${followUpId}`,
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        data: updateFollowUpRequest,
+        data: updateFollowUpBody,
       },
       options,
     );
@@ -654,19 +698,17 @@ export const getSalesTrackerAPI = () => {
    * Marks a follow-up as done, sets completedAt, creates a follow_up_done activity and recalculates business.nextFollowUpAt.
    * @summary Mark follow-up as done
    */
-  const patchFollowUpsFollowUpIdDone = (
+  const markFollowUpDone = (
     followUpId: string,
-    patchFollowUpsFollowUpIdDoneBody: PatchFollowUpsFollowUpIdDoneBody,
-    options?: SecondParameter<
-      typeof orvalMutator<PatchFollowUpsFollowUpIdDone200>
-    >,
+    markFollowUpDoneBody: MarkFollowUpDoneBody,
+    options?: SecondParameter<typeof orvalMutator<MarkFollowUpDone200>>,
   ) => {
-    return orvalMutator<PatchFollowUpsFollowUpIdDone200>(
+    return orvalMutator<MarkFollowUpDone200>(
       {
         url: `/follow-ups/${followUpId}/done`,
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        data: patchFollowUpsFollowUpIdDoneBody,
+        data: markFollowUpDoneBody,
       },
       options,
     );
@@ -676,57 +718,17 @@ export const getSalesTrackerAPI = () => {
    * Cancels a follow-up, creates a follow_up_cancelled activity and recalculates business.nextFollowUpAt.
    * @summary Cancel follow-up
    */
-  const patchFollowUpsFollowUpIdCancel = (
+  const cancelFollowUp = (
     followUpId: string,
-    patchFollowUpsFollowUpIdCancelBody: PatchFollowUpsFollowUpIdCancelBody,
-    options?: SecondParameter<
-      typeof orvalMutator<PatchFollowUpsFollowUpIdCancel200>
-    >,
+    cancelFollowUpBody: CancelFollowUpBody,
+    options?: SecondParameter<typeof orvalMutator<CancelFollowUp200>>,
   ) => {
-    return orvalMutator<PatchFollowUpsFollowUpIdCancel200>(
+    return orvalMutator<CancelFollowUp200>(
       {
         url: `/follow-ups/${followUpId}/cancel`,
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        data: patchFollowUpsFollowUpIdCancelBody,
-      },
-      options,
-    );
-  };
-
-  /**
-   * Returns follow-ups linked to a specific business.
-   * @summary Get business follow-ups
-   */
-  const getBusinessesBusinessIdFollowUps = (
-    businessId: string,
-    options?: SecondParameter<
-      typeof orvalMutator<GetBusinessesBusinessIdFollowUps200>
-    >,
-  ) => {
-    return orvalMutator<GetBusinessesBusinessIdFollowUps200>(
-      { url: `/businesses/${businessId}/follow-ups`, method: 'GET' },
-      options,
-    );
-  };
-
-  /**
-   * Creates a follow-up task for a specific business. It also creates a follow_up_created activity and updates business.nextFollowUpAt when the new task is the nearest pending follow-up.
-   * @summary Create business follow-up
-   */
-  const postBusinessesBusinessIdFollowUps = (
-    businessId: string,
-    createFollowUpRequest: CreateFollowUpRequest,
-    options?: SecondParameter<
-      typeof orvalMutator<PostBusinessesBusinessIdFollowUps201>
-    >,
-  ) => {
-    return orvalMutator<PostBusinessesBusinessIdFollowUps201>(
-      {
-        url: `/businesses/${businessId}/follow-ups`,
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        data: createFollowUpRequest,
+        data: cancelFollowUpBody,
       },
       options,
     );
@@ -763,16 +765,16 @@ export const getSalesTrackerAPI = () => {
    * Creates a new business and automatically creates business_created activity. If assignedToId is provided, the business starts as assigned and business_assigned activity is also created.
    * @summary Create business
    */
-  const postBusinesses = (
-    createBusinessRequest: CreateBusinessRequest,
-    options?: SecondParameter<typeof orvalMutator<PostBusinesses201>>,
+  const createBusiness = (
+    createBusinessBody: CreateBusinessBody,
+    options?: SecondParameter<typeof orvalMutator<CreateBusiness201>>,
   ) => {
-    return orvalMutator<PostBusinesses201>(
+    return orvalMutator<CreateBusiness201>(
       {
         url: `/businesses`,
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        data: createBusinessRequest,
+        data: createBusinessBody,
       },
       options,
     );
@@ -782,11 +784,11 @@ export const getSalesTrackerAPI = () => {
    * Returns a single business by its ID.
    * @summary Get business by ID
    */
-  const getBusinessesBusinessId = (
+  const getBusiness = (
     businessId: string,
-    options?: SecondParameter<typeof orvalMutator<GetBusinessesBusinessId200>>,
+    options?: SecondParameter<typeof orvalMutator<GetBusiness200>>,
   ) => {
-    return orvalMutator<GetBusinessesBusinessId200>(
+    return orvalMutator<GetBusiness200>(
       { url: `/businesses/${businessId}`, method: 'GET' },
       options,
     );
@@ -796,19 +798,17 @@ export const getSalesTrackerAPI = () => {
    * Updates a business. If status changes, a status_changed activity is created. If priority changes, a priority_changed activity is created. If assignedToId changes, a business_assigned activity is created.
    * @summary Update business
    */
-  const patchBusinessesBusinessId = (
+  const updateBusiness = (
     businessId: string,
-    updateBusinessRequest: UpdateBusinessRequest,
-    options?: SecondParameter<
-      typeof orvalMutator<PatchBusinessesBusinessId200>
-    >,
+    updateBusinessBody: UpdateBusinessBody,
+    options?: SecondParameter<typeof orvalMutator<UpdateBusiness200>>,
   ) => {
-    return orvalMutator<PatchBusinessesBusinessId200>(
+    return orvalMutator<UpdateBusiness200>(
       {
         url: `/businesses/${businessId}`,
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        data: updateBusinessRequest,
+        data: updateBusinessBody,
       },
       options,
     );
@@ -818,13 +818,11 @@ export const getSalesTrackerAPI = () => {
    * Returns the activity timeline for a specific business.
    * @summary Get business activities
    */
-  const getBusinessesBusinessIdActivities = (
+  const getBusinessActivities = (
     businessId: string,
-    options?: SecondParameter<
-      typeof orvalMutator<GetBusinessesBusinessIdActivities200>
-    >,
+    options?: SecondParameter<typeof orvalMutator<GetBusinessActivities200>>,
   ) => {
-    return orvalMutator<GetBusinessesBusinessIdActivities200>(
+    return orvalMutator<GetBusinessActivities200>(
       { url: `/businesses/${businessId}/activities`, method: 'GET' },
       options,
     );
@@ -834,19 +832,17 @@ export const getSalesTrackerAPI = () => {
    * Creates a manual activity for a business. Some activity types automatically update the business status or lastContactedAt.
    * @summary Create manual activity
    */
-  const postBusinessesBusinessIdActivities = (
+  const createActivity = (
     businessId: string,
-    createActivityRequest: CreateActivityRequest,
-    options?: SecondParameter<
-      typeof orvalMutator<PostBusinessesBusinessIdActivities201>
-    >,
+    createActivityBody: CreateActivityBody,
+    options?: SecondParameter<typeof orvalMutator<CreateActivity201>>,
   ) => {
-    return orvalMutator<PostBusinessesBusinessIdActivities201>(
+    return orvalMutator<CreateActivity201>(
       {
         url: `/businesses/${businessId}/activities`,
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        data: createActivityRequest,
+        data: createActivityBody,
       },
       options,
     );
@@ -854,61 +850,43 @@ export const getSalesTrackerAPI = () => {
 
   return {
     getUsers,
+    getBusinessFollowUps,
+    createFollowUp,
     getFollowUps,
-    patchFollowUpsFollowUpId,
-    patchFollowUpsFollowUpIdDone,
-    patchFollowUpsFollowUpIdCancel,
-    getBusinessesBusinessIdFollowUps,
-    postBusinessesBusinessIdFollowUps,
+    updateFollowUp,
+    markFollowUpDone,
+    cancelFollowUp,
     getDashboardSummary,
     getBusinesses,
-    postBusinesses,
-    getBusinessesBusinessId,
-    patchBusinessesBusinessId,
-    getBusinessesBusinessIdActivities,
-    postBusinessesBusinessIdActivities,
+    createBusiness,
+    getBusiness,
+    updateBusiness,
+    getBusinessActivities,
+    createActivity,
   };
 };
 export type GetUsersResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof getSalesTrackerAPI>['getUsers']>>
 >;
+export type GetBusinessFollowUpsResult = NonNullable<
+  Awaited<
+    ReturnType<ReturnType<typeof getSalesTrackerAPI>['getBusinessFollowUps']>
+  >
+>;
+export type CreateFollowUpResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSalesTrackerAPI>['createFollowUp']>>
+>;
 export type GetFollowUpsResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof getSalesTrackerAPI>['getFollowUps']>>
 >;
-export type PatchFollowUpsFollowUpIdResult = NonNullable<
-  Awaited<
-    ReturnType<
-      ReturnType<typeof getSalesTrackerAPI>['patchFollowUpsFollowUpId']
-    >
-  >
+export type UpdateFollowUpResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSalesTrackerAPI>['updateFollowUp']>>
 >;
-export type PatchFollowUpsFollowUpIdDoneResult = NonNullable<
-  Awaited<
-    ReturnType<
-      ReturnType<typeof getSalesTrackerAPI>['patchFollowUpsFollowUpIdDone']
-    >
-  >
+export type MarkFollowUpDoneResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSalesTrackerAPI>['markFollowUpDone']>>
 >;
-export type PatchFollowUpsFollowUpIdCancelResult = NonNullable<
-  Awaited<
-    ReturnType<
-      ReturnType<typeof getSalesTrackerAPI>['patchFollowUpsFollowUpIdCancel']
-    >
-  >
->;
-export type GetBusinessesBusinessIdFollowUpsResult = NonNullable<
-  Awaited<
-    ReturnType<
-      ReturnType<typeof getSalesTrackerAPI>['getBusinessesBusinessIdFollowUps']
-    >
-  >
->;
-export type PostBusinessesBusinessIdFollowUpsResult = NonNullable<
-  Awaited<
-    ReturnType<
-      ReturnType<typeof getSalesTrackerAPI>['postBusinessesBusinessIdFollowUps']
-    >
-  >
+export type CancelFollowUpResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSalesTrackerAPI>['cancelFollowUp']>>
 >;
 export type GetDashboardSummaryResult = NonNullable<
   Awaited<
@@ -918,34 +896,20 @@ export type GetDashboardSummaryResult = NonNullable<
 export type GetBusinessesResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof getSalesTrackerAPI>['getBusinesses']>>
 >;
-export type PostBusinessesResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getSalesTrackerAPI>['postBusinesses']>>
+export type CreateBusinessResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSalesTrackerAPI>['createBusiness']>>
 >;
-export type GetBusinessesBusinessIdResult = NonNullable<
+export type GetBusinessResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSalesTrackerAPI>['getBusiness']>>
+>;
+export type UpdateBusinessResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSalesTrackerAPI>['updateBusiness']>>
+>;
+export type GetBusinessActivitiesResult = NonNullable<
   Awaited<
-    ReturnType<ReturnType<typeof getSalesTrackerAPI>['getBusinessesBusinessId']>
+    ReturnType<ReturnType<typeof getSalesTrackerAPI>['getBusinessActivities']>
   >
 >;
-export type PatchBusinessesBusinessIdResult = NonNullable<
-  Awaited<
-    ReturnType<
-      ReturnType<typeof getSalesTrackerAPI>['patchBusinessesBusinessId']
-    >
-  >
->;
-export type GetBusinessesBusinessIdActivitiesResult = NonNullable<
-  Awaited<
-    ReturnType<
-      ReturnType<typeof getSalesTrackerAPI>['getBusinessesBusinessIdActivities']
-    >
-  >
->;
-export type PostBusinessesBusinessIdActivitiesResult = NonNullable<
-  Awaited<
-    ReturnType<
-      ReturnType<
-        typeof getSalesTrackerAPI
-      >['postBusinessesBusinessIdActivities']
-    >
-  >
+export type CreateActivityResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSalesTrackerAPI>['createActivity']>>
 >;
