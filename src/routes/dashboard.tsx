@@ -1,7 +1,6 @@
 import { createRoute } from '@tanstack/react-router';
 
-import { DashboardPage } from '@/features/dashboard/presentation/pages/DashboardPage';
-import { DashboardBusinessFiltersProvider } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersProvider';
+import { DashboardRouteComponent } from '@/features/dashboard/presentation/pages/DashboardRouteComponent';
 import type {
   BusinessStatus,
   Category,
@@ -10,7 +9,6 @@ import type {
 } from '@/shared/api/generated/salesTrackerApi';
 
 import { Route as RootRoute } from './__root';
-import { DashboardSelectedBusinessProvider } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessProvider';
 
 type DashboardSearch = {
   status?: BusinessStatus;
@@ -20,14 +18,6 @@ type DashboardSearch = {
   assignedToId?: string;
   search?: string;
 };
-
-const DashboardRouteComponent = () => (
-  <DashboardBusinessFiltersProvider>
-    <DashboardSelectedBusinessProvider>
-      <DashboardPage />
-    </DashboardSelectedBusinessProvider>
-  </DashboardBusinessFiltersProvider>
-);
 
 export const Route = createRoute({
   getParentRoute: () => RootRoute,

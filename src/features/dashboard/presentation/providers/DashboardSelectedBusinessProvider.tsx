@@ -1,14 +1,6 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 
-type DashboardSelectedBusinessContextValue = {
-  selectedBusinessId: string | null;
-  selectBusiness: (businessId: string) => void;
-  clearSelectedBusiness: () => void;
-  toggleSelectedBusiness: (businessId: string) => void;
-};
-
-const DashboardSelectedBusinessContext =
-  createContext<DashboardSelectedBusinessContextValue | null>(null);
+import { DashboardSelectedBusinessContext } from './DashboardSelectedBusinessContext';
 
 type DashboardSelectedBusinessProviderProps = {
   children: ReactNode;
@@ -47,16 +39,4 @@ export const DashboardSelectedBusinessProvider = ({
       {children}
     </DashboardSelectedBusinessContext.Provider>
   );
-};
-
-export const useDashboardSelectedBusiness = () => {
-  const context = useContext(DashboardSelectedBusinessContext);
-
-  if (!context) {
-    throw new Error(
-      'useDashboardSelectedBusiness must be used within DashboardSelectedBusinessProvider',
-    );
-  }
-
-  return context;
 };

@@ -1,4 +1,4 @@
-import { useDashboardBusinessFilters } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersProvider';
+import { useDashboardBusinessFilters } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersContext';
 import { useAssigneeOptions } from '@/hooks';
 import type {
   BusinessStatus,

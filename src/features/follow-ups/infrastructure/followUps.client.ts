@@ -20,22 +20,22 @@ export const followUpsClient = {
     followUpId: string,
     data: CancelFollowUpRequestDto,
   ): Promise<CancelFollowUpResponseDto> =>
-    salesTrackerApi.patchFollowUpsFollowUpIdCancel(followUpId, data),
+    salesTrackerApi.cancelFollowUp(followUpId, data),
   create: async (
     businessId: string,
     data: CreateFollowUpRequestDto,
   ): Promise<CreateFollowUpResponseDto> =>
-    salesTrackerApi.postBusinessesBusinessIdFollowUps(businessId, data),
+    salesTrackerApi.createFollowUp(businessId, data),
   getAll: async (filters: FollowUpFilters): Promise<GetFollowUpsResponseDto> =>
     salesTrackerApi.getFollowUps(filters),
   markDone: async (
     followUpId: string,
     data: MarkFollowUpDoneRequestDto,
   ): Promise<MarkFollowUpDoneResponseDto> =>
-    salesTrackerApi.patchFollowUpsFollowUpIdDone(followUpId, data),
+    salesTrackerApi.markFollowUpDone(followUpId, data),
   update: async (
     followUpId: string,
     data: UpdateFollowUpRequestDto,
   ): Promise<UpdateFollowUpResponseDto> =>
-    salesTrackerApi.patchFollowUpsFollowUpId(followUpId, data),
+    salesTrackerApi.updateFollowUp(followUpId, data),
 };

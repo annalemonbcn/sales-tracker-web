@@ -1,4 +1,4 @@
-import { useDashboardBusinessFilters } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersProvider';
+import { useDashboardBusinessFilters } from '@/features/dashboard/presentation/providers/DashboardBusinessFiltersContext';
 import {
   Button,
   Card,
@@ -15,7 +15,7 @@ import styles from './BusinessesSection.module.css';
 import { Plus } from 'lucide-react';
 import type { Business } from '@/features/businesses/domain/business.model';
 import { hasActiveBusinessFilters } from '@/features/businesses/domain/businessFilters.model';
-import { useDashboardSelectedBusiness } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessProvider';
+import { useDashboardSelectedBusiness } from '@/features/dashboard/presentation/providers/DashboardSelectedBusinessContext';
 
 type BusinessesEmptyStateProps = {
   isAnyFilterActive: boolean;
