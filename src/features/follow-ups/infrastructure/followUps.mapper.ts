@@ -133,6 +133,7 @@ export const mapFollowUpTaskDtoToDomain = (
   type: followUp.type,
   title: followUp.title,
   dueDate: followUp.dueDate,
+  isOverdue: followUp.isOverdue,
   note: followUp.note,
   completedAt: followUp.completedAt,
   assignedTo: mapUserSummaryDtoToDomain(followUp.assignedTo),

@@ -111,6 +111,7 @@ export const useFollowUpDetailsDrawer = ({
         ...previousFollowUp,
         assignedTo: updatedFollowUp.assignedTo,
         dueDate: updatedFollowUp.dueDate,
+        isOverdue: updatedFollowUp.isOverdue,
         updatedAt: updatedFollowUp.updatedAt,
       }));
 
@@ -136,6 +137,7 @@ export const useFollowUpDetailsDrawer = ({
 
     setCurrentFollowUp((previousFollowUp) => ({
       ...previousFollowUp,
+      isOverdue: updatedFollowUp.isOverdue,
       note: updatedFollowUp.note,
       updatedAt: updatedFollowUp.updatedAt,
     }));
@@ -147,35 +149,39 @@ export const useFollowUpDetailsDrawer = ({
     setIsEditingNotes(false);
   });
 
-  const handleMarkComplete = async () => {
+  const handleMarkComplete = async (note?: string) => {
     if (currentFollowUp.status !== 'pending') {
       return;
     }
 
-    const updatedFollowUp = await markFollowUpDoneMutation.mutateAsync(
-      currentFollowUp.id,
-    );
+    const updatedFollowUp = await markFollowUpDoneMutation.mutateAsync({
+      followUpId: currentFollowUp.id,
+      note,
+    });
 
     setCurrentFollowUp((previousFollowUp) => ({
       ...previousFollowUp,
       completedAt: updatedFollowUp.completedAt,
+      isOverdue: updatedFollowUp.isOverdue,
       status: updatedFollowUp.status,
       updatedAt: updatedFollowUp.updatedAt,
     }));
   };
 
-  const handleCancelFollowUp = async () => {
+  const handleCancelFollowUp = async (note?: string) => {
     if (currentFollowUp.status !== 'pending') {
       return;
     }
 
-    const updatedFollowUp = await cancelFollowUpMutation.mutateAsync(
-      currentFollowUp.id,
-    );
+    const updatedFollowUp = await cancelFollowUpMutation.mutateAsync({
+      followUpId: currentFollowUp.id,
+      note,
+    });
 
     setCurrentFollowUp((previousFollowUp) => ({
       ...previousFollowUp,
       completedAt: updatedFollowUp.completedAt,
+      isOverdue: updatedFollowUp.isOverdue,
       status: updatedFollowUp.status,
       updatedAt: updatedFollowUp.updatedAt,
     }));

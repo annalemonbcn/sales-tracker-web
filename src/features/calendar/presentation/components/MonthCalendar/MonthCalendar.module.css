@@ -1,0 +1,441 @@
+.calendarCard {
+  --follow-up-call-border: #bfdbfe;
+  --follow-up-call-background: var(--color-primary-soft);
+  --follow-up-call-color: var(--color-primary);
+  --follow-up-email-border: #fed7aa;
+  --follow-up-email-background: var(--color-warning-soft);
+  --follow-up-email-color: var(--color-warning);
+  --follow-up-instagram-border: #fbcfe8;
+  --follow-up-instagram-background: var(--color-pink-soft);
+  --follow-up-instagram-color: var(--color-pink);
+  --follow-up-visit-border: #bbf7d0;
+  --follow-up-visit-background: var(--color-success-soft);
+  --follow-up-visit-color: var(--color-success);
+  --follow-up-meeting-border: #a7f3d0;
+  --follow-up-meeting-background: var(--color-teal-soft);
+  --follow-up-meeting-color: var(--color-teal);
+  --follow-up-proposal-border: #ddd6fe;
+  --follow-up-proposal-background: var(--color-purple-soft);
+  --follow-up-proposal-color: var(--color-purple);
+  --follow-up-dossier-border: #c7d2fe;
+  --follow-up-dossier-background: var(--color-indigo-soft);
+  --follow-up-dossier-color: var(--color-indigo);
+  --follow-up-other-border: #fde68a;
+  --follow-up-other-background: var(--color-yellow-soft);
+  --follow-up-other-color: var(--color-yellow);
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.toolbar {
+  position: relative;
+  display: grid;
+  min-height: 4rem;
+  flex: none;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.625rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.toolbar h2 {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.todayButton {
+  height: auto;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.monthSelect {
+  position: relative;
+  display: flex;
+  justify-self: end;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.25rem;
+  padding: 0 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.monthSelect span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.monthSelect select {
+  padding-right: 1.25rem;
+  border: 0;
+  outline: 0;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  font-weight: inherit;
+}
+
+.monthSelect svg {
+  position: absolute;
+  right: 0.55rem;
+  pointer-events: none;
+}
+
+.dayPicker,
+.months,
+.month {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.dayPicker {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.monthCaption {
+  display: none;
+}
+
+.monthGrid {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.monthGrid > thead {
+  display: block;
+  flex: none;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  width: 100%;
+  height: 2.5rem;
+}
+
+.weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.weeks {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-auto-rows: minmax(8rem, 1fr);
+}
+
+.week {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.day {
+  position: relative;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  vertical-align: top;
+}
+
+.day:nth-child(7n) {
+  border-right: 0;
+}
+
+.week:last-child .day {
+  border-bottom: 0;
+}
+
+.dayButton {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 4.5rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.outside {
+  color: var(--color-text-muted);
+  background: color-mix(
+    in srgb,
+    var(--color-text-secondary) 8%,
+    var(--color-bg-surface)
+  );
+}
+
+.dayNumber {
+  display: inline-flex;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border: 0.125rem solid transparent;
+  border-radius: 50%;
+}
+
+.today .dayNumber {
+  background-color: var(--color-primary);
+  color: var(--color-bg-surface);
+}
+
+.followUps {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex: none;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.followUp {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.375rem 0.5rem;
+  overflow: hidden;
+  border: 0.0625rem solid;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+}
+
+.followUpTitle,
+.followUpBusiness {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.followUpTitle {
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.followUpBusiness {
+  font-size: 0.625rem;
+  font-weight: 500;
+}
+
+.call {
+  border-color: var(--follow-up-call-border);
+  background: var(--follow-up-call-background);
+  color: var(--follow-up-call-color);
+}
+
+.email {
+  border-color: var(--follow-up-email-border);
+  background: var(--follow-up-email-background);
+  color: var(--follow-up-email-color);
+}
+
+.instagramMessage {
+  border-color: var(--follow-up-instagram-border);
+  background: var(--follow-up-instagram-background);
+  color: var(--follow-up-instagram-color);
+}
+
+.visit {
+  border-color: var(--follow-up-visit-border);
+  background: var(--follow-up-visit-background);
+  color: var(--follow-up-visit-color);
+}
+
+.meeting {
+  border-color: var(--follow-up-meeting-border);
+  background: var(--follow-up-meeting-background);
+  color: var(--follow-up-meeting-color);
+}
+
+.proposal {
+  border-color: var(--follow-up-proposal-border);
+  background: var(--follow-up-proposal-background);
+  color: var(--follow-up-proposal-color);
+}
+
+.dossier {
+  border-color: var(--follow-up-dossier-border);
+  background: var(--follow-up-dossier-background);
+  color: var(--follow-up-dossier-color);
+}
+
+.other {
+  border-color: var(--follow-up-other-border);
+  background: var(--follow-up-other-background);
+  color: var(--follow-up-other-color);
+}
+
+.overdue {
+  border-color: var(--color-overdue-border);
+  background: var(--background-overdue);
+  color: var(--color-overdue-text);
+}
+
+.moreFollowUps {
+  padding: 0.125rem 0.5rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.moreFollowUps:hover {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+}
+
+.followUpsPopover {
+  position: absolute;
+  z-index: 10;
+  top: -6rem;
+  left: 2.625rem;
+  right: auto;
+  width: 16rem;
+  padding: 0.75rem;
+  border: 0.0625rem solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+  box-shadow: 0 1rem 2rem rgb(15 23 42 / 0.16);
+}
+
+.day:nth-child(7n) .followUpsPopover,
+.day:nth-child(7n-1) .followUpsPopover {
+  right: 0.625rem;
+  left: auto;
+}
+
+.popoverHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.625rem;
+  color: var(--color-text-primary);
+  font-size: 0.8125rem;
+}
+
+.popoverHeader button {
+  display: inline-flex;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+}
+
+.popoverHeader button:hover {
+  background: var(--color-neutral-soft);
+  color: var(--color-text-primary);
+}
+
+.popoverList {
+  display: flex;
+  max-height: 18rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+}
+
+.popoverFollowUp {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.1875rem;
+  padding: 0.5rem 0.625rem;
+  border: 0.0625rem solid;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+}
+
+.popoverFollowUp strong,
+.popoverFollowUp span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.popoverFollowUp strong {
+  font-size: 0.75rem;
+}
+
+.popoverFollowUp span {
+  font-size: 0.6875rem;
+  font-weight: 500;
+}
+
+@media (max-width: 720px) {
+  .toolbar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .toolbar h2 {
+    grid-row: 1;
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+
+  .navigation {
+    grid-row: 2;
+  }
+
+  .monthSelect {
+    grid-row: 2;
+  }
+}

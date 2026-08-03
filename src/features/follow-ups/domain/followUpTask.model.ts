@@ -31,6 +31,7 @@ export type FollowUpTask = {
   createdAt: string;
   dueDate: string;
   id: string;
+  isOverdue: boolean;
   note: string | null;
   status: FollowUpTaskStatus;
   title: string;

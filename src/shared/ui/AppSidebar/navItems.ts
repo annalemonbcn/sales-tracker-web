@@ -35,7 +35,7 @@ export const navItems: SidebarNavItem[] = [
   },
   {
     icon: Calendar,
-    isEnabled: false,
+    isEnabled: true,
     label: 'Calendar',
     to: '/calendar',
   },
