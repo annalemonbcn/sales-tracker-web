@@ -1,9 +1,11 @@
 import type { FollowUpTask } from '@/features/follow-ups/domain/followUpTask.model';
 import { Badge } from '@/shared/ui';
-import { ClockAlert } from 'lucide-react';
+import { Ban, CheckCircle2, ClockAlert } from 'lucide-react';
 
 import styles from './FollowUpDetailsDrawer.module.css';
 import {
+  followUpStatusLabelMap,
+  followUpStatusVariantMap,
   followUpTypeLabelMap,
   followUpTypeVariantMap,
 } from '../FollowUpsTable/followUpsTableFormatters';
@@ -23,6 +25,17 @@ export const FollowUpDetailsHeader = ({
         <Badge variant="overdue">
           <ClockAlert aria-hidden="true" size={14} />
           Overdue
+        </Badge>
+      ) : null}
+
+      {followUp.status !== 'pending' ? (
+        <Badge variant={followUpStatusVariantMap[followUp.status]}>
+          {followUp.status === 'cancelled' ? (
+            <Ban aria-hidden="true" size={14} />
+          ) : (
+            <CheckCircle2 aria-hidden="true" size={14} />
+          )}
+          {followUpStatusLabelMap[followUp.status]}
         </Badge>
       ) : null}
 

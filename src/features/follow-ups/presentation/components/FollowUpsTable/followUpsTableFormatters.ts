@@ -16,7 +16,7 @@ export const followUpStatusVariantMap: Record<
   FollowUpTaskStatus,
   BadgeVariant
 > = {
-  cancelled: 'neutral',
+  cancelled: 'danger',
   done: 'success',
   pending: 'warning',
 };

@@ -32,12 +32,19 @@ export const formatNullableDateTime = (date: string | null): string => {
   return format(parsedDate, 'dd MMM yyyy, HH:mm');
 };
 
-const ISO_DATE_TIME_PATTERN =
-  /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})/g;
+const ISO_DATE_PATTERN =
+  /\b\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2}))?\b/g;
 
-export const formatDateTimesInText = (text: string): string =>
-  text.replace(ISO_DATE_TIME_PATTERN, (dateTime) => {
-    const parsedDate = parseNullableDate(dateTime);
+export const formatDatesInText = (text: string): string =>
+  text.replace(ISO_DATE_PATTERN, (date) => {
+    const parsedDate = parseNullableDate(date);
 
-    return parsedDate ? format(parsedDate, 'dd MMM yyyy, HH:mm') : dateTime;
+    if (!parsedDate) {
+      return date;
+    }
+
+    return format(
+      parsedDate,
+      date.includes('T') ? 'dd MMM yyyy, HH:mm' : 'dd MMM yyyy',
+    );
   });
