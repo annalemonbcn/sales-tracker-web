@@ -111,6 +111,7 @@ export const useFollowUpDetailsDrawer = ({
         ...previousFollowUp,
         assignedTo: updatedFollowUp.assignedTo,
         dueDate: updatedFollowUp.dueDate,
+        isOverdue: updatedFollowUp.isOverdue,
         updatedAt: updatedFollowUp.updatedAt,
       }));
 
@@ -136,6 +137,7 @@ export const useFollowUpDetailsDrawer = ({
 
     setCurrentFollowUp((previousFollowUp) => ({
       ...previousFollowUp,
+      isOverdue: updatedFollowUp.isOverdue,
       note: updatedFollowUp.note,
       updatedAt: updatedFollowUp.updatedAt,
     }));
@@ -159,6 +161,7 @@ export const useFollowUpDetailsDrawer = ({
     setCurrentFollowUp((previousFollowUp) => ({
       ...previousFollowUp,
       completedAt: updatedFollowUp.completedAt,
+      isOverdue: updatedFollowUp.isOverdue,
       status: updatedFollowUp.status,
       updatedAt: updatedFollowUp.updatedAt,
     }));
@@ -176,6 +179,7 @@ export const useFollowUpDetailsDrawer = ({
     setCurrentFollowUp((previousFollowUp) => ({
       ...previousFollowUp,
       completedAt: updatedFollowUp.completedAt,
+      isOverdue: updatedFollowUp.isOverdue,
       status: updatedFollowUp.status,
       updatedAt: updatedFollowUp.updatedAt,
     }));

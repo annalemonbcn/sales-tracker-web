@@ -284,6 +284,8 @@ export interface FollowUpDto {
   type: FollowUpType;
   title: string;
   dueDate: string;
+  /** Whether the follow-up is pending and its due date has passed. */
+  isOverdue: boolean;
   /** @nullable */
   note: string | null;
   /** @nullable */
@@ -317,6 +319,8 @@ export interface FollowUpTaskDto {
   type: FollowUpType;
   title: string;
   dueDate: string;
+  /** Whether the follow-up is pending and its due date has passed. */
+  isOverdue: boolean;
   /** @nullable */
   note: string | null;
   /** @nullable */

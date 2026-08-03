@@ -19,8 +19,12 @@
   line-height: 1.2;
 }
 
-.headerBadge {
-  flex-shrink: 0;
+.headerBadges {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 .content {

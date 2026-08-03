@@ -34,12 +34,12 @@ export const followUpTypeLabelMap: Record<FollowUpTaskType, string> = {
 
 export const followUpTypeVariantMap: Record<FollowUpTaskType, BadgeVariant> = {
   call: 'primary',
-  dossier: 'neutral',
-  email: 'neutral',
-  instagram_message: 'primary',
-  meeting: 'success',
-  other: 'neutral',
-  proposal: 'warning',
+  dossier: 'indigo',
+  email: 'warning',
+  instagram_message: 'pink',
+  meeting: 'teal',
+  other: 'yellow',
+  proposal: 'purple',
   visit: 'success',
 };
 

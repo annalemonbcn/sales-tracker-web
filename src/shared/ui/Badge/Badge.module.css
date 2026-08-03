@@ -35,3 +35,35 @@
   background: var(--color-danger-soft);
   color: var(--color-danger);
 }
+
+.pink {
+  background: var(--color-pink-soft);
+  color: var(--color-pink);
+}
+
+.teal {
+  background: var(--color-teal-soft);
+  color: var(--color-teal);
+}
+
+.purple {
+  background: var(--color-purple-soft);
+  color: var(--color-purple);
+}
+
+.indigo {
+  background: var(--color-indigo-soft);
+  color: var(--color-indigo);
+}
+
+.overdue {
+  gap: 0.25rem;
+  border: 1px solid var(--color-overdue-border);
+  background: var(--background-overdue);
+  color: var(--color-overdue-text);
+}
+
+.yellow {
+  background: var(--color-yellow-soft);
+  color: var(--color-yellow);
+}

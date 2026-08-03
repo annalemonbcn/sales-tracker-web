@@ -1,4 +1,28 @@
 .calendarCard {
+  --follow-up-call-border: #bfdbfe;
+  --follow-up-call-background: var(--color-primary-soft);
+  --follow-up-call-color: var(--color-primary);
+  --follow-up-email-border: #fed7aa;
+  --follow-up-email-background: var(--color-warning-soft);
+  --follow-up-email-color: var(--color-warning);
+  --follow-up-instagram-border: #fbcfe8;
+  --follow-up-instagram-background: var(--color-pink-soft);
+  --follow-up-instagram-color: var(--color-pink);
+  --follow-up-visit-border: #bbf7d0;
+  --follow-up-visit-background: var(--color-success-soft);
+  --follow-up-visit-color: var(--color-success);
+  --follow-up-meeting-border: #a7f3d0;
+  --follow-up-meeting-background: var(--color-teal-soft);
+  --follow-up-meeting-color: var(--color-teal);
+  --follow-up-proposal-border: #ddd6fe;
+  --follow-up-proposal-background: var(--color-purple-soft);
+  --follow-up-proposal-color: var(--color-purple);
+  --follow-up-dossier-border: #c7d2fe;
+  --follow-up-dossier-background: var(--color-indigo-soft);
+  --follow-up-dossier-color: var(--color-indigo);
+  --follow-up-other-border: #fde68a;
+  --follow-up-other-background: var(--color-yellow-soft);
+  --follow-up-other-color: var(--color-yellow);
   display: flex;
   min-height: 0;
   flex: 1;
@@ -133,7 +157,7 @@
   display: grid;
   min-height: 0;
   flex: 1;
-  grid-auto-rows: minmax(7rem, 1fr);
+  grid-auto-rows: minmax(8rem, 1fr);
 }
 
 .week {
@@ -192,6 +216,7 @@
   display: inline-flex;
   width: 1.75rem;
   height: 1.75rem;
+  flex: none;
   align-items: center;
   justify-content: center;
   border: 0.125rem solid transparent;
@@ -207,8 +232,9 @@
   display: flex;
   width: 100%;
   min-width: 0;
+  flex: none;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.375rem;
 }
 
 .followUp {
@@ -242,51 +268,57 @@
 }
 
 .call {
-  border-color: #bfdbfe;
-  background: #eff6ff;
-  color: #1d4ed8;
+  border-color: var(--follow-up-call-border);
+  background: var(--follow-up-call-background);
+  color: var(--follow-up-call-color);
 }
 
 .email {
-  border-color: #fed7aa;
-  background: #fff7ed;
-  color: #c2410c;
+  border-color: var(--follow-up-email-border);
+  background: var(--follow-up-email-background);
+  color: var(--follow-up-email-color);
 }
 
 .instagramMessage {
-  border-color: #fbcfe8;
-  background: #fdf2f8;
-  color: #be185d;
+  border-color: var(--follow-up-instagram-border);
+  background: var(--follow-up-instagram-background);
+  color: var(--follow-up-instagram-color);
 }
 
 .visit {
-  border-color: #bbf7d0;
-  background: #f0fdf4;
-  color: #15803d;
+  border-color: var(--follow-up-visit-border);
+  background: var(--follow-up-visit-background);
+  color: var(--follow-up-visit-color);
 }
 
 .meeting {
-  border-color: #a7f3d0;
-  background: #ecfdf5;
-  color: #047857;
+  border-color: var(--follow-up-meeting-border);
+  background: var(--follow-up-meeting-background);
+  color: var(--follow-up-meeting-color);
 }
 
 .proposal {
-  border-color: #ddd6fe;
-  background: #f5f3ff;
-  color: #6d28d9;
+  border-color: var(--follow-up-proposal-border);
+  background: var(--follow-up-proposal-background);
+  color: var(--follow-up-proposal-color);
 }
 
 .dossier {
-  border-color: #cbd5e1;
-  background: #f8fafc;
-  color: #475569;
+  border-color: var(--follow-up-dossier-border);
+  background: var(--follow-up-dossier-background);
+  color: var(--follow-up-dossier-color);
 }
 
 .other {
-  border-color: #fde68a;
-  background: #fffbeb;
-  color: #a16207;
+  border-color: var(--follow-up-other-border);
+  background: var(--follow-up-other-background);
+  color: var(--follow-up-other-color);
+}
+
+.overdue {
+  border-color: var(--color-overdue-border);
+  background: var(--background-overdue);
+  color: var(--color-overdue-text);
 }
 
 .moreFollowUps {

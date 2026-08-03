@@ -24,12 +24,14 @@ export const FollowUpDetailsFooter = ({
   onCancel,
   onMarkComplete,
   onReschedule,
-}: FollowUpDetailsFooterProps) => (
-  <Drawer.Footer className={styles.footer}>
+}: FollowUpDetailsFooterProps) => {
+  const markCompleteButton = (
     <Button
-      className={styles.primaryAction}
+      className={
+        followUp.isOverdue ? styles.secondaryAction : styles.primaryAction
+      }
       disabled={followUp.status !== 'pending' || isMarkingComplete}
-      size="lg"
+      size={followUp.isOverdue ? 'md' : 'lg'}
       onClick={onMarkComplete}
     >
       <Check size={18} />
@@ -39,35 +41,47 @@ export const FollowUpDetailsFooter = ({
           ? 'Completed'
           : 'Mark complete'}
     </Button>
+  );
+  const rescheduleButton = (
+    <Button
+      className={
+        followUp.isOverdue ? styles.primaryAction : styles.secondaryAction
+      }
+      disabled={followUp.status !== 'pending' || isSavingFollowUpDetails}
+      size={followUp.isOverdue ? 'lg' : 'md'}
+      variant="secondary"
+      onClick={onReschedule}
+    >
+      <RefreshCw size={followUp.isOverdue ? 18 : 16} />
+      Reschedule
+    </Button>
+  );
 
-    <div className={styles.secondaryActions}>
-      <Button
-        className={styles.secondaryAction}
-        disabled={followUp.status !== 'pending' || isSavingFollowUpDetails}
-        variant="secondary"
-        onClick={onReschedule}
-      >
-        <RefreshCw size={16} />
-        Reschedule
-      </Button>
+  return (
+    <Drawer.Footer className={styles.footer}>
+      {followUp.isOverdue ? rescheduleButton : markCompleteButton}
 
-      <Button
-        className={cn(styles.secondaryAction, styles.cancelAction)}
-        disabled={
-          followUp.status === 'done' ||
-          followUp.status === 'cancelled' ||
-          isCancelling
-        }
-        variant="secondary"
-        onClick={onCancel}
-      >
-        <Ban size={16} />
-        {isCancelling
-          ? 'Cancelling...'
-          : followUp.status === 'cancelled'
-            ? 'Cancelled'
-            : 'Cancel'}
-      </Button>
-    </div>
-  </Drawer.Footer>
-);
+      <div className={styles.secondaryActions}>
+        {followUp.isOverdue ? markCompleteButton : rescheduleButton}
+
+        <Button
+          className={cn(styles.secondaryAction, styles.cancelAction)}
+          disabled={
+            followUp.status === 'done' ||
+            followUp.status === 'cancelled' ||
+            isCancelling
+          }
+          variant="secondary"
+          onClick={onCancel}
+        >
+          <Ban size={16} />
+          {isCancelling
+            ? 'Cancelling...'
+            : followUp.status === 'cancelled'
+              ? 'Cancelled'
+              : 'Cancel'}
+        </Button>
+      </div>
+    </Drawer.Footer>
+  );
+};

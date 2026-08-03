@@ -132,6 +132,7 @@ const CalendarDayButton = ({
               className={cn(
                 styles.followUp,
                 followUpTypeClassNameMap[followUp.type],
+                followUp.isOverdue && styles.overdue,
               )}
               key={followUp.id}
               onClick={(event) => {
@@ -202,6 +203,7 @@ const CalendarDayCell = ({
               className={cn(
                 styles.popoverFollowUp,
                 followUpTypeClassNameMap[followUp.type],
+                followUp.isOverdue && styles.overdue,
               )}
               key={followUp.id}
               role="button"

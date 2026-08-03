@@ -9,7 +9,13 @@ export type BadgeVariant =
   | 'primary'
   | 'success'
   | 'warning'
-  | 'danger';
+  | 'danger'
+  | 'pink'
+  | 'teal'
+  | 'purple'
+  | 'indigo'
+  | 'overdue'
+  | 'yellow';
 
 type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
   children: ReactNode;
