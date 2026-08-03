@@ -1,18 +1,23 @@
 import { Ban, Check, RefreshCw } from 'lucide-react';
+import { useState } from 'react';
 
 import type { FollowUpTask } from '@/features/follow-ups/domain/followUpTask.model';
 import { cn } from '@/shared/lib/cn';
 import { Button, Drawer } from '@/shared/ui';
 
 import styles from './FollowUpDetailsDrawer.module.css';
+import {
+  FollowUpActionStepperModal,
+  type FollowUpAction,
+} from './FollowUpActionStepperModal';
 
 type FollowUpDetailsFooterProps = {
   followUp: FollowUpTask;
   isCancelling: boolean;
   isMarkingComplete: boolean;
   isSavingFollowUpDetails: boolean;
-  onCancel: () => void;
-  onMarkComplete: () => void;
+  onCancel: (note?: string) => Promise<void>;
+  onMarkComplete: (note?: string) => Promise<void>;
   onReschedule: () => void;
 };
 
@@ -25,6 +30,8 @@ export const FollowUpDetailsFooter = ({
   onMarkComplete,
   onReschedule,
 }: FollowUpDetailsFooterProps) => {
+  const [activeAction, setActiveAction] = useState<FollowUpAction | null>(null);
+
   const markCompleteButton = (
     <Button
       className={
@@ -32,14 +39,12 @@ export const FollowUpDetailsFooter = ({
       }
       disabled={followUp.status !== 'pending' || isMarkingComplete}
       size={followUp.isOverdue ? 'md' : 'lg'}
-      onClick={onMarkComplete}
+      onClick={() => {
+        setActiveAction('complete');
+      }}
     >
       <Check size={18} />
-      {isMarkingComplete
-        ? 'Marking...'
-        : followUp.status === 'done'
-          ? 'Completed'
-          : 'Mark complete'}
+      {followUp.status === 'done' ? 'Completed' : 'Mark complete'}
     </Button>
   );
   const rescheduleButton = (
@@ -58,30 +63,47 @@ export const FollowUpDetailsFooter = ({
   );
 
   return (
-    <Drawer.Footer className={styles.footer}>
-      {followUp.isOverdue ? rescheduleButton : markCompleteButton}
+    <>
+      <Drawer.Footer className={styles.footer}>
+        {followUp.isOverdue ? rescheduleButton : markCompleteButton}
 
-      <div className={styles.secondaryActions}>
-        {followUp.isOverdue ? markCompleteButton : rescheduleButton}
+        <div className={styles.secondaryActions}>
+          {followUp.isOverdue ? markCompleteButton : rescheduleButton}
 
-        <Button
-          className={cn(styles.secondaryAction, styles.cancelAction)}
-          disabled={
-            followUp.status === 'done' ||
-            followUp.status === 'cancelled' ||
-            isCancelling
+          <Button
+            className={cn(styles.secondaryAction, styles.cancelAction)}
+            disabled={
+              followUp.status === 'done' ||
+              followUp.status === 'cancelled' ||
+              isCancelling
+            }
+            variant="secondary"
+            onClick={() => {
+              setActiveAction('cancel');
+            }}
+          >
+            <Ban size={16} />
+            {followUp.status === 'cancelled' ? 'Cancelled' : 'Cancel'}
+          </Button>
+        </div>
+      </Drawer.Footer>
+
+      {activeAction ? (
+        <FollowUpActionStepperModal
+          action={activeAction}
+          followUp={followUp}
+          isOpen
+          isSubmitting={
+            activeAction === 'cancel' ? isCancelling : isMarkingComplete
           }
-          variant="secondary"
-          onClick={onCancel}
-        >
-          <Ban size={16} />
-          {isCancelling
-            ? 'Cancelling...'
-            : followUp.status === 'cancelled'
-              ? 'Cancelled'
-              : 'Cancel'}
-        </Button>
-      </div>
-    </Drawer.Footer>
+          onConfirm={activeAction === 'cancel' ? onCancel : onMarkComplete}
+          onOpenChange={(isOpen) => {
+            if (!isOpen) {
+              setActiveAction(null);
+            }
+          }}
+        />
+      ) : null}
+    </>
   );
 };

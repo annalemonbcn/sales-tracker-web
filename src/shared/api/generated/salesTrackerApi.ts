@@ -343,7 +343,7 @@ export interface CreateFollowUpRequest {
 }
 
 /**
- * userId identifies the actor temporarily. At least one of title, assignedToId, dueDate or note is also required.
+ * userId identifies the actor temporarily. At least one of title, assignedToId, dueDate or note is also required. activityNote is recorded in the generated activity and does not update FollowUp.note.
  */
 export interface UpdateFollowUpRequest {
   /** Temporary actor ID until authentication is implemented. */
@@ -352,6 +352,8 @@ export interface UpdateFollowUpRequest {
   assignedToId?: string;
   dueDate?: string;
   note?: string;
+  /** Optional note recorded in the follow-up update activity. */
+  activityNote?: string;
 }
 
 /**
@@ -378,11 +380,15 @@ export type UpdateFollowUpBody = UpdateFollowUpRequest;
 export type MarkFollowUpDoneBody = {
   /** Temporary actor ID until authentication is implemented. */
   userId: string;
+  /** Optional note about completing the follow-up. */
+  note?: string;
 };
 
 export type CancelFollowUpBody = {
   /** Temporary actor ID until authentication is implemented. */
   userId: string;
+  /** Optional note explaining why the follow-up was cancelled. */
+  note?: string;
 };
 
 export type CreateBusinessBody = CreateBusinessRequest;

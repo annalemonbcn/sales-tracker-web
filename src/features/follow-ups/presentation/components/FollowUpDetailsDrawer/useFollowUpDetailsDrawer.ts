@@ -149,14 +149,15 @@ export const useFollowUpDetailsDrawer = ({
     setIsEditingNotes(false);
   });
 
-  const handleMarkComplete = async () => {
+  const handleMarkComplete = async (note?: string) => {
     if (currentFollowUp.status !== 'pending') {
       return;
     }
 
-    const updatedFollowUp = await markFollowUpDoneMutation.mutateAsync(
-      currentFollowUp.id,
-    );
+    const updatedFollowUp = await markFollowUpDoneMutation.mutateAsync({
+      followUpId: currentFollowUp.id,
+      note,
+    });
 
     setCurrentFollowUp((previousFollowUp) => ({
       ...previousFollowUp,
@@ -167,14 +168,15 @@ export const useFollowUpDetailsDrawer = ({
     }));
   };
 
-  const handleCancelFollowUp = async () => {
+  const handleCancelFollowUp = async (note?: string) => {
     if (currentFollowUp.status !== 'pending') {
       return;
     }
 
-    const updatedFollowUp = await cancelFollowUpMutation.mutateAsync(
-      currentFollowUp.id,
-    );
+    const updatedFollowUp = await cancelFollowUpMutation.mutateAsync({
+      followUpId: currentFollowUp.id,
+      note,
+    });
 
     setCurrentFollowUp((previousFollowUp) => ({
       ...previousFollowUp,

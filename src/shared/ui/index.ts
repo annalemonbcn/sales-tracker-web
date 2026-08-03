@@ -21,3 +21,4 @@ export { LoadingState } from './Feedback/LoadingState';
 export { Modal } from './Modal/Modal';
 export { PageHeader } from './PageHeader/PageHeader';
 export { Select, type SelectOption } from './Select/Select';
+export { Stepper, type StepperStep } from './Stepper/Stepper';
