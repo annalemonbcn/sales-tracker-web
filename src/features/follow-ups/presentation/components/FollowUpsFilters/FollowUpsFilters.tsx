@@ -12,10 +12,8 @@ import {
   type GetFollowUpsPriority,
   type GetFollowUpsStatus as GetFollowUpsStatusType,
 } from '@/shared/api/generated/salesTrackerApi';
-import type { SelectOption } from '@/shared/ui';
+import { FiltersBar, type SelectOption } from '@/shared/ui';
 import { followUpTypeLabelMap } from '../FollowUpsTable/followUpsTableFormatters';
-
-import { FollowUpsFiltersView } from './FollowUpsFiltersView';
 
 const statusOptions: SelectOption<GetFollowUpsStatusType>[] = [
   {
@@ -80,7 +78,8 @@ export const FollowUpsFilters = ({
     businessOptions.length === 0;
 
   return (
-    <FollowUpsFiltersView
+    <FiltersBar
+      ariaLabel="Task filters"
       clearFilters={clearFilters}
       filterSelects={[
         {

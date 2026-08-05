@@ -1,9 +1,10 @@
-import { Button, Select, type SelectOption } from '@/shared/ui';
+import { Button } from '../Button/Button';
+import { Select, type SelectOption } from '../Select/Select';
 
-import styles from './FollowUpsFilters.module.css';
+import styles from './FiltersBar.module.css';
 
-type FollowUpFilterSelectConfig = {
-  isDisabled: boolean;
+export type FilterSelectConfig = {
+  isDisabled?: boolean;
   key: string;
   label: string;
   onChange: (value: string | null) => void;
@@ -12,18 +13,20 @@ type FollowUpFilterSelectConfig = {
   value: string | null;
 };
 
-type FollowUpsFiltersViewProps = {
+type FiltersBarProps = {
+  ariaLabel: string;
   clearFilters: () => void;
-  filterSelects: FollowUpFilterSelectConfig[];
+  filterSelects: FilterSelectConfig[];
   isClearButtonDisabled: boolean;
 };
 
-export const FollowUpsFiltersView = ({
+export const FiltersBar = ({
+  ariaLabel,
   clearFilters,
   filterSelects,
   isClearButtonDisabled,
-}: FollowUpsFiltersViewProps) => (
-  <div className={styles.filters}>
+}: FiltersBarProps) => (
+  <div className={styles.filters} aria-label={ariaLabel}>
     {filterSelects.map((filter) => (
       <Select
         key={filter.key}

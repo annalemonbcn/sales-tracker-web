@@ -1,4 +1,5 @@
-import { BusinessesFiltersView } from './BusinessesFiltersView';
+import { FiltersBar } from '@/shared/ui';
+
 import type { BusinessSelectFilterKey } from './types';
 import { useBusinessesFilters } from './useBusinessesFilters';
 
@@ -21,7 +22,8 @@ export const BusinessesFilters = ({
     useBusinessesFilters({ isBusinessesFetching, filtersToUse });
 
   return (
-    <BusinessesFiltersView
+    <FiltersBar
+      ariaLabel="Business filters"
       clearFilters={clearFilters}
       filterSelects={filterSelects}
       isClearButtonDisabled={isClearButtonDisabled}
