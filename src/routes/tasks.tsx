@@ -1,12 +1,12 @@
 import { createRoute } from '@tanstack/react-router';
 
-import type {
-  GetFollowUpsPriority,
-  GetFollowUpsStatus,
-} from '@/shared/api/generated/salesTrackerApi';
+import type { GetFollowUpsPriority } from '@/shared/api/generated/salesTrackerApi';
 import { FollowUpsPage } from '@/features/follow-ups/presentation/pages';
 import { FollowUpsFiltersProvider } from '@/features/follow-ups/presentation/providers';
-import type { FollowUpDueDatePreset } from '@/features/follow-ups/domain/followUpFilters.model';
+import type {
+  FollowUpDueDatePreset,
+  FollowUpListStatus,
+} from '@/features/follow-ups/domain/followUpFilters.model';
 import type { FollowUpTaskType } from '@/features/follow-ups/domain/followUpTask.model';
 
 import { Route as RootRoute } from './__root';
@@ -16,7 +16,7 @@ type TasksSearch = {
   businessId?: string;
   dueDate?: FollowUpDueDatePreset;
   priority?: GetFollowUpsPriority;
-  status?: GetFollowUpsStatus;
+  status?: FollowUpListStatus;
   type?: FollowUpTaskType;
 };
 
@@ -33,7 +33,7 @@ export const Route = createRoute({
         ? (search.dueDate as FollowUpDueDatePreset)
         : undefined,
     priority: search.priority as GetFollowUpsPriority | undefined,
-    status: search.status as GetFollowUpsStatus | undefined,
+    status: search.status as FollowUpListStatus | undefined,
     type:
       typeof search.type === 'string'
         ? (search.type as FollowUpTaskType)

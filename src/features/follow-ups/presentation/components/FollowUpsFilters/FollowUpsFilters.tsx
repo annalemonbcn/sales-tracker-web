@@ -2,6 +2,7 @@ import { businessPriorityOptions } from '@/features/businesses/presentation/lib/
 import {
   hasActiveFollowUpFilters,
   type FollowUpDueDatePreset,
+  type FollowUpListStatus,
 } from '@/features/follow-ups/domain/followUpFilters.model';
 import type { FollowUpTaskType } from '@/features/follow-ups/domain/followUpTask.model';
 import { useFollowUpsFilters } from '@/features/follow-ups/presentation/providers';
@@ -10,12 +11,11 @@ import {
   FollowUpType,
   GetFollowUpsStatus,
   type GetFollowUpsPriority,
-  type GetFollowUpsStatus as GetFollowUpsStatusType,
 } from '@/shared/api/generated/salesTrackerApi';
 import { FiltersBar, type SelectOption } from '@/shared/ui';
 import { followUpTypeLabelMap } from '../FollowUpsTable/followUpsTableFormatters';
 
-const statusOptions: SelectOption<GetFollowUpsStatusType>[] = [
+const statusOptions: SelectOption<FollowUpListStatus>[] = [
   {
     label: 'Pending',
     value: GetFollowUpsStatus.pending,
@@ -27,6 +27,10 @@ const statusOptions: SelectOption<GetFollowUpsStatusType>[] = [
   {
     label: 'Cancelled',
     value: GetFollowUpsStatus.cancelled,
+  },
+  {
+    label: 'Overdue',
+    value: 'overdue',
   },
 ];
 
@@ -90,7 +94,7 @@ export const FollowUpsFilters = ({
           value: filters.status,
           isDisabled: isFollowUpsFetching,
           onChange: (value) => {
-            updateFilter('status', value as GetFollowUpsStatusType | null);
+            updateFilter('status', value as FollowUpListStatus | null);
           },
         },
         {

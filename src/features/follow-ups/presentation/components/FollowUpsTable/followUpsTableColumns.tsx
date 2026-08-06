@@ -1,4 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table';
+import { ClockAlert } from 'lucide-react';
 
 import {
   getBadgeVariantByPriority,
@@ -18,6 +19,25 @@ import {
 } from './followUpsTableFormatters';
 
 export const followUpsTableColumns: ColumnDef<FollowUpTask>[] = [
+  {
+    id: 'overdue',
+    header: () => <span className={styles.visuallyHidden}>Overdue</span>,
+    size: 44,
+    enableSorting: false,
+    cell: ({ row }) =>
+      row.original.isOverdue ? (
+        <span
+          aria-label="This task is overdue"
+          className={styles.overdueIndicator}
+          tabIndex={0}
+        >
+          <ClockAlert aria-hidden="true" size={18} />
+          <span className={styles.overdueTooltip} role="tooltip">
+            This task is overdue
+          </span>
+        </span>
+      ) : null,
+  },
   {
     accessorKey: 'title',
     header: 'Task',

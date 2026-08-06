@@ -58,10 +58,15 @@ export const DataTable = <TData,>({
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 const sortDirection = header.column.getIsSorted();
+                const canSort = header.column.getCanSort();
+                const width = header.column.columnDef.size;
 
                 return (
-                  <th key={header.id}>
-                    {header.isPlaceholder ? null : (
+                  <th
+                    key={header.id}
+                    style={width === undefined ? undefined : { width }}
+                  >
+                    {header.isPlaceholder ? null : canSort ? (
                       <button
                         className={styles.headerButton}
                         type="button"
@@ -80,6 +85,11 @@ export const DataTable = <TData,>({
 
                         {!sortDirection ? <ChevronsUpDown size={14} /> : null}
                       </button>
+                    ) : (
+                      flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )
                     )}
                   </th>
                 );
@@ -105,7 +115,14 @@ export const DataTable = <TData,>({
                 }}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
+                  <td
+                    key={cell.id}
+                    style={
+                      cell.column.columnDef.size === undefined
+                        ? undefined
+                        : { width: cell.column.columnDef.size }
+                    }
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

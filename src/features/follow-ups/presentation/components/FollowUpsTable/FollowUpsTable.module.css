@@ -1,3 +1,53 @@
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.overdueIndicator {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-overdue-text);
+  cursor: help;
+}
+
+.overdueIndicator:focus-visible {
+  border-radius: var(--radius-sm);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.overdueTooltip {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 0.625rem);
+  z-index: 4;
+  padding: 0.375rem 0.625rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-text-primary);
+  color: var(--color-bg-surface);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: opacity 0.15s ease;
+}
+
+.overdueIndicator:hover .overdueTooltip,
+.overdueIndicator:focus-visible .overdueTooltip {
+  opacity: 1;
+}
+
 .taskName {
   color: var(--color-text-primary);
 }
