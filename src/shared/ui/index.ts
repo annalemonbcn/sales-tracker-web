@@ -15,6 +15,7 @@ export { DataTable } from './DataTable/DataTable';
 export { Drawer } from './Drawer/Drawer';
 export { EmptyState } from './Feedback/EmptyState';
 export { ErrorState } from './Feedback/ErrorState';
+export { FiltersBar, type FilterSelectConfig } from './FiltersBar/FiltersBar';
 export { IconButton } from './IconButton/IconButton';
 export { Input } from './Input/Input';
 export { LoadingState } from './Feedback/LoadingState';

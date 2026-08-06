@@ -1,6 +1,6 @@
-import type {
-  GetFollowUpsPriority,
+import {
   GetFollowUpsStatus,
+  type GetFollowUpsPriority,
 } from '@/shared/api/generated/salesTrackerApi';
 import type { FollowUpTaskType } from './followUpTask.model';
 
@@ -15,13 +15,14 @@ export type FollowUpFilters = {
 };
 
 export type FollowUpDueDatePreset = 'overdue' | 'today' | 'next_7_days';
+export type FollowUpListStatus = GetFollowUpsStatus | 'overdue';
 
 export type FollowUpListFilters = {
   assignedToId: string | null;
   businessId: string | null;
   dueDate: FollowUpDueDatePreset | null;
   priority: GetFollowUpsPriority | null;
-  status: GetFollowUpsStatus | null;
+  status: FollowUpListStatus | null;
   type: FollowUpTaskType | null;
 };
 
@@ -43,7 +44,7 @@ type FollowUpFiltersSearch = {
   businessId?: string;
   dueDate?: FollowUpDueDatePreset;
   priority?: GetFollowUpsPriority;
-  status?: GetFollowUpsStatus;
+  status?: FollowUpListStatus;
   type?: FollowUpTaskType;
 };
 
@@ -73,15 +74,34 @@ export const mapFollowUpListFiltersToApiFilters = (
   filters: FollowUpListFilters,
 ): FollowUpFilters => {
   const dateRange = getDueDateRange(filters.dueDate);
+  const isOverdueStatus = filters.status === 'overdue';
+  const dueBefore = isOverdueStatus
+    ? getEarlierDate(dateRange.dueBefore, new Date().toISOString())
+    : dateRange.dueBefore;
 
   return {
     assignedToId: filters.assignedToId ?? undefined,
     businessId: filters.businessId ?? undefined,
     priority: filters.priority ?? undefined,
-    status: filters.status ?? undefined,
+    status:
+      filters.status === 'overdue'
+        ? GetFollowUpsStatus.pending
+        : (filters.status ?? undefined),
     type: filters.type ?? undefined,
-    ...dateRange,
+    dueAfter: dateRange.dueAfter,
+    dueBefore,
   };
+};
+
+const getEarlierDate = (
+  firstDate: string | undefined,
+  secondDate: string,
+): string => {
+  if (!firstDate) {
+    return secondDate;
+  }
+
+  return new Date(firstDate) < new Date(secondDate) ? firstDate : secondDate;
 };
 
 const getDueDateRange = (
